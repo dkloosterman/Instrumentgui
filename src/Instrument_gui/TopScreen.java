@@ -21,20 +21,18 @@ public class TopScreen extends javax.swing.JFrame {
     public TopScreen() {
         initComponents();
         InstrumentInfoPanel.setVisible(false);
-        
+
     }
-    
-     // JDBC driver name and database URL
-   static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-   static final String DB_URL = "jdbc:mysql://localhost/sensodx_sql_db?useSSL=false";
 
-   //  Database credentials
-   static final String USER = "root";
-   static final String PASS = "rootMysql151";
-   
-   // Temporary Constants
-   static final String INSTRUMENT_ID = "2017040300001";
+    // JDBC driver name and database URL
+    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://localhost/sensodx_sql_db?useSSL=false";
 
+    //  Database credentials
+    static final String USER = "root";
+    static final String PASS = "rootMysql151";
+
+    //String display = null;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -167,129 +165,60 @@ public class TopScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_CloseInstrumentInfoButtonActionPerformed
 
     private void InstrumentInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InstrumentInfoButtonActionPerformed
-        // TODO add your handling code here:
-        Connection conn = null;
-        String sql = null;
-        Statement stmt = null;
-        ResultSet rs = null;
+
+        // load Combo Box with list of all Intrument IDs
+        Connection conn;
+        String sql;
+        Statement stmt;
+        ResultSet rs;
         String display = null;
-        
-        try
-        {
-            display = "Instrument Information \n";
-            Class.forName(JDBC_DRIVER);              
+
+        try {
+            Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();
-            
-            // get and display data for seleted Instrument ID
-            String inst_id = INSTRUMENT_ID;  // this is temp line of code
-            sql = "SELECT * FROM Instrument_Manufactured WHERE instrument_id = " + inst_id;
-            rs = stmt.executeQuery(sql);
-            while (rs.next()) 
-            {
-                String instrumentID = rs.getString("instrument_id");
-                java.sql.Timestamp mfg_time = rs.getTimestamp("manufactured_timestamp");
-                String location = rs.getString("manufactured_location");
-                String sub1 = rs.getString("subsystem_1_id");
-                String sub2 = rs.getString("subsystem_2_id");
-                String sub3 = rs.getString("subsystem_3_id");
-                display += "ID: " + instrumentID +
-                                   "\n\t timestamp: " + mfg_time +
-                                   "\n\t location: " + location +
-                                   "\n\t sub1: " + sub1 +
-                                   "\n\t sub2: " + sub2 +
-                                   "\n\t sub3: " + sub3 +
-                                   "\n";
-            } // end while (rs.next())
-            
-            // load Combo Box with list of all Intrument IDs
             sql = "SELECT instrument_id FROM Instrument_Manufactured";
             rs = stmt.executeQuery(sql);
             SelectInstrumentComboBox.removeAllItems();
-            while (rs.next()) 
-            {
+
+            while (rs.next()) {
                 String instrumentID = rs.getString("instrument_id");
-                SelectInstrumentComboBox.addItem(instrumentID);               
+                SelectInstrumentComboBox.addItem(instrumentID);
             } // end while (rs.next()) 
-        }
-        catch (ClassNotFoundException e) 
-        {
-           // handle the error
-           display += "\n" + "Class Not Found Exception " + e.getMessage();
-           System.exit(0);
-        }
-        catch (SQLException e) 
-        {
-           // handle the error
-           display += "\n" + "SQL Exception " + e.getMessage();
-           System.exit(0);
-        }
-        finally
-        {
+
+            // Populate the Instrument Info Panel with Instrument's Mfg. Info
+            display = getInstrumentMfgInfo((String) SelectInstrumentComboBox.getSelectedItem());
+
+            // Make Instrument Info Panel visible
+            InstrumentInfoPanel.setVisible(true);
+        } // end try
+        catch (ClassNotFoundException e) {
+            // handle the error
+            display += "\n" + "Class Not Found Exception " + e.getMessage();
+            System.exit(0);
+        } catch (SQLException e) {
+            // handle the error
+            display += "\n" + "SQL Exception " + e.getMessage();
+            System.exit(0);
+        } catch (Exception e) {
+            // handle the error
+            display += "\n" + "General Exception " + e.getMessage();
+            System.exit(0);
+        } finally {
             //finally block used to close resources
-            InstrumentInfoTextArea.setText(display);
-        }   //end finally try
-        
-        InstrumentInfoPanel.setVisible(true);  
+
+        }   //end finally
+
+        InstrumentInfoTextArea.setText(display);
     }//GEN-LAST:event_InstrumentInfoButtonActionPerformed
 
     private void SelectInstrumentComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectInstrumentComboBoxActionPerformed
-        // TODO add your handling code here:
-        Connection conn = null;
-        String sql = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        String display = null;
-        
-        try
-        {
-            display = "Instrument Information \n";
-            Class.forName(JDBC_DRIVER);              
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            stmt = conn.createStatement();
-            
-            // get and display data for seleted Instrument ID
-            String inst_id = (String) SelectInstrumentComboBox.getSelectedItem();  // this is temp line of code
-            sql = "SELECT * FROM Instrument_Manufactured WHERE instrument_id = " + inst_id;
-            rs = stmt.executeQuery(sql);
-            while (rs.next()) 
-            {
-                String instrumentID = rs.getString("instrument_id");
-                java.sql.Timestamp mfg_time = rs.getTimestamp("manufactured_timestamp");
-                String location = rs.getString("manufactured_location");
-                String sub1 = rs.getString("subsystem_1_id");
-                String sub2 = rs.getString("subsystem_2_id");
-                String sub3 = rs.getString("subsystem_3_id");
-                display += "ID: " + instrumentID +
-                                   "\n\t timestamp: " + mfg_time +
-                                   "\n\t location: " + location +
-                                   "\n\t sub1: " + sub1 +
-                                   "\n\t sub2: " + sub2 +
-                                   "\n\t sub3: " + sub3 +
-                                   "\n";
-            } // end while (rs.next())
-            
-        }
-        catch (ClassNotFoundException e) 
-        {
-           // handle the error
-           display += "\n" + "Class Not Found Exception " + e.getMessage();
-           System.exit(0);
-        }
-        catch (SQLException e) 
-        {
-           // handle the error
-           display += "\n" + "SQL Exception " + e.getMessage();
-           System.exit(0);
-        }
-        finally
-        {
-            //finally block used to close resources
-            InstrumentInfoTextArea.setText(display);
-        }   //end finally try
- 
+
+        // update Instrument Info Text Area with selected Instrument ID
+        String display = getInstrumentMfgInfo((String) SelectInstrumentComboBox.getSelectedItem());
+        InstrumentInfoTextArea.setText(display);
     }//GEN-LAST:event_SelectInstrumentComboBoxActionPerformed
-    
+
     /**
      * @param args the command line arguments
      */
@@ -316,19 +245,71 @@ public class TopScreen extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(TopScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
+
                 new TopScreen().setVisible(true);
             }
         });
-        
-        
-        
+
     } // end main
+
+    private String getInstrumentMfgInfo(String forInstrID) {
+
+        Connection conn;
+        String sql;
+        Statement stmt;
+        ResultSet rs;
+
+        String display = "Instrument  Manufacturing Information \n";
+
+        try {
+
+            Class.forName(JDBC_DRIVER);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+
+            // get and display data for seleted Instrument ID
+            //String inst_id = forInstrID;  // this is temp line of code
+            sql = "SELECT * FROM Instrument_Manufactured WHERE instrument_id = " + forInstrID;
+            rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                String instrumentID = rs.getString("instrument_id");
+                java.sql.Timestamp mfg_time = rs.getTimestamp("manufactured_timestamp");
+                String location = rs.getString("manufactured_location");
+                String sub1 = rs.getString("subsystem_1_id");
+                String sub2 = rs.getString("subsystem_2_id");
+                String sub3 = rs.getString("subsystem_3_id");
+                display += "\t ID: " + instrumentID
+                        + "\n\t timestamp: " + mfg_time
+                        + "\n\t location: " + location
+                        + "\n\t sub1: " + sub1
+                        + "\n\t sub2: " + sub2
+                        + "\n\t sub3: " + sub3
+                        + "\n";
+            } // end while (rs.next())
+
+        } catch (ClassNotFoundException e) {
+            // handle the error
+            display += "\n" + "Class Not Found Exception " + e.getMessage();
+            System.exit(0);
+        } catch (SQLException e) {
+            // handle the error
+            display += "\n" + "SQL Exception " + e.getMessage();
+            System.exit(0);
+        } catch (Exception e) {
+            // handle the error
+            display += "\n" + "General Exception " + e.getMessage();
+            System.exit(0);
+        } finally {
+            //finally block used to close resources
+
+        }   //end finally try
+        return (display);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CloseInstrumentInfoButton;
