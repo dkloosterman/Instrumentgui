@@ -5,6 +5,10 @@
  */
 package Instrument_gui;
 
+import java.sql.*;
+import java.util.*;
+import java.text.*;
+
 /**
  *
  * @author David Kloosterman
@@ -16,8 +20,20 @@ public class TopScreen extends javax.swing.JFrame {
      */
     public TopScreen() {
         initComponents();
-        jPanel1.setVisible(false);
+        InstrumentInfoPanel.setVisible(false);
+        
     }
+    
+     // JDBC driver name and database URL
+   static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+   static final String DB_URL = "jdbc:mysql://localhost/sensodx_sql_db?useSSL=false";
+
+   //  Database credentials
+   static final String USER = "root";
+   static final String PASS = "rootMysql151";
+   
+   // Temporary Constants
+   static final String INSTRUMENT_ID = "2017040300001";
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -30,10 +46,12 @@ public class TopScreen extends javax.swing.JFrame {
 
         jFrame1 = new javax.swing.JFrame();
         jFrame2 = new javax.swing.JFrame();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        InstrumentInfoPanel = new javax.swing.JPanel();
+        CloseInstrumentInfoButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        InstrumentInfoTextArea = new javax.swing.JTextArea();
+        SelectInstrumentComboBox = new javax.swing.JComboBox<>();
+        InstrumentInfoButton = new javax.swing.JButton();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -60,46 +78,60 @@ public class TopScreen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SensoDx Topscreen");
         setBackground(new java.awt.Color(255, 255, 255));
-        setPreferredSize(new java.awt.Dimension(900, 600));
         setSize(new java.awt.Dimension(900, 600));
 
-        jPanel1.setBackground(new java.awt.Color(204, 255, 204));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        InstrumentInfoPanel.setBackground(new java.awt.Color(204, 204, 255));
+        InstrumentInfoPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel1.setText("Instrument Info");
-
-        jButton2.setText("Close");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        CloseInstrumentInfoButton.setText("Close");
+        CloseInstrumentInfoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                CloseInstrumentInfoButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(184, Short.MAX_VALUE))
+        InstrumentInfoTextArea.setColumns(20);
+        InstrumentInfoTextArea.setRows(5);
+        InstrumentInfoTextArea.setText("Instrument Information");
+        jScrollPane1.setViewportView(InstrumentInfoTextArea);
+
+        SelectInstrumentComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Instrument ID" }));
+        SelectInstrumentComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SelectInstrumentComboBoxActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout InstrumentInfoPanelLayout = new javax.swing.GroupLayout(InstrumentInfoPanel);
+        InstrumentInfoPanel.setLayout(InstrumentInfoPanelLayout);
+        InstrumentInfoPanelLayout.setHorizontalGroup(
+            InstrumentInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(InstrumentInfoPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(InstrumentInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(InstrumentInfoPanelLayout.createSequentialGroup()
+                        .addComponent(SelectInstrumentComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
+                        .addComponent(CloseInstrumentInfoButton)))
+                .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                .addComponent(jButton2)
+        InstrumentInfoPanelLayout.setVerticalGroup(
+            InstrumentInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, InstrumentInfoPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(InstrumentInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CloseInstrumentInfoButton)
+                    .addComponent(SelectInstrumentComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Instrument_gui/Instrument.png"))); // NOI18N
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        InstrumentInfoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Instrument_gui/Instrument.png"))); // NOI18N
+        InstrumentInfoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                InstrumentInfoButtonActionPerformed(evt);
             }
         });
 
@@ -108,38 +140,156 @@ public class TopScreen extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(358, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(156, 156, 156))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(InstrumentInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(82, 82, 82)
+                .addComponent(InstrumentInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(447, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(158, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(324, Short.MAX_VALUE)
+                .addComponent(InstrumentInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(InstrumentInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void CloseInstrumentInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseInstrumentInfoButtonActionPerformed
         // TODO add your handling code here:
-        jPanel1.setVisible(false);
-    }//GEN-LAST:event_jButton2ActionPerformed
+        InstrumentInfoPanel.setVisible(false);
+    }//GEN-LAST:event_CloseInstrumentInfoButtonActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void InstrumentInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InstrumentInfoButtonActionPerformed
         // TODO add your handling code here:
-        jPanel1.setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
+        Connection conn = null;
+        String sql = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        String display = null;
+        
+        try
+        {
+            display = "Instrument Information \n";
+            Class.forName(JDBC_DRIVER);              
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+            
+            // get and display data for seleted Instrument ID
+            String inst_id = INSTRUMENT_ID;  // this is temp line of code
+            sql = "SELECT * FROM Instrument_Manufactured WHERE instrument_id = " + inst_id;
+            rs = stmt.executeQuery(sql);
+            while (rs.next()) 
+            {
+                String instrumentID = rs.getString("instrument_id");
+                java.sql.Timestamp mfg_time = rs.getTimestamp("manufactured_timestamp");
+                String location = rs.getString("manufactured_location");
+                String sub1 = rs.getString("subsystem_1_id");
+                String sub2 = rs.getString("subsystem_2_id");
+                String sub3 = rs.getString("subsystem_3_id");
+                display += "ID: " + instrumentID +
+                                   "\n\t timestamp: " + mfg_time +
+                                   "\n\t location: " + location +
+                                   "\n\t sub1: " + sub1 +
+                                   "\n\t sub2: " + sub2 +
+                                   "\n\t sub3: " + sub3 +
+                                   "\n";
+            } // end while (rs.next())
+            
+            // load Combo Box with list of all Intrument IDs
+            sql = "SELECT instrument_id FROM Instrument_Manufactured";
+            rs = stmt.executeQuery(sql);
+            SelectInstrumentComboBox.removeAllItems();
+            while (rs.next()) 
+            {
+                String instrumentID = rs.getString("instrument_id");
+                SelectInstrumentComboBox.addItem(instrumentID);               
+            } // end while (rs.next()) 
+        }
+        catch (ClassNotFoundException e) 
+        {
+           // handle the error
+           display += "\n" + "Class Not Found Exception " + e.getMessage();
+           System.exit(0);
+        }
+        catch (SQLException e) 
+        {
+           // handle the error
+           display += "\n" + "SQL Exception " + e.getMessage();
+           System.exit(0);
+        }
+        finally
+        {
+            //finally block used to close resources
+            InstrumentInfoTextArea.setText(display);
+        }   //end finally try
+        
+        InstrumentInfoPanel.setVisible(true);  
+    }//GEN-LAST:event_InstrumentInfoButtonActionPerformed
 
+    private void SelectInstrumentComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectInstrumentComboBoxActionPerformed
+        // TODO add your handling code here:
+        Connection conn = null;
+        String sql = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        String display = null;
+        
+        try
+        {
+            display = "Instrument Information \n";
+            Class.forName(JDBC_DRIVER);              
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+            
+            // get and display data for seleted Instrument ID
+            String inst_id = (String) SelectInstrumentComboBox.getSelectedItem();  // this is temp line of code
+            sql = "SELECT * FROM Instrument_Manufactured WHERE instrument_id = " + inst_id;
+            rs = stmt.executeQuery(sql);
+            while (rs.next()) 
+            {
+                String instrumentID = rs.getString("instrument_id");
+                java.sql.Timestamp mfg_time = rs.getTimestamp("manufactured_timestamp");
+                String location = rs.getString("manufactured_location");
+                String sub1 = rs.getString("subsystem_1_id");
+                String sub2 = rs.getString("subsystem_2_id");
+                String sub3 = rs.getString("subsystem_3_id");
+                display += "ID: " + instrumentID +
+                                   "\n\t timestamp: " + mfg_time +
+                                   "\n\t location: " + location +
+                                   "\n\t sub1: " + sub1 +
+                                   "\n\t sub2: " + sub2 +
+                                   "\n\t sub3: " + sub3 +
+                                   "\n";
+            } // end while (rs.next())
+            
+        }
+        catch (ClassNotFoundException e) 
+        {
+           // handle the error
+           display += "\n" + "Class Not Found Exception " + e.getMessage();
+           System.exit(0);
+        }
+        catch (SQLException e) 
+        {
+           // handle the error
+           display += "\n" + "SQL Exception " + e.getMessage();
+           System.exit(0);
+        }
+        finally
+        {
+            //finally block used to close resources
+            InstrumentInfoTextArea.setText(display);
+        }   //end finally try
+ 
+    }//GEN-LAST:event_SelectInstrumentComboBoxActionPerformed
+    
     /**
      * @param args the command line arguments
      */
@@ -175,14 +325,19 @@ public class TopScreen extends javax.swing.JFrame {
                 new TopScreen().setVisible(true);
             }
         });
-    }
+        
+        
+        
+    } // end main
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton CloseInstrumentInfoButton;
+    private javax.swing.JButton InstrumentInfoButton;
+    private javax.swing.JPanel InstrumentInfoPanel;
+    private javax.swing.JTextArea InstrumentInfoTextArea;
+    private javax.swing.JComboBox<String> SelectInstrumentComboBox;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
