@@ -20,8 +20,8 @@ public class TopScreen extends javax.swing.JFrame {
      */
     public TopScreen() {
         initComponents();
-        InstrumentInfoPanel.setVisible(false);
-
+        InfoPanel.setVisible(false);
+        CartridgeInfoButton.setVisible(false);
     }
 
     // JDBC driver name and database URL
@@ -44,12 +44,15 @@ public class TopScreen extends javax.swing.JFrame {
 
         jFrame1 = new javax.swing.JFrame();
         jFrame2 = new javax.swing.JFrame();
-        InstrumentInfoPanel = new javax.swing.JPanel();
-        CloseInstrumentInfoButton = new javax.swing.JButton();
+        InfoPanel = new javax.swing.JPanel();
+        CloseInfoButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        InstrumentInfoTextArea = new javax.swing.JTextArea();
-        SelectInstrumentComboBox = new javax.swing.JComboBox<>();
+        InfoTextArea = new javax.swing.JTextArea();
+        SelectComboBox = new javax.swing.JComboBox<>();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         InstrumentInfoButton = new javax.swing.JButton();
+        InsertCartridgeButton = new javax.swing.JButton();
+        CartridgeInfoButton = new javax.swing.JButton();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -76,53 +79,59 @@ public class TopScreen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SensoDx Topscreen");
         setBackground(new java.awt.Color(255, 255, 255));
+        setPreferredSize(new java.awt.Dimension(900, 600));
         setSize(new java.awt.Dimension(900, 600));
 
-        InstrumentInfoPanel.setBackground(new java.awt.Color(204, 204, 255));
-        InstrumentInfoPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        InfoPanel.setBackground(new java.awt.Color(204, 204, 255));
+        InfoPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        CloseInstrumentInfoButton.setText("Close");
-        CloseInstrumentInfoButton.addActionListener(new java.awt.event.ActionListener() {
+        CloseInfoButton.setText("Close");
+        CloseInfoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CloseInstrumentInfoButtonActionPerformed(evt);
+                CloseInfoButtonActionPerformed(evt);
             }
         });
 
-        InstrumentInfoTextArea.setColumns(20);
-        InstrumentInfoTextArea.setRows(5);
-        InstrumentInfoTextArea.setText("Instrument Information");
-        jScrollPane1.setViewportView(InstrumentInfoTextArea);
+        InfoTextArea.setColumns(20);
+        InfoTextArea.setRows(5);
+        InfoTextArea.setText("Information");
+        jScrollPane1.setViewportView(InfoTextArea);
 
-        SelectInstrumentComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Instrument ID" }));
-        SelectInstrumentComboBox.addActionListener(new java.awt.event.ActionListener() {
+        SelectComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SelectInstrumentComboBoxActionPerformed(evt);
+                SelectComboBoxActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout InstrumentInfoPanelLayout = new javax.swing.GroupLayout(InstrumentInfoPanel);
-        InstrumentInfoPanel.setLayout(InstrumentInfoPanelLayout);
-        InstrumentInfoPanelLayout.setHorizontalGroup(
-            InstrumentInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(InstrumentInfoPanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout InfoPanelLayout = new javax.swing.GroupLayout(InfoPanel);
+        InfoPanel.setLayout(InfoPanelLayout);
+        InfoPanelLayout.setHorizontalGroup(
+            InfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(InfoPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(InstrumentInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(InfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1)
-                    .addGroup(InstrumentInfoPanelLayout.createSequentialGroup()
-                        .addComponent(SelectInstrumentComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
-                        .addComponent(CloseInstrumentInfoButton)))
+                    .addGroup(InfoPanelLayout.createSequentialGroup()
+                        .addComponent(SelectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(CloseInfoButton)))
                 .addContainerGap())
+            .addGroup(InfoPanelLayout.createSequentialGroup()
+                .addGap(251, 251, 251)
+                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(247, Short.MAX_VALUE))
         );
-        InstrumentInfoPanelLayout.setVerticalGroup(
-            InstrumentInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, InstrumentInfoPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
+        InfoPanelLayout.setVerticalGroup(
+            InfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, InfoPanelLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(InstrumentInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CloseInstrumentInfoButton)
-                    .addComponent(SelectInstrumentComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(InfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CloseInfoButton)
+                    .addComponent(SelectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -133,37 +142,62 @@ public class TopScreen extends javax.swing.JFrame {
             }
         });
 
+        InsertCartridgeButton.setBackground(new java.awt.Color(255, 255, 153));
+        InsertCartridgeButton.setText("Press here to simulate inserting a cartridge");
+        InsertCartridgeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InsertCartridgeButtonActionPerformed(evt);
+            }
+        });
+
+        CartridgeInfoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Instrument_gui/Cartridge.png"))); // NOI18N
+        CartridgeInfoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CartridgeInfoButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(274, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(InstrumentInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(InstrumentInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(255, 255, 255))))
+                .addGap(20, 20, 20)
+                .addComponent(InsertCartridgeButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(CartridgeInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(InstrumentInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(206, 206, 206)
+                .addComponent(InfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(248, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(107, Short.MAX_VALUE)
-                .addComponent(InstrumentInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
-                .addComponent(InstrumentInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(CartridgeInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(64, 64, 64)
+                        .addComponent(InfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 141, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(InstrumentInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(InsertCartridgeButton))))
+                .addGap(19, 19, 19))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void CloseInstrumentInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseInstrumentInfoButtonActionPerformed
+    private void CloseInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseInfoButtonActionPerformed
         // TODO add your handling code here:
-        InstrumentInfoPanel.setVisible(false);
-    }//GEN-LAST:event_CloseInstrumentInfoButtonActionPerformed
+        InfoPanel.setVisible(false);
+    }//GEN-LAST:event_CloseInfoButtonActionPerformed
 
     private void InstrumentInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InstrumentInfoButtonActionPerformed
 
@@ -180,15 +214,15 @@ public class TopScreen extends javax.swing.JFrame {
             stmt = conn.createStatement();
             sql = "SELECT instrument_id FROM Instrument_Manufactured";
             rs = stmt.executeQuery(sql);
-            SelectInstrumentComboBox.removeAllItems();
+            SelectComboBox.removeAllItems();
 
             while (rs.next()) {
                 String instrumentID = rs.getString("instrument_id");
-                SelectInstrumentComboBox.addItem(instrumentID);
+                SelectComboBox.addItem(instrumentID);
             } // end while (rs.next()) 
 
             // Populate the Instrument Info Panel with Instrument's Mfg. Info
-            String selectedInstrumentID = (String) SelectInstrumentComboBox.getSelectedItem();
+            String selectedInstrumentID = (String) SelectComboBox.getSelectedItem();
             display = getInstrumentMfgInfo(selectedInstrumentID);
 
             // Display Instrument Deployment Info.
@@ -212,20 +246,78 @@ public class TopScreen extends javax.swing.JFrame {
 
         }   //end finally
 
-        InstrumentInfoTextArea.setText(display);
-        
+        InfoTextArea.setText(display);
+
         // Make Instrument Info Panel visible
-        InstrumentInfoPanel.setVisible(true);
+        SelectComboBox.setVisible(true);
+        InfoPanel.setVisible(true);
     }//GEN-LAST:event_InstrumentInfoButtonActionPerformed
 
-    private void SelectInstrumentComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectInstrumentComboBoxActionPerformed
+    private void SelectComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectComboBoxActionPerformed
 
         // update Instrument Info Text Area with selected Instrument ID
-        String selectedInstrumentID = (String) SelectInstrumentComboBox.getSelectedItem();
+        String selectedInstrumentID = (String) SelectComboBox.getSelectedItem();
         String display = getInstrumentMfgInfo(selectedInstrumentID);
         display += getInstrumentDeploymentInfo(selectedInstrumentID);
-        InstrumentInfoTextArea.setText(display);
-    }//GEN-LAST:event_SelectInstrumentComboBoxActionPerformed
+        InfoTextArea.setText(display);
+    }//GEN-LAST:event_SelectComboBoxActionPerformed
+
+    private void InsertCartridgeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertCartridgeButtonActionPerformed
+        // Make Instrument Info Panel visible
+        CartridgeInfoButton.setVisible(true);
+        InsertCartridgeButton.setVisible(false);
+    }//GEN-LAST:event_InsertCartridgeButtonActionPerformed
+
+    private void CartridgeInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartridgeInfoButtonActionPerformed
+        Connection conn;
+        String sql;
+        Statement stmt;
+        ResultSet rs;
+        String display = null;
+
+        try {
+            Class.forName(JDBC_DRIVER);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+            sql = "SELECT cartridge_id FROM Cartridge_Manufactured";
+            rs = stmt.executeQuery(sql);
+//            SelectComboBox.removeAllItems();
+
+//            while (rs.next()) {
+//                String instrumentID = rs.getString("instrument_id");
+//                SelectComboBox.addItem(instrumentID);
+//            } // end while (rs.next()) 
+            // Populate the Instrument Info Panel with Instrument's Mfg. Info
+//            String selectedInstrumentID = (String) SelectComboBox.getSelectedItem();
+            rs.last();
+            display = getCartridgeMfgInfo(rs.getString("cartridge_id"));
+
+            // Display Instrument Deployment Info.
+//            display += getInstrumentDeploymentInfo(selectedInstrumentID);
+        } // end try
+        catch (ClassNotFoundException e) {
+            // handle the error
+            display += "\n" + "Class Not Found Exception " + e.getMessage();
+            System.exit(0);
+        } catch (SQLException e) {
+            // handle the error
+            display += "\n" + "SQL Exception " + e.getMessage();
+            System.exit(0);
+        } catch (Exception e) {
+            // handle the error
+            display += "\n" + "General Exception " + e.getMessage();
+            System.exit(0);
+        } finally {
+            //finally block used to close resources
+
+        }   //end finally
+
+        InfoTextArea.setText(display);
+
+        // Make Instrument Info Panel visible
+        SelectComboBox.setVisible(false);
+        InfoPanel.setVisible(true);
+    }//GEN-LAST:event_CartridgeInfoButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -281,7 +373,6 @@ public class TopScreen extends javax.swing.JFrame {
             stmt = conn.createStatement();
 
             // get and display data for seleted Instrument ID
-//            String inst_id = forInstrID;  // this is temp line of code
             sql = "SELECT * FROM Instrument_Manufactured WHERE instrument_id = " + forInstrID;
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -299,6 +390,69 @@ public class TopScreen extends javax.swing.JFrame {
                         + "\n\t sub3: " + sub3
                         + "\n";
             } // end while (rs.next())
+
+        } catch (ClassNotFoundException e) {
+            // handle the error
+            display += "\n" + "Class Not Found Exception " + e.getMessage();
+            System.exit(0);
+        } catch (SQLException e) {
+            // handle the error
+            display += "\n" + "SQL Exception " + e.getMessage();
+            System.exit(0);
+        } catch (Exception e) {
+            // handle the error
+            display += "\n" + "General Exception " + e.getMessage();
+            System.exit(0);
+        } finally {
+            //finally block used to close resources
+
+        }   //end finally try
+        return (display);
+    }
+
+    private String getCartridgeMfgInfo(String forCartID) {
+
+        Connection conn = null;
+        String sql = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        String display = "Cartridge  Manufacturing Information \n";
+
+        try {
+
+            Class.forName(JDBC_DRIVER);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+
+            // get and display data for seleted Instrument ID
+            sql = "SELECT * FROM Cartridge_Manufactured";
+//            sql = "SELECT * FROM Instrument_Manufactured WHERE instrument_id = " + forInstrID;
+
+            rs = stmt.executeQuery(sql);
+            
+            while (rs.next()) {
+                String ID = rs.getString("cartridge_id");
+                if( ID.equals(forCartID)) {
+                    break;
+                }
+            }
+           
+                String cartridge_id = rs.getString("cartridge_id");
+                java.sql.Timestamp manufactured_timestamp = rs.getTimestamp("manufactured_timestamp");
+                String manufactured_location = rs.getString("manufactured_location");
+                String assay_type = rs.getString("assay_type");
+                String subsystem_1_id = rs.getString("subsystem_1_id");
+                String subsystem_2_id = rs.getString("subsystem_2_id");
+                String subsystem_3_id = rs.getString("subsystem_3_id");
+                display += "\n\t Cartridge ID: " + cartridge_id
+                        + "\n\t Mfg Location: " + manufactured_location
+                        + "\n\t Cartridge Assay Type: " + assay_type
+                        + "\n\t Sub 1 ID: " + subsystem_1_id
+                        + "\n\t Sub 2 ID:" + subsystem_2_id
+                        + "\n\t Sub 3 ID:: " + subsystem_3_id
+                        + "\n\t Mfg. Timestamp: " + manufactured_timestamp + "\n";
+//            } // end while (rs.next())
 
         } catch (ClassNotFoundException e) {
             // handle the error
@@ -383,11 +537,14 @@ public class TopScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton CloseInstrumentInfoButton;
+    private javax.swing.JButton CartridgeInfoButton;
+    private javax.swing.JButton CloseInfoButton;
+    private javax.swing.JPanel InfoPanel;
+    private javax.swing.JTextArea InfoTextArea;
+    private javax.swing.JButton InsertCartridgeButton;
     private javax.swing.JButton InstrumentInfoButton;
-    private javax.swing.JPanel InstrumentInfoPanel;
-    private javax.swing.JTextArea InstrumentInfoTextArea;
-    private javax.swing.JComboBox<String> SelectInstrumentComboBox;
+    private javax.swing.JComboBox<String> SelectComboBox;
+    private javax.swing.Box.Filler filler1;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
     private javax.swing.JScrollPane jScrollPane1;
