@@ -118,7 +118,7 @@ public class TopScreen extends javax.swing.JFrame {
             InstrumentInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, InstrumentInfoPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(InstrumentInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CloseInstrumentInfoButton)
@@ -138,20 +138,21 @@ public class TopScreen extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(InstrumentInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(82, 82, 82)
-                .addComponent(InstrumentInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(447, Short.MAX_VALUE))
+                .addContainerGap(274, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(InstrumentInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(InstrumentInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(255, 255, 255))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(324, Short.MAX_VALUE)
+                .addContainerGap(107, Short.MAX_VALUE)
                 .addComponent(InstrumentInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(33, 33, 33)
                 .addComponent(InstrumentInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7))
         );
@@ -187,10 +188,12 @@ public class TopScreen extends javax.swing.JFrame {
             } // end while (rs.next()) 
 
             // Populate the Instrument Info Panel with Instrument's Mfg. Info
-            display = getInstrumentMfgInfo((String) SelectInstrumentComboBox.getSelectedItem());
+            String selectedInstrumentID = (String) SelectInstrumentComboBox.getSelectedItem();
+            display = getInstrumentMfgInfo(selectedInstrumentID);
 
-            // Make Instrument Info Panel visible
-            InstrumentInfoPanel.setVisible(true);
+            // Display Instrument Deployment Info.
+            display += getInstrumentDeploymentInfo(selectedInstrumentID);
+
         } // end try
         catch (ClassNotFoundException e) {
             // handle the error
@@ -210,12 +213,17 @@ public class TopScreen extends javax.swing.JFrame {
         }   //end finally
 
         InstrumentInfoTextArea.setText(display);
+        
+        // Make Instrument Info Panel visible
+        InstrumentInfoPanel.setVisible(true);
     }//GEN-LAST:event_InstrumentInfoButtonActionPerformed
 
     private void SelectInstrumentComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectInstrumentComboBoxActionPerformed
 
         // update Instrument Info Text Area with selected Instrument ID
-        String display = getInstrumentMfgInfo((String) SelectInstrumentComboBox.getSelectedItem());
+        String selectedInstrumentID = (String) SelectInstrumentComboBox.getSelectedItem();
+        String display = getInstrumentMfgInfo(selectedInstrumentID);
+        display += getInstrumentDeploymentInfo(selectedInstrumentID);
         InstrumentInfoTextArea.setText(display);
     }//GEN-LAST:event_SelectInstrumentComboBoxActionPerformed
 
@@ -259,10 +267,10 @@ public class TopScreen extends javax.swing.JFrame {
 
     private String getInstrumentMfgInfo(String forInstrID) {
 
-        Connection conn;
-        String sql;
-        Statement stmt;
-        ResultSet rs;
+        Connection conn = null;
+        String sql = null;
+        Statement stmt = null;
+        ResultSet rs = null;
 
         String display = "Instrument  Manufacturing Information \n";
 
@@ -273,7 +281,7 @@ public class TopScreen extends javax.swing.JFrame {
             stmt = conn.createStatement();
 
             // get and display data for seleted Instrument ID
-            //String inst_id = forInstrID;  // this is temp line of code
+//            String inst_id = forInstrID;  // this is temp line of code
             sql = "SELECT * FROM Instrument_Manufactured WHERE instrument_id = " + forInstrID;
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -290,6 +298,69 @@ public class TopScreen extends javax.swing.JFrame {
                         + "\n\t sub2: " + sub2
                         + "\n\t sub3: " + sub3
                         + "\n";
+            } // end while (rs.next())
+
+        } catch (ClassNotFoundException e) {
+            // handle the error
+            display += "\n" + "Class Not Found Exception " + e.getMessage();
+            System.exit(0);
+        } catch (SQLException e) {
+            // handle the error
+            display += "\n" + "SQL Exception " + e.getMessage();
+            System.exit(0);
+        } catch (Exception e) {
+            // handle the error
+            display += "\n" + "General Exception " + e.getMessage();
+            System.exit(0);
+        } finally {
+            //finally block used to close resources
+
+        }   //end finally try
+        return (display);
+    }
+
+    private String getInstrumentDeploymentInfo(String forInstrID) {
+
+        Connection conn;
+        String sql;
+        Statement stmt;
+        ResultSet rs;
+
+        String display = "Instrument Deployment Information";
+
+        try {
+
+            Class.forName(JDBC_DRIVER);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+
+            // get and display data for seleted Instrument ID
+            /////////////////////////////////////////////////////////////////
+            sql = "SELECT * FROM Instrument_Deployed WHERE instrument_id = " + forInstrID;
+            rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                String instrumentID = rs.getString("instrument_id");
+                java.sql.Timestamp time = rs.getTimestamp("installation_timestamp");
+                String customer_id = rs.getString("customer_id");
+                String customer_name = rs.getString("customer_name");
+                String customer_location = rs.getString("customer_location");
+                String contact_name = rs.getString("contact_name");
+                String contact_telephone = rs.getString("contact_telephone");
+                String contact_email = rs.getString("contact_email");
+                java.sql.Date customer_since = rs.getDate("customer_since");
+                String assay_types_enabled = rs.getString("assay_types_enabled");
+
+                display += "\n\t ID: " + instrumentID
+                        + "\n\t installed: " + time
+                        + "\n\t customer id: " + customer_id
+                        + "\n\t customer name: " + customer_name
+                        + "\n\t customer location: " + customer_location
+                        + "\n\t contact name: " + contact_name
+                        + "\n\t contact phone: " + contact_telephone
+                        + "\n\t cpntact email: " + contact_email
+                        + "\n\t customer since: " + customer_since
+                        + "\n\t assays enabled: " + assay_types_enabled + "\n";
             } // end while (rs.next())
 
         } catch (ClassNotFoundException e) {
