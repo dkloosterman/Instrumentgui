@@ -426,18 +426,11 @@ public class TopScreen extends javax.swing.JFrame {
             stmt = conn.createStatement();
 
             // get and display data for seleted Instrument ID
-            sql = "SELECT * FROM Cartridge_Manufactured";
-//            sql = "SELECT * FROM Instrument_Manufactured WHERE instrument_id = " + forInstrID;
-
+            sql = "SELECT * FROM Cartridge_Manufactured WHERE cartridge_id = " + forCartID;
             rs = stmt.executeQuery(sql);
-            
+
             while (rs.next()) {
-                String ID = rs.getString("cartridge_id");
-                if( ID.equals(forCartID)) {
-                    break;
-                }
-            }
-           
+
                 String cartridge_id = rs.getString("cartridge_id");
                 java.sql.Timestamp manufactured_timestamp = rs.getTimestamp("manufactured_timestamp");
                 String manufactured_location = rs.getString("manufactured_location");
@@ -445,6 +438,7 @@ public class TopScreen extends javax.swing.JFrame {
                 String subsystem_1_id = rs.getString("subsystem_1_id");
                 String subsystem_2_id = rs.getString("subsystem_2_id");
                 String subsystem_3_id = rs.getString("subsystem_3_id");
+
                 display += "\n\t Cartridge ID: " + cartridge_id
                         + "\n\t Mfg Location: " + manufactured_location
                         + "\n\t Cartridge Assay Type: " + assay_type
@@ -452,7 +446,7 @@ public class TopScreen extends javax.swing.JFrame {
                         + "\n\t Sub 2 ID:" + subsystem_2_id
                         + "\n\t Sub 3 ID:: " + subsystem_3_id
                         + "\n\t Mfg. Timestamp: " + manufactured_timestamp + "\n";
-//            } // end while (rs.next())
+            }
 
         } catch (ClassNotFoundException e) {
             // handle the error
@@ -489,7 +483,6 @@ public class TopScreen extends javax.swing.JFrame {
             stmt = conn.createStatement();
 
             // get and display data for seleted Instrument ID
-            /////////////////////////////////////////////////////////////////
             sql = "SELECT * FROM Instrument_Deployed WHERE instrument_id = " + forInstrID;
             rs = stmt.executeQuery(sql);
 
