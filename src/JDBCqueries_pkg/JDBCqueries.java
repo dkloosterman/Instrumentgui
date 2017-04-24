@@ -7,7 +7,6 @@ package JDBCqueries_pkg;
 
 import java.sql.*;
 import java.util.*;
-import java.text.*;
 
 /**
  *
@@ -27,16 +26,15 @@ public class JDBCqueries {
     String sql = null;
     Statement stmt = null;
     ResultSet rs = null;
-    String display = null;
 
     public JDBCqueries() {
 
+        String display = null;
+        
         try {
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();
-            sql = "SELECT instrument_id FROM Instrument_Manufactured";
-            rs = stmt.executeQuery(sql);
         } catch (ClassNotFoundException e) {
             // handle the error
             display += "\n" + "Class Not Found Exception " + e.getMessage();
@@ -53,28 +51,13 @@ public class JDBCqueries {
             //finally block used to close resources
 
         }   //end finally
-
-        System.out.println("End of JDBC constructor");
-    }
-
-    public String test() {
-        return ("Hello World");
     }
 
     public String getCartridgeMfgInfo(String forCartID) {
 
-        Connection conn = null;
-        String sql = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-
         String display = "Cartridge  Manufacturing Information \n";
 
         try {
-
-            Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            stmt = conn.createStatement();
 
             // get and display data for seleted Instrument ID
             sql = "SELECT * FROM Cartridge_Manufactured WHERE cartridge_id = " + forCartID;
@@ -99,10 +82,6 @@ public class JDBCqueries {
                         + "\n\t Mfg. Timestamp: " + manufactured_timestamp + "\n";
             }
 
-        } catch (ClassNotFoundException e) {
-            // handle the error
-            display += "\n" + "Class Not Found Exception " + e.getMessage();
-            System.exit(0);
         } catch (SQLException e) {
             // handle the error
             display += "\n" + "SQL Exception " + e.getMessage();
@@ -118,21 +97,35 @@ public class JDBCqueries {
         return (display);
     }
 
-    public String getInstrumentDeploymentInfo(String forInstrID) {
+    public String getLastCartridgeMfgInfo() {
+        String display = null;
+        
+        try {
+            sql = "SELECT cartridge_id FROM Cartridge_Manufactured";
+            rs = stmt.executeQuery(sql);
+            rs.last();
+            display = this.getCartridgeMfgInfo(rs.getString("cartridge_id"));
+        } // end try
+        catch (SQLException e) {
+            // handle the error
+            display += "\n" + "SQL Exception " + e.getMessage();
+            System.exit(0);
+        } catch (Exception e) {
+            // handle the error
+            display += "\n" + "General Exception " + e.getMessage();
+            System.exit(0);
+        } finally {
+            //finally block used to close resources
 
-        Connection conn;
-        String sql;
-        Statement stmt;
-        ResultSet rs;
+        }   //end finally
+        return (display);
+    }
+
+    public String getInstrumentDeploymentInfo(String forInstrID) {
 
         String display = "Instrument Deployment Information";
 
         try {
-
-            Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            stmt = conn.createStatement();
-
             // get and display data for seleted Instrument ID
             sql = "SELECT * FROM Instrument_Deployed WHERE instrument_id = " + forInstrID;
             rs = stmt.executeQuery(sql);
@@ -161,10 +154,6 @@ public class JDBCqueries {
                         + "\n\t assays enabled: " + assay_types_enabled + "\n";
             } // end while (rs.next())
 
-        } catch (ClassNotFoundException e) {
-            // handle the error
-            display += "\n" + "Class Not Found Exception " + e.getMessage();
-            System.exit(0);
         } catch (SQLException e) {
             // handle the error
             display += "\n" + "SQL Exception " + e.getMessage();
@@ -180,21 +169,40 @@ public class JDBCqueries {
         return (display);
     }
 
-    public String getInstrumentMfgInfo(String forInstrID) {
+    public ArrayList getAllInstrumentIDs() {
 
-        Connection conn = null;
-        String sql = null;
-        Statement stmt = null;
-        ResultSet rs = null;
+        String display = null;
+        ArrayList<String> allInstrIDs = new ArrayList<String>();
+
+        try {
+
+            sql = "SELECT instrument_id FROM Instrument_Manufactured";
+            rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                allInstrIDs.add(rs.getString("instrument_id"));
+            } // end while (rs.next()) 
+
+        } catch (SQLException e) {
+            // handle the error
+            display += "\n" + "SQL Exception " + e.getMessage();
+            System.exit(0);
+        } catch (Exception e) {
+            // handle the error
+            display += "\n" + "General Exception " + e.getMessage();
+            System.exit(0);
+        } finally {
+            //finally block used to close resources
+
+        }   //end finally
+        return (allInstrIDs);
+    }
+
+    public String getInstrumentMfgInfo(String forInstrID) {
 
         String display = "Instrument  Manufacturing Information \n";
 
         try {
-
-            Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            stmt = conn.createStatement();
-
             // get and display data for seleted Instrument ID
             sql = "SELECT * FROM Instrument_Manufactured WHERE instrument_id = " + forInstrID;
             rs = stmt.executeQuery(sql);
@@ -214,10 +222,6 @@ public class JDBCqueries {
                         + "\n";
             } // end while (rs.next())
 
-        } catch (ClassNotFoundException e) {
-            // handle the error
-            display += "\n" + "Class Not Found Exception " + e.getMessage();
-            System.exit(0);
         } catch (SQLException e) {
             // handle the error
             display += "\n" + "SQL Exception " + e.getMessage();

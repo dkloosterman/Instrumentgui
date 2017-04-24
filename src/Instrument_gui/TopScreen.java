@@ -5,11 +5,9 @@
  */
 package Instrument_gui;
 
-import java.sql.*;
 import java.util.*;
-import java.text.*;
 import JDBCqueries_pkg.*;
-
+import java.text.*;
 
 /**
  *
@@ -24,24 +22,8 @@ public class TopScreen extends javax.swing.JFrame {
         initComponents();
         InfoPanel.setVisible(false);
         CartridgeInfoButton.setVisible(false);
-        
-        JDBCqueries queries = new JDBCqueries();
-        String test = null;
-        test = queries. test();
-        String hello = test;
-        System.out.println(hello);
-        
-    }
+     }
 
-    // JDBC driver name and database URL
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost/sensodx_sql_db?useSSL=false";
-
-    //  Database credentials
-    static final String USER = "root";
-    static final String PASS = "rootMysql151";
-
-    //String display = null;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -180,33 +162,24 @@ public class TopScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CloseInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseInfoButtonActionPerformed
-        // TODO add your handling code here:
+
         InfoPanel.setVisible(false);
     }//GEN-LAST:event_CloseInfoButtonActionPerformed
 
     private void InstrumentInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InstrumentInfoButtonActionPerformed
 
         // load Combo Box with list of all Intrument IDs
-        Connection conn;
-        String sql;
-        Statement stmt;
-        ResultSet rs;
+        ArrayList<String> allInstrIDs = new ArrayList<String>();
         String display = null;
 
         try {
             JDBCqueries queries = new JDBCqueries();
-            Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            stmt = conn.createStatement();
-            sql = "SELECT instrument_id FROM Instrument_Manufactured";
-            rs = stmt.executeQuery(sql);
             SelectComboBox.removeAllItems();
-
-            while (rs.next()) {
-                String instrumentID = rs.getString("instrument_id");
-                SelectComboBox.addItem(instrumentID);
-            } // end while (rs.next()) 
-
+            allInstrIDs = queries.getAllInstrumentIDs();
+            for (String ID : allInstrIDs){
+                SelectComboBox.addItem(ID);
+            }
+ 
             // Populate the Instrument Info Panel with Instrument's Mfg. Info
             String selectedInstrumentID = (String) SelectComboBox.getSelectedItem();
             display = queries.getInstrumentMfgInfo(selectedInstrumentID);
@@ -214,16 +187,13 @@ public class TopScreen extends javax.swing.JFrame {
             // Display Instrument Deployment Info.
             display += queries.getInstrumentDeploymentInfo(selectedInstrumentID);
 
+            InfoTextArea.setText(display);
+
+            // Make Instrument Info Panel visible
+            SelectComboBox.setVisible(true);
+            InfoPanel.setVisible(true);
         } // end try
-        catch (ClassNotFoundException e) {
-            // handle the error
-            display += "\n" + "Class Not Found Exception " + e.getMessage();
-            System.exit(0);
-        } catch (SQLException e) {
-            // handle the error
-            display += "\n" + "SQL Exception " + e.getMessage();
-            System.exit(0);
-        } catch (Exception e) {
+        catch (Exception e) {
             // handle the error
             display += "\n" + "General Exception " + e.getMessage();
             System.exit(0);
@@ -232,21 +202,29 @@ public class TopScreen extends javax.swing.JFrame {
 
         }   //end finally
 
-        InfoTextArea.setText(display);
-
-        // Make Instrument Info Panel visible
-        SelectComboBox.setVisible(true);
-        InfoPanel.setVisible(true);
+ 
     }//GEN-LAST:event_InstrumentInfoButtonActionPerformed
 
     private void SelectComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectComboBoxActionPerformed
 
-        // update Instrument Info Text Area with selected Instrument ID
-        JDBCqueries queries = new JDBCqueries();
-        String selectedInstrumentID = (String) SelectComboBox.getSelectedItem();
-        String display = queries.getInstrumentMfgInfo(selectedInstrumentID);
-        display += queries.getInstrumentDeploymentInfo(selectedInstrumentID);
-        InfoTextArea.setText(display);
+        String display = null;
+        try {
+            // update Instrument Info Text Area with selected Instrument ID
+            JDBCqueries queries = new JDBCqueries();
+            String selectedInstrumentID = (String) SelectComboBox.getSelectedItem();
+            display = queries.getInstrumentMfgInfo(selectedInstrumentID);
+            display += queries.getInstrumentDeploymentInfo(selectedInstrumentID);
+            InfoTextArea.setText(display);
+        
+        } // end try
+        catch (Exception e) {
+            // handle the error
+            display += "\n" + "General Exception " + e.getMessage();
+            System.exit(0);
+        } finally {
+            //finally block used to close resources
+
+        }   //end finally 
     }//GEN-LAST:event_SelectComboBoxActionPerformed
 
     private void InsertCartridgeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertCartridgeButtonActionPerformed
@@ -256,56 +234,25 @@ public class TopScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_InsertCartridgeButtonActionPerformed
 
     private void CartridgeInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartridgeInfoButtonActionPerformed
-        Connection conn;
-        String sql;
-        Statement stmt;
-        ResultSet rs;
         String display = null;
         
-
         try {
             JDBCqueries queries = new JDBCqueries();
-            Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            stmt = conn.createStatement();
-            sql = "SELECT cartridge_id FROM Cartridge_Manufactured";
-            rs = stmt.executeQuery(sql);
-//            SelectComboBox.removeAllItems();
+            display = queries.getLastCartridgeMfgInfo();
+            InfoTextArea.setText(display);
 
-//            while (rs.next()) {
-//                String instrumentID = rs.getString("instrument_id");
-//                SelectComboBox.addItem(instrumentID);
-//            } // end while (rs.next()) 
-            // Populate the Instrument Info Panel with Instrument's Mfg. Info
-//            String selectedInstrumentID = (String) SelectComboBox.getSelectedItem();
-            rs.last();
-            display = queries.getCartridgeMfgInfo(rs.getString("cartridge_id"));
-
-            // Display Instrument Deployment Info.
-//            display += getInstrumentDeploymentInfo(selectedInstrumentID);
+            // Make Instrument Info Panel visible
+            SelectComboBox.setVisible(false);
+            InfoPanel.setVisible(true);
         } // end try
-        catch (ClassNotFoundException e) {
-            // handle the error
-            display += "\n" + "Class Not Found Exception " + e.getMessage();
-            System.exit(0);
-        } catch (SQLException e) {
-            // handle the error
-            display += "\n" + "SQL Exception " + e.getMessage();
-            System.exit(0);
-        } catch (Exception e) {
+        catch (Exception e) {
             // handle the error
             display += "\n" + "General Exception " + e.getMessage();
             System.exit(0);
         } finally {
             //finally block used to close resources
 
-        }   //end finally
-
-        InfoTextArea.setText(display);
-
-        // Make Instrument Info Panel visible
-        SelectComboBox.setVisible(false);
-        InfoPanel.setVisible(true);
+        }   //end finally     
     }//GEN-LAST:event_CartridgeInfoButtonActionPerformed
 
     /**
@@ -334,7 +281,6 @@ public class TopScreen extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(TopScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
