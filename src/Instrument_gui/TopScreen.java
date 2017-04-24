@@ -7,7 +7,6 @@ package Instrument_gui;
 
 import java.util.*;
 import JDBCqueries_pkg.*;
-import java.text.*;
 
 /**
  *
@@ -15,14 +14,38 @@ import java.text.*;
  */
 public class TopScreen extends javax.swing.JFrame {
 
+    String selectedInstID;
+
     /**
      * Creates new form TopScreen
      */
     public TopScreen() {
         initComponents();
-        InfoPanel.setVisible(false);
-        CartridgeInfoButton.setVisible(false);
-     }
+        String display = null;
+
+        try {
+            selectedInstID = "";
+            InfoPanel.setVisible(false);
+            CartridgeInfoButton.setVisible(false);
+
+            // load combobox with all instr IDs
+            ArrayList<String> allInstrIDs = new ArrayList<String>();
+            JDBCqueries queries = new JDBCqueries();
+            SelectComboBox.removeAllItems();
+            allInstrIDs = queries.getAllInstrumentIDs();
+            for (String ID : allInstrIDs) {
+                SelectComboBox.addItem(ID);
+            }
+
+        } catch (Exception e) {
+            // handle the error
+            display += "\n" + "General Exception " + e.getMessage();
+            System.exit(0);
+        } finally {
+            //finally block used to close resources
+
+        }   //end finally
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -169,23 +192,13 @@ public class TopScreen extends javax.swing.JFrame {
     private void InstrumentInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InstrumentInfoButtonActionPerformed
 
         // load Combo Box with list of all Intrument IDs
-        ArrayList<String> allInstrIDs = new ArrayList<String>();
         String display = null;
 
         try {
             JDBCqueries queries = new JDBCqueries();
-            SelectComboBox.removeAllItems();
-            allInstrIDs = queries.getAllInstrumentIDs();
-            for (String ID : allInstrIDs){
-                SelectComboBox.addItem(ID);
-            }
- 
-            // Populate the Instrument Info Panel with Instrument's Mfg. Info
-            String selectedInstrumentID = (String) SelectComboBox.getSelectedItem();
-            display = queries.getInstrumentMfgInfo(selectedInstrumentID);
 
-            // Display Instrument Deployment Info.
-            display += queries.getInstrumentDeploymentInfo(selectedInstrumentID);
+            display = queries.getInstrumentMfgInfo(selectedInstID);
+            display += queries.getInstrumentDeploymentInfo(selectedInstID);
 
             InfoTextArea.setText(display);
 
@@ -202,7 +215,7 @@ public class TopScreen extends javax.swing.JFrame {
 
         }   //end finally
 
- 
+
     }//GEN-LAST:event_InstrumentInfoButtonActionPerformed
 
     private void SelectComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectComboBoxActionPerformed
@@ -211,11 +224,11 @@ public class TopScreen extends javax.swing.JFrame {
         try {
             // update Instrument Info Text Area with selected Instrument ID
             JDBCqueries queries = new JDBCqueries();
-            String selectedInstrumentID = (String) SelectComboBox.getSelectedItem();
-            display = queries.getInstrumentMfgInfo(selectedInstrumentID);
-            display += queries.getInstrumentDeploymentInfo(selectedInstrumentID);
+            selectedInstID = (String) SelectComboBox.getSelectedItem();
+            display = queries.getInstrumentMfgInfo(selectedInstID);
+            display += queries.getInstrumentDeploymentInfo(selectedInstID);
             InfoTextArea.setText(display);
-        
+
         } // end try
         catch (Exception e) {
             // handle the error
@@ -235,7 +248,7 @@ public class TopScreen extends javax.swing.JFrame {
 
     private void CartridgeInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartridgeInfoButtonActionPerformed
         String display = null;
-        
+
         try {
             JDBCqueries queries = new JDBCqueries();
             display = queries.getLastCartridgeMfgInfo();
