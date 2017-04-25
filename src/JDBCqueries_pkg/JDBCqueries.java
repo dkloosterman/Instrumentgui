@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package JDBCqueries_pkg;
 
 import java.sql.*;
@@ -10,7 +5,7 @@ import java.util.*;
 
 /**
  *
- * @author Owner
+ * @author David Kloosterman
  */
 public class JDBCqueries {
 
@@ -30,8 +25,9 @@ public class JDBCqueries {
     public JDBCqueries() {
 
         String display = null;
-        
+
         try {
+//            get JDBC ready for SQL queries
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();
@@ -97,9 +93,45 @@ public class JDBCqueries {
         return (display);
     }
 
+    public String createCartridge() {
+        String display = null;
+
+        try {
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            String cartID = timestamp.toString();
+            
+            cartID = cartID.replace(" ", "");
+            cartID = cartID.replace(":", "");
+            cartID = cartID.replace(".", "");
+            cartID = cartID.replace("-", "");
+
+            sql = "INSERT INTO Cartridge_Manufactured VALUES " 
+                    + "('" + cartID + "', '2017-03-29 08:59:00', 'Perinton, NY', '0010 0000 0000 0000', "
+                    + "'0000000010000002', '0000000020000002', '0000000030000002')";
+
+            // get and display data for seleted Instrument ID
+            stmt.executeUpdate(sql);
+            
+            return(cartID);
+
+        } catch (SQLException e) {
+            // handle the error
+            display += "\n" + "SQL Exception " + e.getMessage();
+            System.exit(0);
+        } catch (Exception e) {
+            // handle the error
+            display += "\n" + "General Exception " + e.getMessage();
+            System.exit(0);
+        } finally {
+            //finally block used to close resources
+
+        }   //end finally try
+        return (display);
+    }
+
     public String getLastCartridgeMfgInfo() {
         String display = null;
-        
+
         try {
             sql = "SELECT cartridge_id FROM Cartridge_Manufactured";
             rs = stmt.executeQuery(sql);
@@ -149,7 +181,7 @@ public class JDBCqueries {
                         + "\n\t customer location: " + customer_location
                         + "\n\t contact name: " + contact_name
                         + "\n\t contact phone: " + contact_telephone
-                        + "\n\t cpntact email: " + contact_email
+                        + "\n\t contact email: " + contact_email
                         + "\n\t customer since: " + customer_since
                         + "\n\t assays enabled: " + assay_types_enabled + "\n";
             } // end while (rs.next())

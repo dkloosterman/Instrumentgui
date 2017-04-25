@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Instrument_gui;
 
 import java.util.*;
@@ -15,6 +10,7 @@ import JDBCqueries_pkg.*;
 public class TopScreen extends javax.swing.JFrame {
 
     String selectedInstID;
+    String cardID;
 
     /**
      * Creates new form TopScreen
@@ -27,6 +23,7 @@ public class TopScreen extends javax.swing.JFrame {
             selectedInstID = "";
             InfoPanel.setVisible(false);
             CartridgeInfoButton.setVisible(false);
+            EndTestButton.setVisible(false);
 
             // load combobox with all instr IDs
             ArrayList<String> allInstrIDs = new ArrayList<String>();
@@ -62,6 +59,7 @@ public class TopScreen extends javax.swing.JFrame {
         InfoTextArea = new javax.swing.JTextArea();
         SelectComboBox = new javax.swing.JComboBox<>();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        EndTestButton = new javax.swing.JButton();
         InstrumentInfoButton = new javax.swing.JButton();
         InsertCartridgeButton = new javax.swing.JButton();
         CartridgeInfoButton = new javax.swing.JButton();
@@ -93,6 +91,13 @@ public class TopScreen extends javax.swing.JFrame {
             }
         });
 
+        EndTestButton.setText("End Test");
+        EndTestButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EndTestButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout InfoPanelLayout = new javax.swing.GroupLayout(InfoPanel);
         InfoPanel.setLayout(InfoPanelLayout);
         InfoPanelLayout.setHorizontalGroup(
@@ -103,6 +108,8 @@ public class TopScreen extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addGroup(InfoPanelLayout.createSequentialGroup()
                         .addComponent(SelectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(EndTestButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(CloseInfoButton)))
                 .addContainerGap())
@@ -121,7 +128,8 @@ public class TopScreen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(InfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CloseInfoButton)
-                    .addComponent(SelectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(SelectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(EndTestButton))
                 .addContainerGap())
         );
 
@@ -190,8 +198,6 @@ public class TopScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_CloseInfoButtonActionPerformed
 
     private void InstrumentInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InstrumentInfoButtonActionPerformed
-
-        // load Combo Box with list of all Intrument IDs
         String display = null;
 
         try {
@@ -228,7 +234,7 @@ public class TopScreen extends javax.swing.JFrame {
             display = queries.getInstrumentMfgInfo(selectedInstID);
             display += queries.getInstrumentDeploymentInfo(selectedInstID);
             InfoTextArea.setText(display);
-
+            
         } // end try
         catch (Exception e) {
             // handle the error
@@ -241,9 +247,31 @@ public class TopScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_SelectComboBoxActionPerformed
 
     private void InsertCartridgeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertCartridgeButtonActionPerformed
-        // Make Instrument Info Panel visible
-        CartridgeInfoButton.setVisible(true);
-        InsertCartridgeButton.setVisible(false);
+        String display = null;
+
+        try {
+            // update Instrument Info Text Area with selected Instrument ID
+            JDBCqueries queries = new JDBCqueries();
+
+            cardID = queries.createCartridge();
+            display = queries.getCartridgeMfgInfo(cardID);
+            InfoTextArea.setText(display);
+
+            // Make Instrument Info Panel visible
+            CartridgeInfoButton.setVisible(true);
+            SelectComboBox.setVisible(false);
+            InsertCartridgeButton.setVisible(false);
+            InfoPanel.setVisible(true);
+            EndTestButton.setVisible(true);
+        } // end try
+        catch (Exception e) {
+            // handle the error
+            display += "\n" + "General Exception " + e.getMessage();
+            System.exit(0);
+        } finally {
+            //finally block used to close resources
+
+        }   //end finally 
     }//GEN-LAST:event_InsertCartridgeButtonActionPerformed
 
     private void CartridgeInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartridgeInfoButtonActionPerformed
@@ -251,7 +279,7 @@ public class TopScreen extends javax.swing.JFrame {
 
         try {
             JDBCqueries queries = new JDBCqueries();
-            display = queries.getLastCartridgeMfgInfo();
+            display = queries.getCartridgeMfgInfo(cardID);
             InfoTextArea.setText(display);
 
             // Make Instrument Info Panel visible
@@ -267,6 +295,13 @@ public class TopScreen extends javax.swing.JFrame {
 
         }   //end finally     
     }//GEN-LAST:event_CartridgeInfoButtonActionPerformed
+
+    private void EndTestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EndTestButtonActionPerformed
+        InfoPanel.setVisible(false);
+        InsertCartridgeButton.setVisible(true);
+        CartridgeInfoButton.setVisible(false);
+        EndTestButton.setVisible(false);
+    }//GEN-LAST:event_EndTestButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -309,6 +344,7 @@ public class TopScreen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CartridgeInfoButton;
     private javax.swing.JButton CloseInfoButton;
+    private javax.swing.JButton EndTestButton;
     private javax.swing.JPanel InfoPanel;
     private javax.swing.JTextArea InfoTextArea;
     private javax.swing.JButton InsertCartridgeButton;
