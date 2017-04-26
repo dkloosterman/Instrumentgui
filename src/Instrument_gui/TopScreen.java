@@ -26,6 +26,8 @@ public class TopScreen extends javax.swing.JFrame {
         String display = null;
 
         try {
+            this.instrument = new Instrument();
+
             selectedInstID = "";
             InfoPanel.setVisible(false);
             CartridgeInfoButton.setVisible(false);
@@ -34,6 +36,7 @@ public class TopScreen extends javax.swing.JFrame {
             // load combobox with all instr IDs
             ArrayList<String> allInstrIDs = new ArrayList<String>();
             JDBCqueries queries = new JDBCqueries();
+            
             SelectComboBox.removeAllItems();
             allInstrIDs = queries.getAllInstrumentIDs();
             for (String ID : allInstrIDs) {
@@ -41,7 +44,6 @@ public class TopScreen extends javax.swing.JFrame {
             }
             
             
-
         } catch (Exception e) {
             // handle the error
             display += "\n" + "General Exception " + e.getMessage();
@@ -211,10 +213,10 @@ public class TopScreen extends javax.swing.JFrame {
         try {
             JDBCqueries queries = new JDBCqueries();
 
-            display = queries.getInstrumentMfgInfo(selectedInstID);
-            display += queries.getInstrumentDeploymentInfo(selectedInstID);
+            display = queries.getInstrumentMfgInfo(selectedInstID, this.instrument);
+            display += queries.getInstrumentDeploymentInfo(selectedInstID, this.instrument);
 
-            InfoTextArea.setText(display);
+            InfoTextArea.setText(this.instrument.toString());
 
             // Make Instrument Info Panel visible
             SelectComboBox.setVisible(true);
@@ -239,9 +241,9 @@ public class TopScreen extends javax.swing.JFrame {
             // update Instrument Info Text Area with selected Instrument ID
             JDBCqueries queries = new JDBCqueries();
             selectedInstID = (String) SelectComboBox.getSelectedItem();
-            display = queries.getInstrumentMfgInfo(selectedInstID);
-            display += queries.getInstrumentDeploymentInfo(selectedInstID);
-            InfoTextArea.setText(display);
+            display = queries.getInstrumentMfgInfo(selectedInstID, this.instrument);
+            display += queries.getInstrumentDeploymentInfo(selectedInstID, this.instrument);
+            InfoTextArea.setText(this.instrument.toString());
             
         } // end try
         catch (Exception e) {

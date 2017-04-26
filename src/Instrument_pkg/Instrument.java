@@ -14,6 +14,15 @@ import java.util.Date;
 public class Instrument {
 
     /*
+    CREATE TABLE Instrument_Manufactured ( 
+       instrument_id VARCHAR (20),
+       manufactured_timestamp TIMESTAMP,
+       manufactured_location TEXT,
+       subsystem_1_id VARCHAR (20),
+       subsystem_2_id VARCHAR (20),
+       subsystem_3_id VARCHAR (20),
+       PRIMARY KEY (instrument_id ) );
+    
     CREATE TABLE Instrument_Deployed (
        instrument_id VARCHAR (20),
        installation_timestamp TIMESTAMP,
@@ -27,21 +36,72 @@ public class Instrument {
        assay_types_enabled VARCHAR (50),
        PRIMARY KEY (instrument_id )  );
      */
-    String instrument_id;
-    Date installation_timestamp;
-    String customer_id;
-    String customer_name;
-    String customer_location;
-    String contact_telephone;
-    String contact_email;
-    Date customer_since;
-    String assay_types_enabled;
+    
+    // Instrument Mfg. Info
+    String instrument_id = null;
+    Date manufactured_timestamp = null;
+    String manufactured_location = null;
+    String subsystem_1_id = null;
+    String subsystem_2_id = null;
+    String subsystem_3_id = null;
+
+    // Instrument Deployment Info
+    //    String instrument_id;
+    Date installation_timestamp = null;
+    String customer_id = null;
+    String customer_name = null;
+    String customer_location = null;
+    String contact_telephone = null;
+    String contact_email = null;
+    Date customer_since = null;
+    String assay_types_enabled = null;
 
     @Override
     public String toString() {
-        return "Instrument{" + "instrument_id=" + instrument_id + ", installation_timestamp=" + installation_timestamp + ", customer_id=" + customer_id + ", customer_name=" + customer_name + ", customer_location=" + customer_location + ", contact_telephone=" + contact_telephone + ", contact_email=" + contact_email + ", customer_since=" + customer_since + ", assay_types_enabled=" + assay_types_enabled + '}';
+        return "Instrument\n   instrument_id =\t" + instrument_id + "\n   manufactured_timestamp =\t" + manufactured_timestamp + "\n   manufactured_location =\t" + manufactured_location + "\n   subsystem_1_id =\t" + subsystem_1_id + "\n   subsystem_2_id =\t" + subsystem_2_id + "\n   subsystem_3_id =\t" + subsystem_3_id + "\n   installation_timestamp =\t" + installation_timestamp + "\n   customer_id =\t" + customer_id + "\n   customer_name =\t" + customer_name + "\n   customer_location =\t" + customer_location + "\n   contact_telephone =\t" + contact_telephone + "\n   contact_email =\t" + contact_email + "\n   customer_since =\t" + customer_since + "\n   assay_types_enabled =\t" + assay_types_enabled ;
     }
 
+    public Date getManufactured_timestamp() {
+        return manufactured_timestamp;
+    }
+
+    public void setManufactured_timestamp(Date manufactured_timestamp) {
+        this.manufactured_timestamp = manufactured_timestamp;
+    }
+
+    public String getManufactured_location() {
+        return manufactured_location;
+    }
+
+    public void setManufactured_location(String manufactured_location) {
+        this.manufactured_location = manufactured_location;
+    }
+
+    public String getSubsystem_1_id() {
+        return subsystem_1_id;
+    }
+
+    public void setSubsystem_1_id(String subsystem_1_id) {
+        this.subsystem_1_id = subsystem_1_id;
+    }
+
+    public String getSubsystem_2_id() {
+        return subsystem_2_id;
+    }
+
+    public void setSubsystem_2_id(String subsystem_2_id) {
+        this.subsystem_2_id = subsystem_2_id;
+    }
+
+    public String getSubsystem_3_id() {
+        return subsystem_3_id;
+    }
+
+    public void setSubsystem_3_id(String subsystem_3_id) {
+        this.subsystem_3_id = subsystem_3_id;
+    }
+
+    
     public Date getInstallation_timestamp() {
         return installation_timestamp;
     }
@@ -113,5 +173,5 @@ public class Instrument {
     public void setInstrument_id(String instrument_id) {
         this.instrument_id = instrument_id;
     }
-    
+
 }
