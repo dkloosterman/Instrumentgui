@@ -1,7 +1,10 @@
 package Instrument_gui;
 
-import java.util.*;
+import Cartridge_pkg.Cartridge;
+import Instrument_pkg.Instrument;
+import TestInstance_pkg.TestInstance;
 import JDBCqueries_pkg.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -11,6 +14,9 @@ public class TopScreen extends javax.swing.JFrame {
 
     String selectedInstID;
     String cardID;
+    TestInstance test;
+    Cartridge cartridge;
+    Instrument instrument;
 
     /**
      * Creates new form TopScreen
@@ -33,6 +39,8 @@ public class TopScreen extends javax.swing.JFrame {
             for (String ID : allInstrIDs) {
                 SelectComboBox.addItem(ID);
             }
+            
+            
 
         } catch (Exception e) {
             // handle the error
@@ -250,6 +258,8 @@ public class TopScreen extends javax.swing.JFrame {
         String display = null;
 
         try {
+            this.test = new TestInstance();
+            
             // update Instrument Info Text Area with selected Instrument ID
             JDBCqueries queries = new JDBCqueries();
 
@@ -301,6 +311,7 @@ public class TopScreen extends javax.swing.JFrame {
         InsertCartridgeButton.setVisible(true);
         CartridgeInfoButton.setVisible(false);
         EndTestButton.setVisible(false);
+        this.test = null;
     }//GEN-LAST:event_EndTestButtonActionPerformed
 
     /**

@@ -99,20 +99,20 @@ public class JDBCqueries {
         try {
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             String cartID = timestamp.toString();
-            
+
             cartID = cartID.replace(" ", "");
             cartID = cartID.replace(":", "");
             cartID = cartID.replace(".", "");
             cartID = cartID.replace("-", "");
 
-            sql = "INSERT INTO Cartridge_Manufactured VALUES " 
+            sql = "INSERT INTO Cartridge_Manufactured VALUES "
                     + "('" + cartID + "', '2017-03-29 08:59:00', 'Perinton, NY', '0010 0000 0000 0000', "
                     + "'0000000010000002', '0000000020000002', '0000000030000002')";
 
             // get and display data for seleted Instrument ID
             stmt.executeUpdate(sql);
-            
-            return(cartID);
+
+            return (cartID);
 
         } catch (SQLException e) {
             // handle the error
@@ -126,30 +126,6 @@ public class JDBCqueries {
             //finally block used to close resources
 
         }   //end finally try
-        return (display);
-    }
-
-    public String getLastCartridgeMfgInfo() {
-        String display = null;
-
-        try {
-            sql = "SELECT cartridge_id FROM Cartridge_Manufactured";
-            rs = stmt.executeQuery(sql);
-            rs.last();
-            display = this.getCartridgeMfgInfo(rs.getString("cartridge_id"));
-        } // end try
-        catch (SQLException e) {
-            // handle the error
-            display += "\n" + "SQL Exception " + e.getMessage();
-            System.exit(0);
-        } catch (Exception e) {
-            // handle the error
-            display += "\n" + "General Exception " + e.getMessage();
-            System.exit(0);
-        } finally {
-            //finally block used to close resources
-
-        }   //end finally
         return (display);
     }
 
