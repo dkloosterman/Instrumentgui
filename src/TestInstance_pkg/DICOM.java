@@ -5,7 +5,8 @@
  */
 package TestInstance_pkg;
 
-import java.awt.Image;
+//import java.awt.Image.*;
+import java.awt.image.BufferedImage;
 import java.util.Date;
 
 /**
@@ -16,7 +17,7 @@ public class DICOM {
     
     String patient_id = null;
     Date timestamp = null;
-    Image image = null;
+    BufferedImage image = null;
 
      public DICOM() {
         
@@ -46,11 +47,11 @@ public class DICOM {
         this.timestamp = timestamp;
     }
 
-    public Image getImage() {
+    public BufferedImage getImage() {
         return image;
     }
 
-    public void setImage(Image image) {
+    public void setImage(BufferedImage image) {
         this.image = image;
     }
     
