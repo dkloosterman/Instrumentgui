@@ -3,7 +3,7 @@ package Instrument_gui;
 import Cartridge_pkg.Cartridge;
 import Instrument_pkg.Instrument;
 import TestInstance_pkg.TestInstance;
-import JDBCqueries_pkg.*;
+import JDBCqueries_pkg.JDBCqueries;
 import java.util.ArrayList;
 
 /**
@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class TopScreen extends javax.swing.JFrame {
 
-    String cardID;
+//    String cardID;
     TestInstance test;
     Cartridge cartridge;
     Instrument instrument;
@@ -261,13 +261,14 @@ public class TopScreen extends javax.swing.JFrame {
 
         try {
             this.test = new TestInstance();
+            this.cartridge = new Cartridge();
             
             // update Instrument Info Text Area with selected Instrument ID
             JDBCqueries queries = new JDBCqueries();
 
-            cardID = queries.createCartridge();
-            display = queries.getCartridgeMfgInfo(cardID);
-            InfoTextArea.setText(display);
+            queries.createCartridge(this.cartridge);
+            queries.getCartridgeMfgInfo(this.cartridge);
+            InfoTextArea.setText(this.cartridge.toString());
 
             // Make Instrument Info Panel visible
             CartridgeInfoButton.setVisible(true);
@@ -291,8 +292,8 @@ public class TopScreen extends javax.swing.JFrame {
 
         try {
             JDBCqueries queries = new JDBCqueries();
-            display = queries.getCartridgeMfgInfo(cardID);
-            InfoTextArea.setText(display);
+            queries.getCartridgeMfgInfo(this.cartridge);
+            InfoTextArea.setText(this.cartridge.toString());
 
             // Make Instrument Info Panel visible
             SelectComboBox.setVisible(false);
@@ -314,6 +315,7 @@ public class TopScreen extends javax.swing.JFrame {
         CartridgeInfoButton.setVisible(false);
         EndTestButton.setVisible(false);
         this.test = null;
+        this.cartridge = null;
     }//GEN-LAST:event_EndTestButtonActionPerformed
 
     /**

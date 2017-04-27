@@ -24,6 +24,7 @@ public class Cartridge {
        subsystem_3_id VARCHAR (20),
        PRIMARY KEY (cartridge_id ) );
     */
+    
     String cartridge_id;
     Date manufactured_timestamp;
     String manufactured_location;
@@ -34,7 +35,11 @@ public class Cartridge {
 
     @Override
     public String toString() {
-        return "Cartridge{" + "cartridge_id=" + cartridge_id + ", manufactured_timestamp=" + manufactured_timestamp + ", manufactured_location=" + manufactured_location + ", assay_type=" + assay_type + ", subsystem_1_id=" + subsystem_1_id + ", subsystem_2_id=" + subsystem_2_id + ", subsystem_3_id=" + subsystem_3_id + '}';
+        return "Cartridge Manufacturing Information\n" + "   cartridge_id =\t\t" + cartridge_id 
+                + "\n   manufactured_timestamp =\t" + manufactured_timestamp + "\n   manufactured_location =\t" 
+                + manufactured_location + "\n   assay_type =\t\t" + assay_type 
+                + "\n   subsystem_1_id =\t" + subsystem_1_id + "\n   subsystem_2_id =\t" + subsystem_2_id 
+                + "\n   subsystem_3_id =\t" + subsystem_3_id + '}';
     }
 
     public String getCartridge_id() {

@@ -3,6 +3,7 @@ package JDBCqueries_pkg;
 import java.sql.*;
 import java.util.*;
 import Instrument_pkg.Instrument;
+import Cartridge_pkg.Cartridge;
 
 /**
  *
@@ -50,34 +51,44 @@ public class JDBCqueries {
         }   //end finally
     }
 
-    public String getCartridgeMfgInfo(String forCartID) {
+    public void getCartridgeMfgInfo(Cartridge cartridge) {
 
         String display = "Cartridge  Manufacturing Information \n";
 
         try {
 
             // get and display data for seleted Instrument ID
-            sql = "SELECT * FROM Cartridge_Manufactured WHERE cartridge_id = " + forCartID;
+            sql = "SELECT * FROM Cartridge_Manufactured WHERE cartridge_id = " + cartridge.getCartridge_id();
             rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
-
-                String cartridge_id = rs.getString("cartridge_id");
-                java.sql.Timestamp manufactured_timestamp = rs.getTimestamp("manufactured_timestamp");
-                String manufactured_location = rs.getString("manufactured_location");
-                String assay_type = rs.getString("assay_type");
-                String subsystem_1_id = rs.getString("subsystem_1_id");
-                String subsystem_2_id = rs.getString("subsystem_2_id");
-                String subsystem_3_id = rs.getString("subsystem_3_id");
-
-                display += "\n\t Cartridge ID: " + cartridge_id
-                        + "\n\t Mfg Location: " + manufactured_location
-                        + "\n\t Cartridge Assay Type: " + assay_type
-                        + "\n\t Sub 1 ID: " + subsystem_1_id
-                        + "\n\t Sub 2 ID:" + subsystem_2_id
-                        + "\n\t Sub 3 ID:: " + subsystem_3_id
-                        + "\n\t Mfg. Timestamp: " + manufactured_timestamp + "\n";
+                cartridge.setCartridge_id(rs.getString("cartridge_id"));
+                cartridge.setManufactured_timestamp(rs.getTimestamp("manufactured_timestamp"));
+                cartridge.setManufactured_location(rs.getString("manufactured_location"));
+                cartridge.setAssay_type(rs.getString("assay_type"));
+                cartridge.setSubsystem_1_id(rs.getString("subsystem_1_id"));
+                cartridge.setSubsystem_2_id(rs.getString("subsystem_2_id"));
+                cartridge.setSubsystem_3_id(rs.getString("subsystem_3_id"));
             }
+
+//            while (rs.next()) {
+//
+//                String cartridge_id = rs.getString("cartridge_id");
+//                java.sql.Timestamp manufactured_timestamp = rs.getTimestamp("manufactured_timestamp");
+//                String manufactured_location = rs.getString("manufactured_location");
+//                String assay_type = rs.getString("assay_type");
+//                String subsystem_1_id = rs.getString("subsystem_1_id");
+//                String subsystem_2_id = rs.getString("subsystem_2_id");
+//                String subsystem_3_id = rs.getString("subsystem_3_id");
+//
+//                display += "\n\t Cartridge ID: " + cartridge_id
+//                        + "\n\t Mfg Location: " + manufactured_location
+//                        + "\n\t Cartridge Assay Type: " + assay_type
+//                        + "\n\t Sub 1 ID: " + subsystem_1_id
+//                        + "\n\t Sub 2 ID:" + subsystem_2_id
+//                        + "\n\t Sub 3 ID:: " + subsystem_3_id
+//                        + "\n\t Mfg. Timestamp: " + manufactured_timestamp + "\n";
+//            }
 
         } catch (SQLException e) {
             // handle the error
@@ -91,13 +102,14 @@ public class JDBCqueries {
             //finally block used to close resources
 
         }   //end finally try
-        return (display);
+//        return (display);
     }
 
-    public String createCartridge() {
+    public void createCartridge(Cartridge cartridge) {
         String display = null;
 
         try {
+            // temp code : create a cartridge ID from the current timestamp
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             String cartID = timestamp.toString();
 
@@ -112,8 +124,10 @@ public class JDBCqueries {
 
             // get and display data for seleted Instrument ID
             stmt.executeUpdate(sql);
+            
+            cartridge.setCartridge_id(cartID);
 
-            return (cartID);
+//            return (cartridge);
 
         } catch (SQLException e) {
             // handle the error
@@ -127,7 +141,7 @@ public class JDBCqueries {
             //finally block used to close resources
 
         }   //end finally try
-        return (display);
+       
     }
 
     public String getInstrumentDeploymentInfo(String instrID, Instrument instrument) {

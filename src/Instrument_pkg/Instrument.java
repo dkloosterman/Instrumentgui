@@ -36,6 +36,7 @@ public class Instrument {
        assay_types_enabled VARCHAR (50),
        PRIMARY KEY (instrument_id )  );
      */
+    
     // Instrument Mfg. Info
     String instrument_id = null;
     Date manufactured_timestamp = null;
