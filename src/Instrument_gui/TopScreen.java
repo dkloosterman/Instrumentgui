@@ -12,7 +12,6 @@ import java.util.ArrayList;
  */
 public class TopScreen extends javax.swing.JFrame {
 
-    String selectedInstID;
     String cardID;
     TestInstance test;
     Cartridge cartridge;
@@ -28,7 +27,6 @@ public class TopScreen extends javax.swing.JFrame {
         try {
             this.instrument = new Instrument();
 
-            selectedInstID = "";
             InfoPanel.setVisible(false);
             CartridgeInfoButton.setVisible(false);
             EndTestButton.setVisible(false);
@@ -213,8 +211,8 @@ public class TopScreen extends javax.swing.JFrame {
         try {
             JDBCqueries queries = new JDBCqueries();
 
-            display = queries.getInstrumentMfgInfo(selectedInstID, this.instrument);
-            display += queries.getInstrumentDeploymentInfo(selectedInstID, this.instrument);
+            display = queries.getInstrumentMfgInfo((String) SelectComboBox.getSelectedItem(), this.instrument);
+            display += queries.getInstrumentDeploymentInfo((String) SelectComboBox.getSelectedItem(), this.instrument);
 
             InfoTextArea.setText(this.instrument.toString());
 
@@ -238,11 +236,13 @@ public class TopScreen extends javax.swing.JFrame {
 
         String display = null;
         try {
+            this.instrument = null;
+            this.instrument = new Instrument();
+            
             // update Instrument Info Text Area with selected Instrument ID
             JDBCqueries queries = new JDBCqueries();
-            selectedInstID = (String) SelectComboBox.getSelectedItem();
-            display = queries.getInstrumentMfgInfo(selectedInstID, this.instrument);
-            display += queries.getInstrumentDeploymentInfo(selectedInstID, this.instrument);
+            display = queries.getInstrumentMfgInfo((String) SelectComboBox.getSelectedItem(), this.instrument);
+            display += queries.getInstrumentDeploymentInfo((String) SelectComboBox.getSelectedItem(), this.instrument);
             InfoTextArea.setText(this.instrument.toString());
             
         } // end try

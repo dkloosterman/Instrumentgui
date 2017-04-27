@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class Instrument {
 
-    /*
+    /*  This is what the database tables look like
     CREATE TABLE Instrument_Manufactured ( 
        instrument_id VARCHAR (20),
        manufactured_timestamp TIMESTAMP,
@@ -36,7 +36,6 @@ public class Instrument {
        assay_types_enabled VARCHAR (50),
        PRIMARY KEY (instrument_id )  );
      */
-    
     // Instrument Mfg. Info
     String instrument_id = null;
     Date manufactured_timestamp = null;
@@ -56,9 +55,22 @@ public class Instrument {
     Date customer_since = null;
     String assay_types_enabled = null;
 
+    public Instrument() {
+
+    }
+
     @Override
     public String toString() {
-        return "Instrument\n   instrument_id =\t" + instrument_id + "\n   manufactured_timestamp =\t" + manufactured_timestamp + "\n   manufactured_location =\t" + manufactured_location + "\n   subsystem_1_id =\t" + subsystem_1_id + "\n   subsystem_2_id =\t" + subsystem_2_id + "\n   subsystem_3_id =\t" + subsystem_3_id + "\n   installation_timestamp =\t" + installation_timestamp + "\n   customer_id =\t" + customer_id + "\n   customer_name =\t" + customer_name + "\n   customer_location =\t" + customer_location + "\n   contact_telephone =\t" + contact_telephone + "\n   contact_email =\t" + contact_email + "\n   customer_since =\t" + customer_since + "\n   assay_types_enabled =\t" + assay_types_enabled ;
+        return "Instrument Manufacturing Information\n   instrument_id =\t" + instrument_id
+                + "\n   manufactured_timestamp =\t" + manufactured_timestamp + "\n   manufactured_location =\t"
+                + manufactured_location + "\n   subsystem_1_id =\t" + subsystem_1_id
+                + "\n   subsystem_2_id =\t" + subsystem_2_id + "\n   subsystem_3_id =\t" + subsystem_3_id
+                + "\n\nInstrument Deployment Information\n   installation_timestamp =\t"
+                + installation_timestamp + "\n   customer_id =\t" + customer_id
+                + "\n   customer_name =\t" + customer_name + "\n   customer_location =\t"
+                + customer_location + "\n   contact_telephone =\t" + contact_telephone
+                + "\n   contact_email =\t" + contact_email + "\n   customer_since =\t"
+                + customer_since + "\n   assay_types_enabled =\t" + assay_types_enabled;
     }
 
     public Date getManufactured_timestamp() {
@@ -101,7 +113,6 @@ public class Instrument {
         this.subsystem_3_id = subsystem_3_id;
     }
 
-    
     public Date getInstallation_timestamp() {
         return installation_timestamp;
     }
