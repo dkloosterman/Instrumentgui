@@ -12,7 +12,6 @@ import java.util.ArrayList;
  */
 public class TopScreen extends javax.swing.JFrame {
 
-//    String cardID;
     TestInstance test;
     Cartridge cartridge;
     Instrument instrument;
@@ -87,6 +86,8 @@ public class TopScreen extends javax.swing.JFrame {
                 CloseInfoButtonActionPerformed(evt);
             }
         });
+
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
 
         InfoTextArea.setColumns(20);
         InfoTextArea.setRows(5);

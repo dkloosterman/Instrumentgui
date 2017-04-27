@@ -62,16 +62,23 @@ public class Instrument {
 
     @Override
     public String toString() {
-        return "Instrument Manufacturing Information\n   instrument_id =\t" + instrument_id
-                + "\n   manufactured_timestamp =\t" + manufactured_timestamp + "\n   manufactured_location =\t"
-                + manufactured_location + "\n   subsystem_1_id =\t" + subsystem_1_id
-                + "\n   subsystem_2_id =\t" + subsystem_2_id + "\n   subsystem_3_id =\t" + subsystem_3_id
-                + "\n\nInstrument Deployment Information\n   installation_timestamp =\t"
-                + installation_timestamp + "\n   customer_id =\t" + customer_id
-                + "\n   customer_name =\t" + customer_name + "\n   customer_location =\t"
-                + customer_location + "\n   contact_telephone =\t" + contact_telephone
-                + "\n   contact_email =\t" + contact_email + "\n   customer_since =\t"
-                + customer_since + "\n   assay_types_enabled =\t" + assay_types_enabled;
+        return  "Instrument Manufacturing Information" 
+                + "\n   instrument_id =\t" + instrument_id
+                + "\n   manufactured_timestamp =\t" + manufactured_timestamp 
+                + "\n   manufactured_location =\t" + manufactured_location 
+                + "\n   subsystem_1_id =\t" + subsystem_1_id
+                + "\n   subsystem_2_id =\t" + subsystem_2_id 
+                + "\n   subsystem_3_id =\t" + subsystem_3_id
+                
+                + "\n\nInstrument Deployment Information" 
+                + "\n   installation_timestamp =\t" + installation_timestamp 
+                + "\n   customer_id =\t" + customer_id
+                + "\n   customer_name =\t" + customer_name 
+                + "\n   customer_location =\t" + customer_location 
+                + "\n   contact_telephone =\t" + contact_telephone
+                + "\n   contact_email =\t" + contact_email 
+                + "\n   customer_since =\t" + customer_since 
+                + "\n   assay_types_enabled =\t" + assay_types_enabled;
     }
 
     public Date getManufactured_timestamp() {

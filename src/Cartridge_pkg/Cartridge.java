@@ -33,13 +33,20 @@ public class Cartridge {
     String subsystem_2_id;
     String subsystem_3_id;
 
+    public Cartridge() {
+
+    }
+    
     @Override
     public String toString() {
-        return "Cartridge Manufacturing Information\n" + "   cartridge_id =\t\t" + cartridge_id 
-                + "\n   manufactured_timestamp =\t" + manufactured_timestamp + "\n   manufactured_location =\t" 
-                + manufactured_location + "\n   assay_type =\t\t" + assay_type 
-                + "\n   subsystem_1_id =\t" + subsystem_1_id + "\n   subsystem_2_id =\t" + subsystem_2_id 
-                + "\n   subsystem_3_id =\t" + subsystem_3_id + '}';
+        return  "Cartridge Manufacturing Information" 
+                + "\n   cartridge_id =\t\t" + cartridge_id 
+                + "\n   manufactured_timestamp =\t" + manufactured_timestamp 
+                + "\n   manufactured_location =\t" + manufactured_location 
+                + "\n   assay_type =\t\t" + assay_type 
+                + "\n   subsystem_1_id =\t" + subsystem_1_id 
+                + "\n   subsystem_2_id =\t" + subsystem_2_id 
+                + "\n   subsystem_3_id =\t" + subsystem_3_id;
     }
 
     public String getCartridge_id() {
