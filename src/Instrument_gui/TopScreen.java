@@ -4,6 +4,7 @@ import Cartridge_pkg.Cartridge;
 import Instrument_pkg.Instrument;
 import TestInstance_pkg.TestInstance;
 import JDBCqueries_pkg.JDBCqueries;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**
@@ -263,15 +264,18 @@ public class TopScreen extends javax.swing.JFrame {
         try {
             this.test = new TestInstance();
             this.cartridge = new Cartridge();
+            // temp code until real cartridges exist
+            this.createTestCartridge(this.cartridge);
             
             // update Instrument Info Text Area with selected Instrument ID
             JDBCqueries queries = new JDBCqueries();
-
-            queries.createCartridge(this.cartridge);
+            queries.insertCartridge(this.cartridge);
             queries.getCartridgeMfgInfo(this.cartridge);
-            InfoTextArea.setText(this.cartridge.toString());
+            
+            test.processTest(this.instrument, this.cartridge);
+            InfoTextArea.setText(this.test.toString());
 
-            // Make Instrument Info Panel visible
+            // update view
             CartridgeInfoButton.setVisible(true);
             SelectComboBox.setVisible(false);
             InsertCartridgeButton.setVisible(false);
@@ -287,6 +291,40 @@ public class TopScreen extends javax.swing.JFrame {
 
         }   //end finally 
     }//GEN-LAST:event_InsertCartridgeButtonActionPerformed
+
+        public void createTestCartridge(Cartridge cartridge) {
+        String display = null;
+
+        try {
+            // temp code : create a cartridge ID from the current timestamp
+            /*
+            (cartridge_id, manufactured_timestamp, manufactured_location, assay_type,
+                             subsystem_1_id, subsystem_2_id, subsystem_3_id)
+             */
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            String cartID = timestamp.toString();
+
+            cartID = cartID.replace(" ", "");
+            cartID = cartID.replace(":", "");
+            cartID = cartID.replace(".", "");
+            cartID = cartID.replace("-", "");
+            cartridge.setCartridge_id(cartID);
+            cartridge.setManufactured_timestamp(new Timestamp(System.currentTimeMillis()));
+            cartridge.setManufactured_location("Perinton, NY");
+            cartridge.setAssay_type("1000 0000 0000 0000");
+            cartridge.setSubsystem_1_id("0000000010000002");
+            cartridge.setSubsystem_2_id("0000000020000002");
+            cartridge.setSubsystem_3_id("0000000030000002");
+
+        } catch (Exception e) {
+            // handle the error
+            display += "\n" + "General Exception " + e.getMessage();
+            System.exit(0);
+        } finally {
+            //finally block used to close resources
+
+        }   //end finally try
+    }
 
     private void CartridgeInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartridgeInfoButtonActionPerformed
         String display = null;
@@ -348,6 +386,7 @@ public class TopScreen extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
 
                 new TopScreen().setVisible(true);

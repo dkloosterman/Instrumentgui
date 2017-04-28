@@ -5,7 +5,11 @@
  */
 package TestInstance_pkg;
 
+import Cartridge_pkg.Cartridge;
+import Instrument_pkg.Instrument;
+import java.sql.Timestamp;
 import java.util.Date;
+import JDBCqueries_pkg.JDBCqueries;
 
 /**
  *
@@ -31,24 +35,47 @@ public class TestInstance {
     String technician_id = null;
     String doctor_id = null;
     String raw_assay_data = null;
-    String analysis_result = null;
+    double analysis_result = 0;
     Date clinical_test_timestamp = null;
+    
     DICOM dicom = null;
+    JDBCqueries queries = null;
 
     public TestInstance() {
+        queries = new JDBCqueries();
 
+    }
+
+    public void processTest(Instrument instrument, Cartridge cartridge) {
+        this.instrument_id = instrument.getInstrument_id();
+        this.cartridge_id = cartridge.getCartridge_id();
+        this.patient_id = "5555555555";
+        this.technician_id = "Jane Technician";
+        this.doctor_id = "Joe Doctor";
+        this.raw_assay_data = "pointerToImage";
+        
+        this.analysis_result = Math.random();
+        
+        this.clinical_test_timestamp = new Timestamp(System.currentTimeMillis());
+        
+        this.dicom = new DICOM();
+        this.dicom.patient_id = this.patient_id;
+        this.dicom.timestamp = this.clinical_test_timestamp;
+        this.dicom.image = null;
+        
+        queries.insertTestInstance(this);
     }
 
     @Override
     public String toString() {
-        return  "TestInstance" 
-                + "\n   cartridge_id = \t" + cartridge_id 
-                + "\n   instrument_id = \t" + instrument_id 
-                + "\n   patient_id = \t" + patient_id 
-                + "\n   technician_id = \t" + technician_id 
-                + "\n   doctor_id = \t" + doctor_id 
-                + "\n   raw_assay_data = \t" + raw_assay_data 
-                + "\n   analysis_result = \t" + analysis_result 
+        return "TestInstance"
+                + "\n   cartridge_id = \t\t" + cartridge_id
+                + "\n   instrument_id = \t" + instrument_id
+                + "\n   patient_id = \t\t" + patient_id
+                + "\n   technician_id = \t" + technician_id
+                + "\n   doctor_id = \t\t" + doctor_id
+                + "\n   raw_assay_data = \t" + raw_assay_data
+                + "\n   analysis_result = \t" + analysis_result
                 + "\n   clinical_test_timestamp = \t" + clinical_test_timestamp
                 + "\n"
                 + dicom.toString();
@@ -102,11 +129,11 @@ public class TestInstance {
         this.raw_assay_data = raw_assay_data;
     }
 
-    public String getAnalysis_result() {
+    public double getAnalysis_result() {
         return analysis_result;
     }
 
-    public void setAnalysis_result(String analysis_result) {
+    public void setAnalysis_result(double analysis_result) {
         this.analysis_result = analysis_result;
     }
 

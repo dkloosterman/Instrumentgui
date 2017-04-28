@@ -25,10 +25,10 @@ public class DICOM {
     
     @Override
     public String toString() {
-        return "DICOM" 
-                + "\n   patient_id=" + patient_id 
-                + "\n   timestamp=" + timestamp 
-                + "\n   image=" + image + '}';
+        return "\nDICOM" 
+                + "\n   patient_id =\t\t" + patient_id 
+                + "\n   timestamp =\t\t" + timestamp 
+                + "\n   image =\t\t" + image;
     }
 
     public String getPatient_id() {

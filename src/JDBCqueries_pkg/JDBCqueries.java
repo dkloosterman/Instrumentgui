@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.*;
 import Instrument_pkg.Instrument;
 import Cartridge_pkg.Cartridge;
+import TestInstance_pkg.TestInstance;
 
 /**
  *
@@ -71,25 +72,6 @@ public class JDBCqueries {
                 cartridge.setSubsystem_3_id(rs.getString("subsystem_3_id"));
             }
 
-//            while (rs.next()) {
-//
-//                String cartridge_id = rs.getString("cartridge_id");
-//                java.sql.Timestamp manufactured_timestamp = rs.getTimestamp("manufactured_timestamp");
-//                String manufactured_location = rs.getString("manufactured_location");
-//                String assay_type = rs.getString("assay_type");
-//                String subsystem_1_id = rs.getString("subsystem_1_id");
-//                String subsystem_2_id = rs.getString("subsystem_2_id");
-//                String subsystem_3_id = rs.getString("subsystem_3_id");
-//
-//                display += "\n\t Cartridge ID: " + cartridge_id
-//                        + "\n\t Mfg Location: " + manufactured_location
-//                        + "\n\t Cartridge Assay Type: " + assay_type
-//                        + "\n\t Sub 1 ID: " + subsystem_1_id
-//                        + "\n\t Sub 2 ID:" + subsystem_2_id
-//                        + "\n\t Sub 3 ID:: " + subsystem_3_id
-//                        + "\n\t Mfg. Timestamp: " + manufactured_timestamp + "\n";
-//            }
-
         } catch (SQLException e) {
             // handle the error
             display += "\n" + "SQL Exception " + e.getMessage();
@@ -105,30 +87,22 @@ public class JDBCqueries {
 //        return (display);
     }
 
-    public void createCartridge(Cartridge cartridge) {
+    public void insertCartridge(Cartridge cartridge) {
         String display = null;
 
-        try {
-            // temp code : create a cartridge ID from the current timestamp
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            String cartID = timestamp.toString();
-
-            cartID = cartID.replace(" ", "");
-            cartID = cartID.replace(":", "");
-            cartID = cartID.replace(".", "");
-            cartID = cartID.replace("-", "");
-
+        try {           
             sql = "INSERT INTO Cartridge_Manufactured VALUES "
-                    + "('" + cartID + "', '2017-03-29 08:59:00', 'Perinton, NY', '0010 0000 0000 0000', "
-                    + "'0000000010000002', '0000000020000002', '0000000030000002')";
+                    + "('" + cartridge.getCartridge_id()
+                    + "', '" + cartridge.getManufactured_timestamp()
+                    + "', '" + cartridge.getManufactured_location()
+                    + "', '" + cartridge.getAssay_type()
+                    + "', '" + cartridge.getSubsystem_1_id()
+                    + "', '" + cartridge.getSubsystem_2_id()
+                    + "', '" + cartridge.getSubsystem_3_id() + "')";
 
             // get and display data for seleted Instrument ID
             stmt.executeUpdate(sql);
             
-            cartridge.setCartridge_id(cartID);
-
-//            return (cartridge);
-
         } catch (SQLException e) {
             // handle the error
             display += "\n" + "SQL Exception " + e.getMessage();
@@ -141,7 +115,7 @@ public class JDBCqueries {
             //finally block used to close resources
 
         }   //end finally try
-       
+
     }
 
     public String getInstrumentDeploymentInfo(String instrID, Instrument instrument) {
@@ -241,4 +215,34 @@ public class JDBCqueries {
         return (display);
     }
 
+    public void insertTestInstance(TestInstance test) {
+        String display = null;
+
+        try {
+            /*
+             (cartridge_id, instrument_id, patient_id, technician_id, doctor_id, 
+             raw_assay_data, analysis_result, clinical_test_timestamp)
+             */
+            sql = "INSERT INTO Clinical_Test_Instance VALUES "
+                    + "('" + test.getCartridge_id() + "', '" + test.getInstrument_id()
+                    + "', '" + test.getPatient_id() + "', '" + test.getTechnician_id()
+                    + "', '" + test.getDoctor_id() + "', '" + test.getRaw_assay_data()
+                    + "', '" + test.getAnalysis_result()
+                    + "', '" + test.getClinical_test_timestamp() + "')";
+
+            // get and display data for seleted Instrument ID
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            // handle the error
+            display += "\n" + "SQL Exception " + e.getMessage();
+            System.exit(0);
+        } catch (Exception e) {
+            // handle the error
+            display += "\n" + "General Exception " + e.getMessage();
+            System.exit(0);
+        } finally {
+            //finally block used to close resources
+
+        }   //end finally try
+    }
 }
