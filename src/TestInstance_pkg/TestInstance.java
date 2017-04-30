@@ -29,6 +29,8 @@ public class TestInstance {
        clinical_test_timestamp TIMESTAMP,
        PRIMARY KEY (cartridge_id ) );
      */
+    
+    long   clinical_test_counter = 0;
     String cartridge_id = null;
     String instrument_id = null;
     String patient_id = null;
@@ -49,10 +51,15 @@ public class TestInstance {
     public void processTest(Instrument instrument, Cartridge cartridge) {
         this.instrument_id = instrument.getInstrument_id();
         this.cartridge_id = cartridge.getCartridge_id();
+        
+        // insert future code to verify this cartridge with this instrument
+        
         this.patient_id = "5555555555";
         this.technician_id = "Jane Technician";
         this.doctor_id = "Joe Doctor";
         this.raw_assay_data = "pointerToImage";
+        
+        // insert future algorithm logic here
         
         this.analysis_result = Math.random();
         
@@ -64,11 +71,13 @@ public class TestInstance {
         this.dicom.image = null;
         
         queries.insertTestInstance(this);
-    }
+        queries.getTestInstanceCounter(this, this.cartridge_id);
+     }
 
     @Override
     public String toString() {
-        return "TestInstance"
+        return "Test Instance"
+                + "\n   clinical_test_counter = \t\t" + clinical_test_counter
                 + "\n   cartridge_id = \t\t" + cartridge_id
                 + "\n   instrument_id = \t" + instrument_id
                 + "\n   patient_id = \t\t" + patient_id
@@ -79,6 +88,14 @@ public class TestInstance {
                 + "\n   clinical_test_timestamp = \t" + clinical_test_timestamp
                 + "\n"
                 + dicom.toString();
+    }
+
+    public long getClinical_test_counter() {
+        return clinical_test_counter;
+    }
+    
+    public void setClinical_test_counter(long clinical_test_counter) {
+        this.clinical_test_counter = clinical_test_counter;
     }
 
     public String getCartridge_id() {

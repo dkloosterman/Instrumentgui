@@ -94,6 +94,8 @@
                       <Component id="jScrollPane1" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Component id="SelectComboBox" min="-2" pref="169" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="DisplayTestButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="EndTestButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
@@ -121,6 +123,7 @@
                       <Component id="CloseInfoButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="SelectComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="EndTestButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="DisplayTestButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -181,6 +184,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EndTestButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="DisplayTestButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Display Test"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DisplayTestButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

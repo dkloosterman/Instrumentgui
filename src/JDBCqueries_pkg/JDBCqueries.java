@@ -223,7 +223,9 @@ public class JDBCqueries {
              (cartridge_id, instrument_id, patient_id, technician_id, doctor_id, 
              raw_assay_data, analysis_result, clinical_test_timestamp)
              */
-            sql = "INSERT INTO Clinical_Test_Instance VALUES "
+            sql = "INSERT INTO Clinical_Test_Instance "
+                    + "(cartridge_id, instrument_id, patient_id, technician_id, doctor_id, raw_assay_data, analysis_result, clinical_test_timestamp) "
+                    + "VALUES "                    
                     + "('" + test.getCartridge_id() + "', '" + test.getInstrument_id()
                     + "', '" + test.getPatient_id() + "', '" + test.getTechnician_id()
                     + "', '" + test.getDoctor_id() + "', '" + test.getRaw_assay_data()
@@ -232,6 +234,33 @@ public class JDBCqueries {
 
             // get and display data for seleted Instrument ID
             stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            // handle the error
+            display += "\n" + "SQL Exception " + e.getMessage();
+            System.exit(0);
+        } catch (Exception e) {
+            // handle the error
+            display += "\n" + "General Exception " + e.getMessage();
+            System.exit(0);
+        } finally {
+            //finally block used to close resources
+
+        }   //end finally try
+    }
+    
+    public void getTestInstanceCounter(TestInstance test, String cartidgeID){
+        
+        String display = null;
+        
+        try {
+            sql = "SELECT * FROM Clinical_Test_Instance WHERE cartridge_id = " + cartidgeID;
+            rs = stmt.executeQuery(sql);
+            
+            while (rs.next()) {
+                test.setClinical_test_counter(rs.getLong("clinical_test_counter"));
+
+            }
+
         } catch (SQLException e) {
             // handle the error
             display += "\n" + "SQL Exception " + e.getMessage();
