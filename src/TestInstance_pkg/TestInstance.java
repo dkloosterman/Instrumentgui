@@ -45,6 +45,7 @@ public class TestInstance {
     String raw_assay_data = null;
     double analysis_result = 0;
     Date clinical_test_timestamp = null;
+    String testResultString = null;
 
     DICOM dicom = null;
     JDBCqueries queries = null;
@@ -54,12 +55,15 @@ public class TestInstance {
 
     }
 
-    public void processTest(Instrument instrument, Cartridge cartridge) {
+    public boolean processTest(Instrument instrument, Cartridge cartridge) {
+        boolean testResult = true;
+        this.testResultString = "Test Successfully Completed";
+
         this.instrument_id = instrument.getInstrument_id();
         this.cartridge_id = cartridge.getCartridge_id();
 
         // insert future code to verify this cartridge with this instrument
-        this.patient_id = "5555555555";
+        this.patient_id = "1234567890123456";
         this.technician_id = "Jane Technician";
         this.doctor_id = "Joe Doctor";
         this.raw_assay_data = "pointerToImage";
@@ -74,8 +78,16 @@ public class TestInstance {
         this.dicom.timestamp = this.clinical_test_timestamp;
         this.dicom.image = null;
 
-        queries.insertTestInstance(this);
-        queries.getTestInstanceCounter(this, this.cartridge_id);
+        // test if this Cartridge is an assay test type supported by this Instrument
+        if ((instrument.getAssay_types_enabled() & cartridge.getAssay_type()) > 0) {
+            queries.insertTestInstance(this);
+            queries.getTestInstanceCounter(this, this.cartridge_id);
+        } else {
+            testResult = false;
+            this.testResultString = "Failure: Cartridge is not compatible with assay tests supported by this Instrument";
+        }
+
+        return (testResult);
     }
 
     @Override
@@ -164,6 +176,14 @@ public class TestInstance {
 
     public void setClinical_test_timestamp(Date clinical_test_timestamp) {
         this.clinical_test_timestamp = clinical_test_timestamp;
+    }
+
+    public String getTestResultString() {
+        return testResultString;
+    }
+
+    public void setTestResultString(String testResultString) {
+        this.testResultString = testResultString;
     }
 
     public static String convertIntegerToBinaryString(int number, int binaryStringLength) {

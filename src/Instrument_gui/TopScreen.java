@@ -284,8 +284,11 @@ public class TopScreen extends javax.swing.JFrame {
             queries.insertCartridge(this.cartridge);
             queries.getCartridgeMfgInfo(this.cartridge);
 
-            test.processTest(this.instrument, this.cartridge);
-            InfoTextArea.setText(this.test.toString());
+            if (test.processTest(this.instrument, this.cartridge)) {
+                InfoTextArea.setText(this.test.getTestResultString() + "\n\n" + this.test.toString());
+            } else {
+                InfoTextArea.setText(this.test.getTestResultString());
+            }
 
             // update view
             CartridgeInfoButton.setVisible(true);
