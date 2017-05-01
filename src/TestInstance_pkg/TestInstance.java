@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package TestInstance_pkg;
 
 import Cartridge_pkg.Cartridge;
@@ -45,6 +41,7 @@ public class TestInstance {
     String raw_assay_data = null;
     double analysis_result = 0;
     Date clinical_test_timestamp = null;
+    
     String testResultString = null;
 
     DICOM dicom = null;
