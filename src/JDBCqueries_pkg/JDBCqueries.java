@@ -52,6 +52,7 @@ public class JDBCqueries {
         }   //end finally
     }
 
+    // Cartridge queries
     public void getCartridgeMfgInfo(Cartridge cartridge) {
 
         String display = "Cartridge  Manufacturing Information \n";
@@ -66,7 +67,7 @@ public class JDBCqueries {
                 cartridge.setCartridge_id(rs.getString("cartridge_id"));
                 cartridge.setManufactured_timestamp(rs.getTimestamp("manufactured_timestamp"));
                 cartridge.setManufactured_location(rs.getString("manufactured_location"));
-                cartridge.setAssay_type(rs.getString("assay_type"));
+                cartridge.setAssay_type(rs.getInt("assay_type"));
                 cartridge.setSubsystem_1_id(rs.getString("subsystem_1_id"));
                 cartridge.setSubsystem_2_id(rs.getString("subsystem_2_id"));
                 cartridge.setSubsystem_3_id(rs.getString("subsystem_3_id"));
@@ -118,6 +119,7 @@ public class JDBCqueries {
 
     }
 
+    // Instrument quesries
     public String getInstrumentDeploymentInfo(String instrID, Instrument instrument) {
 
         String display = "Instrument Deployment Information";
@@ -136,7 +138,7 @@ public class JDBCqueries {
                 instrument.setContact_telephone(rs.getString("contact_telephone"));
                 instrument.setContact_email(rs.getString("contact_email"));
                 instrument.setCustomer_since(rs.getTimestamp("customer_since"));
-                instrument.setAssay_types_enabled(rs.getString("assay_types_enabled"));
+                instrument.setAssay_types_enabled(rs.getInt("assay_types_enabled"));
             }
 
         } catch (SQLException e) {
@@ -215,6 +217,7 @@ public class JDBCqueries {
         return (display);
     }
 
+    // Test Instance queries
     public void insertTestInstance(TestInstance test) {
         String display = null;
 

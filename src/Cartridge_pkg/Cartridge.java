@@ -6,6 +6,8 @@
 package Cartridge_pkg;
 
 import java.util.Date;
+import TestInstance_pkg.TestInstance;
+import static TestInstance_pkg.TestInstance.ASSAY_FIELD_LENGTH;
 
 /**
  *
@@ -28,7 +30,7 @@ public class Cartridge {
     String cartridge_id;
     Date manufactured_timestamp;
     String manufactured_location;
-    String assay_type;
+    int assay_type;
     String subsystem_1_id;
     String subsystem_2_id;
     String subsystem_3_id;
@@ -39,11 +41,14 @@ public class Cartridge {
     
     @Override
     public String toString() {
+        
+        String binaryAssayType = TestInstance.convertIntegerToBinaryString(assay_type, ASSAY_FIELD_LENGTH);
+                        
         return  "Cartridge Manufacturing Information" 
                 + "\n   cartridge_id =\t\t" + cartridge_id 
                 + "\n   manufactured_timestamp =\t" + manufactured_timestamp 
                 + "\n   manufactured_location =\t" + manufactured_location 
-                + "\n   assay_type =\t\t" + assay_type 
+                + "\n   assay_type =\t\t" + binaryAssayType 
                 + "\n   subsystem_1_id =\t" + subsystem_1_id 
                 + "\n   subsystem_2_id =\t" + subsystem_2_id 
                 + "\n   subsystem_3_id =\t" + subsystem_3_id;
@@ -73,11 +78,11 @@ public class Cartridge {
         this.manufactured_location = manufactured_location;
     }
 
-    public String getAssay_type() {
+    public int getAssay_type() {
         return assay_type;
     }
 
-    public void setAssay_type(String assay_type) {
+    public void setAssay_type(int assay_type) {
         this.assay_type = assay_type;
     }
 

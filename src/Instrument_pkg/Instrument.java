@@ -5,6 +5,8 @@
  */
 package Instrument_pkg;
 
+import TestInstance_pkg.*;
+import static TestInstance_pkg.TestInstance.ASSAY_FIELD_LENGTH;
 import java.util.Date;
 
 /**
@@ -54,7 +56,7 @@ public class Instrument {
     String contact_telephone = null;
     String contact_email = null;
     Date customer_since = null;
-    String assay_types_enabled = null;
+    int assay_types_enabled = 0;
 
     public Instrument() {
 
@@ -62,6 +64,9 @@ public class Instrument {
 
     @Override
     public String toString() {
+        
+        String binaryAssayTypesEnabled = TestInstance.convertIntegerToBinaryString(assay_types_enabled, ASSAY_FIELD_LENGTH);
+                
         return  "Instrument Manufacturing Information" 
                 + "\n   instrument_id =\t" + instrument_id
                 + "\n   manufactured_timestamp =\t" + manufactured_timestamp 
@@ -78,7 +83,7 @@ public class Instrument {
                 + "\n   contact_telephone =\t" + contact_telephone
                 + "\n   contact_email =\t" + contact_email 
                 + "\n   customer_since =\t" + customer_since 
-                + "\n   assay_types_enabled =\t" + assay_types_enabled;
+                + "\n   assay_types_enabled =\t" + binaryAssayTypesEnabled;
     }
 
     public Date getManufactured_timestamp() {
@@ -177,11 +182,11 @@ public class Instrument {
         this.customer_since = customer_since;
     }
 
-    public String getAssay_types_enabled() {
+    public int getAssay_types_enabled() {
         return assay_types_enabled;
     }
 
-    public void setAssay_types_enabled(String assay_types_enabled) {
+    public void setAssay_types_enabled(int assay_types_enabled) {
         this.assay_types_enabled = assay_types_enabled;
     }
 

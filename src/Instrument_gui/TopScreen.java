@@ -275,7 +275,7 @@ public class TopScreen extends javax.swing.JFrame {
         try {
             this.test = new TestInstance();
             this.cartridge = new Cartridge();
-            
+
             // temp code until real cartridges exist
             this.createTestCartridge(this.cartridge);
 
@@ -324,7 +324,7 @@ public class TopScreen extends javax.swing.JFrame {
             cartridge.setCartridge_id(cartID);
             cartridge.setManufactured_timestamp(new Timestamp(System.currentTimeMillis()));
             cartridge.setManufactured_location("Perinton, NY");
-            cartridge.setAssay_type("1000 0000 0000 0000");
+            cartridge.setAssay_type(test.CARDIAC_WELLNESS_TEST);
             cartridge.setSubsystem_1_id("0000000010000002");
             cartridge.setSubsystem_2_id("0000000020000002");
             cartridge.setSubsystem_3_id("0000000030000002");
@@ -338,6 +338,7 @@ public class TopScreen extends javax.swing.JFrame {
 
         }   //end finally try
     }
+
 
     private void CartridgeInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartridgeInfoButtonActionPerformed
         String display = null;

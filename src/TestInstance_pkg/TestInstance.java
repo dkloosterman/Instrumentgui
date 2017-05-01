@@ -10,12 +10,19 @@ import Instrument_pkg.Instrument;
 import java.sql.Timestamp;
 import java.util.Date;
 import JDBCqueries_pkg.JDBCqueries;
+import static java.lang.Integer.toBinaryString;
 
 /**
  *
  * @author David Kloosterman
  */
 public class TestInstance {
+
+    // Assay Test Types
+    public static final int ASSAY_FIELD_LENGTH = 16;
+    public static final int NO_ASSAY_TEST = 0b0000000000000000;
+    public static final int CARDIAC_WELLNESS_TEST = 0b0000000000000001;
+    public static final int ORAL_CANCER_TEST = 0b0000000000000010;
 
     /*
     CREATE TABLE Clinical_Test_Instance (
@@ -29,8 +36,7 @@ public class TestInstance {
        clinical_test_timestamp TIMESTAMP,
        PRIMARY KEY (cartridge_id ) );
      */
-    
-    long   clinical_test_counter = 0;
+    long clinical_test_counter = 0;
     String cartridge_id = null;
     String instrument_id = null;
     String patient_id = null;
@@ -39,7 +45,7 @@ public class TestInstance {
     String raw_assay_data = null;
     double analysis_result = 0;
     Date clinical_test_timestamp = null;
-    
+
     DICOM dicom = null;
     JDBCqueries queries = null;
 
@@ -51,28 +57,26 @@ public class TestInstance {
     public void processTest(Instrument instrument, Cartridge cartridge) {
         this.instrument_id = instrument.getInstrument_id();
         this.cartridge_id = cartridge.getCartridge_id();
-        
+
         // insert future code to verify this cartridge with this instrument
-        
         this.patient_id = "5555555555";
         this.technician_id = "Jane Technician";
         this.doctor_id = "Joe Doctor";
         this.raw_assay_data = "pointerToImage";
-        
+
         // insert future algorithm logic here
-        
         this.analysis_result = Math.random();
-        
+
         this.clinical_test_timestamp = new Timestamp(System.currentTimeMillis());
-        
+
         this.dicom = new DICOM();
         this.dicom.patient_id = this.patient_id;
         this.dicom.timestamp = this.clinical_test_timestamp;
         this.dicom.image = null;
-        
+
         queries.insertTestInstance(this);
         queries.getTestInstanceCounter(this, this.cartridge_id);
-     }
+    }
 
     @Override
     public String toString() {
@@ -93,7 +97,7 @@ public class TestInstance {
     public long getClinical_test_counter() {
         return clinical_test_counter;
     }
-    
+
     public void setClinical_test_counter(long clinical_test_counter) {
         this.clinical_test_counter = clinical_test_counter;
     }
@@ -160,6 +164,15 @@ public class TestInstance {
 
     public void setClinical_test_timestamp(Date clinical_test_timestamp) {
         this.clinical_test_timestamp = clinical_test_timestamp;
+    }
+
+    public static String convertIntegerToBinaryString(int number, int binaryStringLength) {
+
+        String binaryString = "0000000000000000" + toBinaryString(number);
+
+        binaryString = binaryString.substring(binaryString.length() - ASSAY_FIELD_LENGTH, binaryString.length());
+
+        return (binaryString);
     }
 
 }
