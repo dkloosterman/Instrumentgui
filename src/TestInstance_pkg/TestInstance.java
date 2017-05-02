@@ -52,7 +52,7 @@ public class TestInstance {
 
     }
 
-    public boolean processTest(Instrument instrument, Cartridge cartridge) {
+    public boolean processTest(Instrument instrument, Cartridge cartridge, String testFilePath) {
         boolean testResult = true;
         this.testResultString = "Test Successfully Completed";
 
