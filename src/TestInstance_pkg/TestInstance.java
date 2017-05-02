@@ -8,6 +8,7 @@ import java.util.Date;
 import JDBCqueries_pkg.JDBCqueries;
 import static java.lang.Integer.toBinaryString;
 
+
 /**
  *
  * @author David Kloosterman
