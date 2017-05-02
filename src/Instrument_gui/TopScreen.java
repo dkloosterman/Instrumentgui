@@ -297,7 +297,7 @@ public class TopScreen extends javax.swing.JFrame {
             currentTimestamp = currentTimestamp.replace(".", "");
             currentTimestamp = currentTimestamp.replace("-", "");
             
-            String clinicalTestFile = ".\\clinicalTestFiles\\" + currentTimestamp + ".txt";
+            String clinicalTestFile = "..\\clinicalTestFiles\\" + currentTimestamp + ".txt";
             
             BufferedWriter bw = null;
             FileWriter fw = null;
