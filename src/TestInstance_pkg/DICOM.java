@@ -14,21 +14,26 @@ import java.util.Date;
  * @author David Kloosterman
  */
 public class DICOM {
-    
+
+//    public static final String TESTFILE_SAMPLE = ".\\TestImage.tif";
     String patient_id = null;
     Date timestamp = null;
-    BufferedImage image = null;
+    long clinicalTestImage_id = 0;
+    long clinicalTestImage_length = 0;
+    String clinicalTestFilePathInInstrument = null;
 
-     public DICOM() {
-        
+    public DICOM() {
+
     }
-    
+
     @Override
     public String toString() {
-        return "\nDICOM" 
-                + "\n   patient_id =\t\t" + patient_id 
-                + "\n   timestamp =\t\t" + timestamp 
-                + "\n   image =\t\t" + image;
+        return "\nDICOM"
+                + "\n   patient_id =\t\t" + patient_id
+                + "\n   timestamp =\t\t" + timestamp
+                + "\n   clinical test image ID =\t\t" + clinicalTestImage_id
+                + "\n   clinical test image length =\t\t" + clinicalTestImage_length
+                + "\n   image =\t\t" + clinicalTestFilePathInInstrument;
     }
 
     public String getPatient_id() {
@@ -47,13 +52,28 @@ public class DICOM {
         this.timestamp = timestamp;
     }
 
-    public BufferedImage getImage() {
-        return image;
+    public long getClinicalTestImage_id() {
+        return clinicalTestImage_id;
     }
 
-    public void setImage(BufferedImage image) {
-        this.image = image;
+    public void setClinicalTestImage_id(long clinicalTestImage_id) {
+        this.clinicalTestImage_id = clinicalTestImage_id;
     }
-    
-   
+
+    public String getClinicalTestFilePathInInstrument() {
+        return clinicalTestFilePathInInstrument;
+    }
+
+    public void setClinicalTestFilePathInInstrument(String clinicalTestFilePathInInstrument) {
+        this.clinicalTestFilePathInInstrument = clinicalTestFilePathInInstrument;
+    }
+
+    public long getClinicalTestImage_length() {
+        return clinicalTestImage_length;
+    }
+
+    public void setClinicalTestImage_length(long clinicalTestImage_length) {
+        this.clinicalTestImage_length = clinicalTestImage_length;
+    }
+
 }

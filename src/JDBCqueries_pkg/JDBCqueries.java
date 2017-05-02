@@ -4,7 +4,9 @@ import java.sql.*;
 import java.util.*;
 import Instrument_pkg.Instrument;
 import Cartridge_pkg.Cartridge;
-import TestInstance_pkg.TestInstance;
+import TestInstance_pkg.*;
+import java.io.*;
+import java.util.Date;
 
 /**
  *
@@ -91,7 +93,7 @@ public class JDBCqueries {
     public void insertCartridge(Cartridge cartridge) {
         String display = null;
 
-        try {           
+        try {
             sql = "INSERT INTO Cartridge_Manufactured VALUES "
                     + "('" + cartridge.getCartridge_id()
                     + "', '" + cartridge.getManufactured_timestamp()
@@ -103,7 +105,7 @@ public class JDBCqueries {
 
             // get and display data for seleted Instrument ID
             stmt.executeUpdate(sql);
-            
+
         } catch (SQLException e) {
             // handle the error
             display += "\n" + "SQL Exception " + e.getMessage();
@@ -228,7 +230,7 @@ public class JDBCqueries {
              */
             sql = "INSERT INTO Clinical_Test_Instance "
                     + "(cartridge_id, instrument_id, patient_id, technician_id, doctor_id, raw_assay_data, analysis_result, clinical_test_timestamp) "
-                    + "VALUES "                    
+                    + "VALUES "
                     + "('" + test.getCartridge_id() + "', '" + test.getInstrument_id()
                     + "', '" + test.getPatient_id() + "', '" + test.getTechnician_id()
                     + "', '" + test.getDoctor_id() + "', '" + test.getRaw_assay_data()
@@ -250,15 +252,15 @@ public class JDBCqueries {
 
         }   //end finally try
     }
-    
-    public void getTestInstanceCounter(TestInstance test, String cartidgeID){
-        
+
+    public void getTestInstanceCounter(TestInstance test, String cartidgeID) {
+
         String display = null;
-        
+
         try {
             sql = "SELECT * FROM Clinical_Test_Instance WHERE cartridge_id = " + cartidgeID;
             rs = stmt.executeQuery(sql);
-            
+
             while (rs.next()) {
                 test.setClinical_test_counter(rs.getLong("clinical_test_counter"));
 
@@ -275,6 +277,60 @@ public class JDBCqueries {
         } finally {
             //finally block used to close resources
 
+        }   //end finally try
+    }
+
+    public long insertClinicalTestImage(DICOM dicom) {
+        String display = null;
+        long image_id = 0;
+        PreparedStatement psmnt = null;
+
+        try {
+            /*
+                CREATE TABLE Clinical_Test_Images (
+                       image_id        BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+                       image           blob,
+                       image_timestamp VARCHAR (25),
+                       PRIMARY KEY (image_id )
+                );
+             */
+            String currentTimestamp = dicom.getTimestamp().toString();
+            currentTimestamp = currentTimestamp.replace(" ", "");
+            currentTimestamp = currentTimestamp.replace(":", "");
+            currentTimestamp = currentTimestamp.replace(".", "");
+            currentTimestamp = currentTimestamp.replace("-", "");
+
+            File imageFile = new File(dicom.getClinicalTestFilePathInInstrument());
+            FileInputStream fis = new FileInputStream(imageFile);
+            psmnt = conn.prepareStatement("INSERT INTO Clinical_Test_Images(image, image_timestamp) " + "VALUES(?,?)");
+//            fis = new FileInputStream(testFilePath);
+            psmnt.setBinaryStream(1, (InputStream) fis, (int) (imageFile.length()));
+            psmnt.setString(2,currentTimestamp);
+            int s = psmnt.executeUpdate();
+            if (s > 0) {
+                sql = "SELECT * FROM Clinical_Test_Images WHERE image_timestamp = " + currentTimestamp;
+                rs = stmt.executeQuery(sql);
+
+                while (rs.next()) {
+                    image_id = rs.getLong("image_id");
+                    dicom.setClinicalTestImage_id(image_id);
+                    dicom.setClinicalTestImage_length(imageFile.length());
+                }
+                System.out.println("Image Uploaded successfully !");
+            } else {
+                System.out.println("unsucessfull to upload image.");
+            }
+        } catch (SQLException e) {
+            // handle the error
+            display += "\n" + "SQL Exception " + e.getMessage();
+            System.exit(0);
+        } catch (Exception e) {
+            // handle the error
+            display += "\n" + "General Exception " + e.getMessage();
+            System.exit(0);
+        } finally {
+            //finally block used to close resources
+            return (image_id);
         }   //end finally try
     }
 }

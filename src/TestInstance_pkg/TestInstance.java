@@ -1,4 +1,3 @@
-
 package TestInstance_pkg;
 
 import Cartridge_pkg.Cartridge;
@@ -7,7 +6,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import JDBCqueries_pkg.JDBCqueries;
 import static java.lang.Integer.toBinaryString;
-
 
 /**
  *
@@ -42,18 +40,19 @@ public class TestInstance {
     String raw_assay_data = null;
     double analysis_result = 0;
     Date clinical_test_timestamp = null;
-    
+
     String testResultString = null;
 
-    DICOM dicom = null;
+    public DICOM dicom = null;
     JDBCqueries queries = null;
 
     public TestInstance() {
-        queries = new JDBCqueries();
+        this.dicom = new DICOM();
+        this.queries = new JDBCqueries();
 
     }
 
-    public boolean processTest(Instrument instrument, Cartridge cartridge, String testFilePath) {
+    public boolean processTest(Instrument instrument, Cartridge cartridge) {
         boolean testResult = true;
         this.testResultString = "Test Successfully Completed";
 
@@ -71,15 +70,21 @@ public class TestInstance {
 
         this.clinical_test_timestamp = new Timestamp(System.currentTimeMillis());
 
-        this.dicom = new DICOM();
         this.dicom.patient_id = this.patient_id;
         this.dicom.timestamp = this.clinical_test_timestamp;
-        this.dicom.image = null;
 
         // test if this Cartridge is an assay test type supported by this Instrument
         if ((instrument.getAssay_types_enabled() & cartridge.getAssay_type()) > 0) {
-            queries.insertTestInstance(this);
-            queries.getTestInstanceCounter(this, this.cartridge_id);
+
+            long insertImage_id = 
+                queries.insertClinicalTestImage(this.dicom);
+            
+            if (insertImage_id > 0) {
+//                this.dicom.setClinicalTestImage_id(insertImage_id);
+                queries.insertTestInstance(this);
+                queries.getTestInstanceCounter(this, this.cartridge_id);
+            }
+
         } else {
             testResult = false;
             this.testResultString = "Failure: Cartridge is not compatible with assay tests supported by this Instrument";
