@@ -288,7 +288,7 @@ public class JDBCqueries {
         try {
             /*
                 CREATE TABLE Clinical_Test_Images (
-                       image_id        BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+                       clinical_test_image_counter        BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
                        image           blob,
                        image_timestamp VARCHAR (25),
                        PRIMARY KEY (image_id )
@@ -311,7 +311,7 @@ public class JDBCqueries {
                 rs = stmt.executeQuery(sql);
 
                 while (rs.next()) {
-                    image_id = rs.getLong("image_id");
+                    image_id = rs.getLong("clinical_test_image_counter");
                     dicom.setClinicalTestImage_id(image_id);
                     dicom.setClinicalTestImage_length(imageFile.length());
                 }
