@@ -239,13 +239,13 @@ public class TopScreen extends javax.swing.JFrame {
 
             InfoTextArea.setText(this.instrument.toString());
 
-            // Make Instrument Info Panel visible
-            SelectObjectComboBox.removeAllItems();
-            ArrayList<String> allIDs = new ArrayList<String>();
-            allIDs = queries.getAllInstrumentIDs();
-            for (String ID : allIDs) {
-                SelectObjectComboBox.addItem(ID);
-            }
+//            // Make Instrument Info Panel visible
+//            SelectObjectComboBox.removeAllItems();
+//            ArrayList<String> allIDs = new ArrayList<String>();
+//            allIDs = queries.getAllInstrumentIDs();
+//            for (String ID : allIDs) {
+//                SelectObjectComboBox.addItem(ID);
+//            }
 
             SelectObjectComboBox.setVisible(true);
             InfoPanel.setVisible(true);
@@ -263,8 +263,6 @@ public class TopScreen extends javax.swing.JFrame {
 
         try {
             JDBCqueries queries = new JDBCqueries();
-//            SelectObjectComboBox.removeAllItems();
-//            ArrayList<String> allIDs = new ArrayList<String>();
 
             switch (this.objectType) {
                 case INSTRUMENT:
@@ -278,30 +276,19 @@ public class TopScreen extends javax.swing.JFrame {
                     queries.getInstrumentDeploymentInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
                     InfoTextArea.setText(this.instrument.toString());
 
-//                    SelectObjectComboBox.removeAllItems();
-//                    allIDs = queries.getAllInstrumentIDs();
-//                    for (String ID : allIDs) {
-//                        SelectObjectComboBox.addItem(ID);
-//                    }
-//                    
                     System.out.println("INSTRUMENT pressed");
                     break;
 
-                case CARTRIDGE:
-                    this.cartridge = null;
-                    this.cartridge = new Cartridge();
-
-                    // update Instrument Info Text Area with selected  ID
-                    queries.getCartridgeMfgInfo((String) SelectObjectComboBox.getSelectedItem(), this.cartridge);
-                    InfoTextArea.setText(this.cartridge.toString());
-
-//                    SelectObjectComboBox.removeAllItems();
-//                    allIDs = queries.getAllCartridgeIDs();
-//                    for (String ID : allIDs) {
-//                        SelectObjectComboBox.addItem(ID);
-//                    }
-                    System.out.println("CARTRIDGE pressed");
-                    break;
+//                case CARTRIDGE:
+//                    this.cartridge = null;
+//                    this.cartridge = new Cartridge();
+//
+//                    // update Instrument Info Text Area with selected  ID
+//                    queries.getCartridgeMfgInfo((String) SelectObjectComboBox.getSelectedItem(), this.cartridge);
+//                    InfoTextArea.setText(this.cartridge.toString());
+//
+//                    System.out.println("CARTRIDGE pressed");
+//                    break;
 
                 default:
                     System.out.println("Unknown button pressed");
@@ -404,14 +391,16 @@ public class TopScreen extends javax.swing.JFrame {
             queries.getCartridgeMfgInfo(this.cartridge.getCartridge_id(), this.cartridge);
             InfoTextArea.setText(this.cartridge.toString());
 
-            // Make Instrument Info Panel visible
-            SelectObjectComboBox.removeAllItems();
-            ArrayList<String> allIDs = new ArrayList<String>();
-            allIDs = queries.getAllCartridgeIDs();
-            for (String ID : allIDs) {
-                SelectObjectComboBox.addItem(ID);
-            }
-            SelectObjectComboBox.setVisible(true);
+//            // Make Instrument Info Panel visible
+//            SelectObjectComboBox.removeAllItems();
+//            ArrayList<String> allIDs = new ArrayList<String>();
+//            allIDs = queries.getAllCartridgeIDs();
+//            for (String ID : allIDs) {
+//                SelectObjectComboBox.addItem(ID);
+//            }
+
+            SelectObjectComboBox.setVisible(false);
+
             InfoPanel.setVisible(true);
         } catch (Exception e) {
             // handle the error

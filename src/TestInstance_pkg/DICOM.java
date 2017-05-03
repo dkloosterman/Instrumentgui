@@ -33,7 +33,7 @@ public class DICOM {
                 + "\n   timestamp =\t\t" + timestamp
                 + "\n   clinical test image ID =\t\t" + clinicalTestImage_id
                 + "\n   clinical test image length =\t\t" + clinicalTestImage_length
-                + "\n   image =\t\t" + clinicalTestFilePathInInstrument;
+                + "\n   clinical test image filename =\t\t" + clinicalTestFilePathInInstrument;
     }
 
     public String getPatient_id() {

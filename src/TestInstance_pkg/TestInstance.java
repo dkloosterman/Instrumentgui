@@ -37,7 +37,7 @@ public class TestInstance {
     String patient_id = null;
     String technician_id = null;
     String doctor_id = null;
-    String raw_assay_data = null;
+    long raw_assay_data = 0;
     double analysis_result = 0;
     Date clinical_test_timestamp = null;
 
@@ -54,7 +54,7 @@ public class TestInstance {
 
     public boolean processTest(Instrument instrument, Cartridge cartridge) {
         boolean testResult = true;  // return true if test successfully processed
-        
+
         this.testResultString = "Test Successfully Completed";
 
         this.instrument_id = instrument.getInstrument_id();
@@ -64,10 +64,6 @@ public class TestInstance {
         this.patient_id = "1234567890123456";
         this.technician_id = "Jane Technician";
         this.doctor_id = "Joe Doctor";
-        this.raw_assay_data = "pointerToImage";
-
-        // insert future algorithm logic here
-        this.analysis_result = Math.random();
 
         this.clinical_test_timestamp = new Timestamp(System.currentTimeMillis());
 
@@ -82,6 +78,8 @@ public class TestInstance {
 
             if (insertImage_id > 0) {
                 queries.insertClinicalTestInstance(this);
+                this.setAnalysis_result(Math.random());   // temp code here until algorithms integrated
+                this.setRaw_assay_data(this.dicom.getClinicalTestImage_id());
 
             } else {
                 testResult = false;
@@ -160,11 +158,11 @@ public class TestInstance {
         this.doctor_id = doctor_id;
     }
 
-    public String getRaw_assay_data() {
+    public long getRaw_assay_data() {
         return raw_assay_data;
     }
 
-    public void setRaw_assay_data(String raw_assay_data) {
+    public void setRaw_assay_data(long raw_assay_data) {
         this.raw_assay_data = raw_assay_data;
     }
 
