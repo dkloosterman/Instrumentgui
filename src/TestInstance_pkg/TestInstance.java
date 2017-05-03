@@ -76,13 +76,18 @@ public class TestInstance {
         // test if this Cartridge is an assay test type supported by this Instrument
         if ((instrument.getAssay_types_enabled() & cartridge.getAssay_type()) > 0) {
 
-            long insertImage_id = 
-                queries.insertClinicalTestImage(this.dicom);
-            
+            long insertImage_id
+                    = queries.insertClinicalTestImage(this.dicom);
+
             if (insertImage_id > 0) {
-//                this.dicom.setClinicalTestImage_id(insertImage_id);
                 queries.insertTestInstance(this);
+
+//              remove the following query
                 queries.getTestInstanceCounter(this, this.cartridge_id);
+
+            } else {
+                testResult = false;
+                this.testResultString = "Failure: Unable to add Clinical Test Image to database";
             }
 
         } else {

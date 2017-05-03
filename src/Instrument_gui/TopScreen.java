@@ -14,8 +14,7 @@ import java.io.*;
  */
 public class TopScreen extends javax.swing.JFrame {
 
-//    public static final String TESTFILE_SAMPLE = ".\\TestImage.tif";
-    public static final String TESTFILE_SAMPLE = ".\\test853K.tif";
+    public static final String TESTFILE_SAMPLE = ".\\TestImage.tif";
 
     TestInstance test;
     Cartridge cartridge;
@@ -275,8 +274,6 @@ public class TopScreen extends javax.swing.JFrame {
 
     private void InsertCartridgeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertCartridgeButtonActionPerformed
         String display = null;
-        long testlength = 0;
-        
 
         try {
             this.test = new TestInstance();
@@ -294,13 +291,13 @@ public class TopScreen extends javax.swing.JFrame {
             if (f.exists() && !f.isDirectory()) {
                 //             temp sample clinical test file
                 this.test.dicom.setClinicalTestFilePathInInstrument(TESTFILE_SAMPLE);
-                testlength = f.length();
-            }
+               
+                if (test.processTest(this.instrument, this.cartridge)) {
+                    InfoTextArea.setText(this.test.getTestResultString() + "\n\n" + this.test.toString());
+                } else {
+                    InfoTextArea.setText(this.test.getTestResultString());
+                }
 
-            if (test.processTest(this.instrument, this.cartridge)) {
-                InfoTextArea.setText(this.test.getTestResultString() + "\n\n" + this.test.toString());
-            } else {
-                InfoTextArea.setText(this.test.getTestResultString());
             }
 
             // update view

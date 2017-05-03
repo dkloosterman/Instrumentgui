@@ -303,7 +303,6 @@ public class JDBCqueries {
             File imageFile = new File(dicom.getClinicalTestFilePathInInstrument());
             FileInputStream fis = new FileInputStream(imageFile);
             psmnt = conn.prepareStatement("INSERT INTO Clinical_Test_Images(image, image_timestamp) " + "VALUES(?,?)");
-//            fis = new FileInputStream(testFilePath);
             psmnt.setBinaryStream(1, (InputStream) fis, (int) (imageFile.length()));
             psmnt.setString(2,currentTimestamp);
             int s = psmnt.executeUpdate();
