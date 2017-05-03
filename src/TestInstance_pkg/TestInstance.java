@@ -31,7 +31,7 @@ public class TestInstance {
        clinical_test_timestamp TIMESTAMP,
        PRIMARY KEY (cartridge_id ) );
      */
-    long clinical_test_counter = 0;
+    long clinical_test_instancce_counter = 0;
     String cartridge_id = null;
     String instrument_id = null;
     String patient_id = null;
@@ -53,7 +53,8 @@ public class TestInstance {
     }
 
     public boolean processTest(Instrument instrument, Cartridge cartridge) {
-        boolean testResult = true;
+        boolean testResult = true;  // return true if test successfully processed
+        
         this.testResultString = "Test Successfully Completed";
 
         this.instrument_id = instrument.getInstrument_id();
@@ -82,9 +83,6 @@ public class TestInstance {
             if (insertImage_id > 0) {
                 queries.insertTestInstance(this);
 
-//              remove the following query
-                queries.getTestInstanceCounter(this, this.cartridge_id);
-
             } else {
                 testResult = false;
                 this.testResultString = "Failure: Unable to add Clinical Test Image to database";
@@ -101,7 +99,7 @@ public class TestInstance {
     @Override
     public String toString() {
         return "Test Instance"
-                + "\n   clinical_test_counter = \t\t" + clinical_test_counter
+                + "\n   clinical_test_instancce_counter = \t\t" + clinical_test_instancce_counter
                 + "\n   cartridge_id = \t\t" + cartridge_id
                 + "\n   instrument_id = \t" + instrument_id
                 + "\n   patient_id = \t\t" + patient_id
@@ -114,12 +112,12 @@ public class TestInstance {
                 + dicom.toString();
     }
 
-    public long getClinical_test_counter() {
-        return clinical_test_counter;
+    public long getClinical_test_instancce_counter() {
+        return clinical_test_instancce_counter;
     }
 
-    public void setClinical_test_counter(long clinical_test_counter) {
-        this.clinical_test_counter = clinical_test_counter;
+    public void setClinical_test_instancce_counter(long clinical_test_instancce_counter) {
+        this.clinical_test_instancce_counter = clinical_test_instancce_counter;
     }
 
     public String getCartridge_id() {

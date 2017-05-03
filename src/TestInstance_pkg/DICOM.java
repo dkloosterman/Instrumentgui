@@ -6,7 +6,7 @@
 package TestInstance_pkg;
 
 //import java.awt.Image.*;
-import java.awt.image.BufferedImage;
+//import java.awt.image.BufferedImage;
 import java.util.Date;
 
 /**

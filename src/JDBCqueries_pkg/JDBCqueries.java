@@ -57,8 +57,6 @@ public class JDBCqueries {
     // Cartridge queries
     public void getCartridgeMfgInfo(Cartridge cartridge) {
 
-        String display = "Cartridge  Manufacturing Information \n";
-
         try {
 
             // get and display data for seleted Instrument ID
@@ -77,11 +75,11 @@ public class JDBCqueries {
 
         } catch (SQLException e) {
             // handle the error
-            display += "\n" + "SQL Exception " + e.getMessage();
+            System.out.println("\n" + "SQL Exception " + e.getMessage());
             System.exit(0);
         } catch (Exception e) {
             // handle the error
-            display += "\n" + "General Exception " + e.getMessage();
+            System.out.println("\n" + "General Exception " + e.getMessage());
             System.exit(0);
         } finally {
             //finally block used to close resources
@@ -91,8 +89,7 @@ public class JDBCqueries {
     }
 
     public void insertCartridge(Cartridge cartridge) {
-        String display = null;
-
+ 
         try {
             sql = "INSERT INTO Cartridge_Manufactured VALUES "
                     + "('" + cartridge.getCartridge_id()
@@ -108,11 +105,11 @@ public class JDBCqueries {
 
         } catch (SQLException e) {
             // handle the error
-            display += "\n" + "SQL Exception " + e.getMessage();
+            System.out.println("\n" + "SQL Exception " + e.getMessage());
             System.exit(0);
         } catch (Exception e) {
             // handle the error
-            display += "\n" + "General Exception " + e.getMessage();
+            System.out.println("\n" + "General Exception " + e.getMessage());
             System.exit(0);
         } finally {
             //finally block used to close resources
@@ -122,11 +119,9 @@ public class JDBCqueries {
     }
 
     // Instrument quesries
-    public String getInstrumentDeploymentInfo(String instrID, Instrument instrument) {
+    public void getInstrumentDeploymentInfo(String instrID, Instrument instrument) {
 
-        String display = "Instrument Deployment Information";
-
-        try {
+         try {
             // get and display data for seleted Instrument ID
             sql = "SELECT * FROM Instrument_Deployed WHERE instrument_id = " + instrID;
             rs = stmt.executeQuery(sql);
@@ -145,22 +140,20 @@ public class JDBCqueries {
 
         } catch (SQLException e) {
             // handle the error
-            display += "\n" + "SQL Exception " + e.getMessage();
+            System.out.println("\n" + "SQL Exception " + e.getMessage());
             System.exit(0);
         } catch (Exception e) {
             // handle the error
-            display += "\n" + "General Exception " + e.getMessage();
+            System.out.println("\n" + "General Exception " + e.getMessage());
             System.exit(0);
         } finally {
             //finally block used to close resources
 
         }   //end finally try
-        return (display);
     }
 
     public ArrayList getAllInstrumentIDs() {
 
-        String display = null;
         ArrayList<String> allInstrIDs = new ArrayList<String>();
 
         try {
@@ -174,11 +167,11 @@ public class JDBCqueries {
 
         } catch (SQLException e) {
             // handle the error
-            display += "\n" + "SQL Exception " + e.getMessage();
+            System.out.println("\n" + "SQL Exception " + e.getMessage());
             System.exit(0);
         } catch (Exception e) {
             // handle the error
-            display += "\n" + "General Exception " + e.getMessage();
+            System.out.println("\n" + "General Exception " + e.getMessage());
             System.exit(0);
         } finally {
             //finally block used to close resources
@@ -187,9 +180,7 @@ public class JDBCqueries {
         return (allInstrIDs);
     }
 
-    public String getInstrumentMfgInfo(String forInstrID, Instrument instrument) {
-
-        String display = "Instrument  Manufacturing Information \n";
+    public void getInstrumentMfgInfo(String forInstrID, Instrument instrument) {
 
         try {
             // get and display data for seleted Instrument ID
@@ -206,22 +197,20 @@ public class JDBCqueries {
 
         } catch (SQLException e) {
             // handle the error
-            display += "\n" + "SQL Exception " + e.getMessage();
+            System.out.println("\n" + "SQL Exception " + e.getMessage());
             System.exit(0);
         } catch (Exception e) {
             // handle the error
-            display += "\n" + "General Exception " + e.getMessage();
+            System.out.println("\n" + "General Exception " + e.getMessage());
             System.exit(0);
         } finally {
             //finally block used to close resources
 
         }   //end finally try
-        return (display);
     }
 
     // Test Instance queries
-    public void insertTestInstance(TestInstance test) {
-        String display = null;
+    public long insertTestInstance(TestInstance test) {
 
         try {
             /*
@@ -239,50 +228,32 @@ public class JDBCqueries {
 
             // get and display data for seleted Instrument ID
             stmt.executeUpdate(sql);
-        } catch (SQLException e) {
-            // handle the error
-            display += "\n" + "SQL Exception " + e.getMessage();
-            System.exit(0);
-        } catch (Exception e) {
-            // handle the error
-            display += "\n" + "General Exception " + e.getMessage();
-            System.exit(0);
-        } finally {
-            //finally block used to close resources
 
-        }   //end finally try
-    }
-
-    public void getTestInstanceCounter(TestInstance test, String cartidgeID) {
-
-        String display = null;
-
-        try {
-            sql = "SELECT * FROM Clinical_Test_Instance WHERE cartridge_id = " + cartidgeID;
+            sql = "SELECT * FROM Clinical_Test_Instance WHERE cartridge_id = " + test.getCartridge_id();
             rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
-                test.setClinical_test_counter(rs.getLong("clinical_test_counter"));
+                test.setClinical_test_instancce_counter(rs.getLong("clinical_test_instance_counter"));
 
             }
 
         } catch (SQLException e) {
             // handle the error
-            display += "\n" + "SQL Exception " + e.getMessage();
+            System.out.println("\n" + "SQL Exception " + e.getMessage());
             System.exit(0);
         } catch (Exception e) {
             // handle the error
-            display += "\n" + "General Exception " + e.getMessage();
+            System.out.println("\n" + "General Exception " + e.getMessage());
             System.exit(0);
         } finally {
             //finally block used to close resources
 
+            return (test.getClinical_test_instancce_counter());
         }   //end finally try
     }
 
     public long insertClinicalTestImage(DICOM dicom) {
-        String display = null;
-        long image_id = 0;
+
         PreparedStatement psmnt = null;
 
         try {
@@ -304,32 +275,34 @@ public class JDBCqueries {
             FileInputStream fis = new FileInputStream(imageFile);
             psmnt = conn.prepareStatement("INSERT INTO Clinical_Test_Images(image, image_timestamp) " + "VALUES(?,?)");
             psmnt.setBinaryStream(1, (InputStream) fis, (int) (imageFile.length()));
-            psmnt.setString(2,currentTimestamp);
+            psmnt.setString(2, currentTimestamp);
             int s = psmnt.executeUpdate();
             if (s > 0) {
                 sql = "SELECT * FROM Clinical_Test_Images WHERE image_timestamp = " + currentTimestamp;
                 rs = stmt.executeQuery(sql);
 
                 while (rs.next()) {
-                    image_id = rs.getLong("clinical_test_image_counter");
-                    dicom.setClinicalTestImage_id(image_id);
+                    dicom.setClinicalTestImage_id(rs.getLong("clinical_test_image_counter"));
                     dicom.setClinicalTestImage_length(imageFile.length());
                 }
                 System.out.println("Image Uploaded successfully !");
+
             } else {
                 System.out.println("unsucessfull to upload image.");
             }
+
         } catch (SQLException e) {
             // handle the error
-            display += "\n" + "SQL Exception " + e.getMessage();
+            System.out.println("\n" + "SQL Exception " + e.getMessage());
             System.exit(0);
         } catch (Exception e) {
             // handle the error
-            display += "\n" + "General Exception " + e.getMessage();
+            System.out.println("\n" + "General Exception " + e.getMessage());
             System.exit(0);
         } finally {
             //finally block used to close resources
-            return (image_id);
+
+            return (dicom.getClinicalTestImage_id());
         }   //end finally try
     }
 }

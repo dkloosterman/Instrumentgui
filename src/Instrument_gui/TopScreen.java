@@ -47,7 +47,7 @@ public class TopScreen extends javax.swing.JFrame {
 
         } catch (Exception e) {
             // handle the error
-            display += "\n" + "General Exception " + e.getMessage();
+            System.out.println("\n" + "General Exception " + e.getMessage());
             System.exit(0);
         } finally {
             //finally block used to close resources
@@ -222,49 +222,43 @@ public class TopScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_CloseInfoButtonActionPerformed
 
     private void InstrumentInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InstrumentInfoButtonActionPerformed
-        String display = null;
 
         try {
             JDBCqueries queries = new JDBCqueries();
 
-            display = queries.getInstrumentMfgInfo((String) SelectComboBox.getSelectedItem(), this.instrument);
-            display += queries.getInstrumentDeploymentInfo((String) SelectComboBox.getSelectedItem(), this.instrument);
+            queries.getInstrumentMfgInfo((String) SelectComboBox.getSelectedItem(), this.instrument);
+            queries.getInstrumentDeploymentInfo((String) SelectComboBox.getSelectedItem(), this.instrument);
 
             InfoTextArea.setText(this.instrument.toString());
 
             // Make Instrument Info Panel visible
             SelectComboBox.setVisible(true);
             InfoPanel.setVisible(true);
-        } // end try
-        catch (Exception e) {
+        } catch (Exception e) {
             // handle the error
-            display += "\n" + "General Exception " + e.getMessage();
+            System.out.println("\n" + "General Exception " + e.getMessage());
             System.exit(0);
         } finally {
             //finally block used to close resources
 
         }   //end finally
-
-
     }//GEN-LAST:event_InstrumentInfoButtonActionPerformed
 
     private void SelectComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectComboBoxActionPerformed
 
-        String display = null;
-        try {
+         try {
             this.instrument = null;
             this.instrument = new Instrument();
 
             // update Instrument Info Text Area with selected Instrument ID
             JDBCqueries queries = new JDBCqueries();
-            display = queries.getInstrumentMfgInfo((String) SelectComboBox.getSelectedItem(), this.instrument);
-            display += queries.getInstrumentDeploymentInfo((String) SelectComboBox.getSelectedItem(), this.instrument);
+            queries.getInstrumentMfgInfo((String) SelectComboBox.getSelectedItem(), this.instrument);
+            queries.getInstrumentDeploymentInfo((String) SelectComboBox.getSelectedItem(), this.instrument);
             InfoTextArea.setText(this.instrument.toString());
 
-        } // end try
-        catch (Exception e) {
+        } catch (Exception e) {
             // handle the error
-            display += "\n" + "General Exception " + e.getMessage();
+            System.out.println("\n" + "General Exception " + e.getMessage());
             System.exit(0);
         } finally {
             //finally block used to close resources
@@ -273,8 +267,7 @@ public class TopScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_SelectComboBoxActionPerformed
 
     private void InsertCartridgeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertCartridgeButtonActionPerformed
-        String display = null;
-
+ 
         try {
             this.test = new TestInstance();
             this.cartridge = new Cartridge();
@@ -291,7 +284,7 @@ public class TopScreen extends javax.swing.JFrame {
             if (f.exists() && !f.isDirectory()) {
                 //             temp sample clinical test file
                 this.test.dicom.setClinicalTestFilePathInInstrument(TESTFILE_SAMPLE);
-               
+
                 if (test.processTest(this.instrument, this.cartridge)) {
                     InfoTextArea.setText(this.test.getTestResultString() + "\n\n" + this.test.toString());
                 } else {
@@ -307,10 +300,9 @@ public class TopScreen extends javax.swing.JFrame {
             InfoPanel.setVisible(true);
             EndTestButton.setVisible(true);
             DisplayTestButton.setVisible(true);
-        } // end try
-        catch (Exception e) {
+        } catch (Exception e) {
             // handle the error
-            display += "\n" + "General Exception " + e.getMessage();
+            System.out.println("\n" + "General Exception " + e.getMessage());
             System.exit(0);
         } finally {
             //finally block used to close resources
@@ -319,7 +311,6 @@ public class TopScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_InsertCartridgeButtonActionPerformed
 
     public void createTestCartridge(Cartridge cartridge) {
-        String display = null;
 
         try {
             // temp code : create a cartridge ID from the current timestamp
@@ -344,7 +335,7 @@ public class TopScreen extends javax.swing.JFrame {
 
         } catch (Exception e) {
             // handle the error
-            display += "\n" + "General Exception " + e.getMessage();
+            System.out.println("\n" + "General Exception " + e.getMessage());
             System.exit(0);
         } finally {
             //finally block used to close resources
@@ -354,7 +345,6 @@ public class TopScreen extends javax.swing.JFrame {
 
 
     private void CartridgeInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartridgeInfoButtonActionPerformed
-        String display = null;
 
         try {
             JDBCqueries queries = new JDBCqueries();
@@ -364,10 +354,9 @@ public class TopScreen extends javax.swing.JFrame {
             // Make Instrument Info Panel visible
             SelectComboBox.setVisible(false);
             InfoPanel.setVisible(true);
-        } // end try
-        catch (Exception e) {
+        } catch (Exception e) {
             // handle the error
-            display += "\n" + "General Exception " + e.getMessage();
+            System.out.println("\n" + "General Exception " + e.getMessage());
             System.exit(0);
         } finally {
             //finally block used to close resources
