@@ -30,7 +30,8 @@ public class TopScreen extends javax.swing.JFrame {
      */
     public TopScreen() {
         initComponents();
-;        String display = null;
+
+        String display = null;
 
         try {
             this.instrument = new Instrument();
@@ -230,7 +231,7 @@ public class TopScreen extends javax.swing.JFrame {
 
         try {
             this.objectType = LastObjectTypeButtonSelected.INSTRUMENT;
-            
+
             JDBCqueries queries = new JDBCqueries();
 
             queries.getInstrumentMfgInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
@@ -239,6 +240,13 @@ public class TopScreen extends javax.swing.JFrame {
             InfoTextArea.setText(this.instrument.toString());
 
             // Make Instrument Info Panel visible
+            SelectObjectComboBox.removeAllItems();
+            ArrayList<String> allIDs = new ArrayList<String>();
+            allIDs = queries.getAllInstrumentIDs();
+            for (String ID : allIDs) {
+                SelectObjectComboBox.addItem(ID);
+            }
+
             SelectObjectComboBox.setVisible(true);
             InfoPanel.setVisible(true);
         } catch (Exception e) {
@@ -254,13 +262,44 @@ public class TopScreen extends javax.swing.JFrame {
     private void SelectObjectComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectObjectComboBoxActionPerformed
 
         try {
+            JDBCqueries queries = new JDBCqueries();
+//            SelectObjectComboBox.removeAllItems();
+//            ArrayList<String> allIDs = new ArrayList<String>();
 
             switch (this.objectType) {
                 case INSTRUMENT:
+                    // load combobox with all instr IDs  
+
+                    this.instrument = null;
+                    this.instrument = new Instrument();
+
+                    // update Instrument Info Text Area with selected Instrument ID
+                    queries.getInstrumentMfgInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
+                    queries.getInstrumentDeploymentInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
+                    InfoTextArea.setText(this.instrument.toString());
+
+//                    SelectObjectComboBox.removeAllItems();
+//                    allIDs = queries.getAllInstrumentIDs();
+//                    for (String ID : allIDs) {
+//                        SelectObjectComboBox.addItem(ID);
+//                    }
+//                    
                     System.out.println("INSTRUMENT pressed");
                     break;
 
                 case CARTRIDGE:
+                    this.cartridge = null;
+                    this.cartridge = new Cartridge();
+
+                    // update Instrument Info Text Area with selected  ID
+                    queries.getCartridgeMfgInfo((String) SelectObjectComboBox.getSelectedItem(), this.cartridge);
+                    InfoTextArea.setText(this.cartridge.toString());
+
+//                    SelectObjectComboBox.removeAllItems();
+//                    allIDs = queries.getAllCartridgeIDs();
+//                    for (String ID : allIDs) {
+//                        SelectObjectComboBox.addItem(ID);
+//                    }
                     System.out.println("CARTRIDGE pressed");
                     break;
 
@@ -268,15 +307,6 @@ public class TopScreen extends javax.swing.JFrame {
                     System.out.println("Unknown button pressed");
                     break;
             }
-
-            this.instrument = null;
-            this.instrument = new Instrument();
-
-            // update Instrument Info Text Area with selected Instrument ID
-            JDBCqueries queries = new JDBCqueries();
-            queries.getInstrumentMfgInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
-            queries.getInstrumentDeploymentInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
-            InfoTextArea.setText(this.instrument.toString());
 
         } catch (Exception e) {
             // handle the error
@@ -300,7 +330,7 @@ public class TopScreen extends javax.swing.JFrame {
             // update Instrument Info Text Area with selected Instrument ID
             JDBCqueries queries = new JDBCqueries();
             queries.insertCartridge(this.cartridge);
-            queries.getCartridgeMfgInfo(this.cartridge);
+            queries.getCartridgeMfgInfo(this.cartridge.getCartridge_id(), this.cartridge);
 
             File f = new File(TESTFILE_SAMPLE);
             if (f.exists() && !f.isDirectory()) {
@@ -369,13 +399,19 @@ public class TopScreen extends javax.swing.JFrame {
 
         try {
             this.objectType = LastObjectTypeButtonSelected.CARTRIDGE;
-            
+
             JDBCqueries queries = new JDBCqueries();
-            queries.getCartridgeMfgInfo(this.cartridge);
+            queries.getCartridgeMfgInfo(this.cartridge.getCartridge_id(), this.cartridge);
             InfoTextArea.setText(this.cartridge.toString());
 
             // Make Instrument Info Panel visible
-//            SelectObjectComboBox.setVisible(false);
+            SelectObjectComboBox.removeAllItems();
+            ArrayList<String> allIDs = new ArrayList<String>();
+            allIDs = queries.getAllCartridgeIDs();
+            for (String ID : allIDs) {
+                SelectObjectComboBox.addItem(ID);
+            }
+            SelectObjectComboBox.setVisible(true);
             InfoPanel.setVisible(true);
         } catch (Exception e) {
             // handle the error

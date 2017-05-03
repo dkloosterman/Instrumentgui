@@ -55,12 +55,12 @@ public class JDBCqueries {
     }
 
     // Cartridge queries
-    public void getCartridgeMfgInfo(Cartridge cartridge) {
+    public void getCartridgeMfgInfo(String forCartID, Cartridge cartridge) {
 
         try {
 
             // get and display data for seleted Instrument ID
-            sql = "SELECT * FROM Cartridge_Manufactured WHERE cartridge_id = " + cartridge.getCartridge_id();
+            sql = "SELECT * FROM Cartridge_Manufactured WHERE cartridge_id = " + forCartID;
             rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
@@ -87,6 +87,35 @@ public class JDBCqueries {
         }   //end finally try
     }
 
+    public ArrayList getAllCartridgeIDs() {
+
+        ArrayList<String> allIDs = new ArrayList<String>();
+
+        try {
+
+            sql = "SELECT cartridge_id FROM Cartridge_Manufactured";
+            rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                allIDs.add(rs.getString("cartridge_id"));
+            } // end while (rs.next()) 
+
+        } catch (SQLException e) {
+            // handle the error
+            System.out.println("\n" + "SQL Exception " + e.getMessage());
+            System.exit(0);
+        } catch (Exception e) {
+            // handle the error
+            System.out.println("\n" + "General Exception " + e.getMessage());
+            System.exit(0);
+        } finally {
+            //finally block used to close resources
+
+        }   //end finally
+        return (allIDs);
+    }
+
+   
     public void insertCartridge(Cartridge cartridge) {
  
         try {
