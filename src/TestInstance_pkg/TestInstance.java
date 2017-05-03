@@ -81,7 +81,7 @@ public class TestInstance {
                     = queries.insertClinicalTestImage(this.dicom);
 
             if (insertImage_id > 0) {
-                queries.insertTestInstance(this);
+                queries.insertClinicalTestInstance(this);
 
             } else {
                 testResult = false;

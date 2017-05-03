@@ -14,7 +14,12 @@ import java.io.*;
  */
 public class TopScreen extends javax.swing.JFrame {
 
-    public static final String TESTFILE_SAMPLE = ".\\TestImage.tif";
+    private static final String TESTFILE_SAMPLE = ".\\TestImage.tif";
+
+    private enum LastObjectTypeButtonSelected {
+        INSTRUMENT, CARTRIDGE, TEST_INSTANCE, TEST_IMAGE, PATIENT
+    };
+    LastObjectTypeButtonSelected objectType = LastObjectTypeButtonSelected.INSTRUMENT;
 
     TestInstance test;
     Cartridge cartridge;
@@ -25,7 +30,7 @@ public class TopScreen extends javax.swing.JFrame {
      */
     public TopScreen() {
         initComponents();
-        String display = null;
+;        String display = null;
 
         try {
             this.instrument = new Instrument();
@@ -39,10 +44,10 @@ public class TopScreen extends javax.swing.JFrame {
             ArrayList<String> allInstrIDs = new ArrayList<String>();
             JDBCqueries queries = new JDBCqueries();
 
-            SelectComboBox.removeAllItems();
+            SelectObjectComboBox.removeAllItems();
             allInstrIDs = queries.getAllInstrumentIDs();
             for (String ID : allInstrIDs) {
-                SelectComboBox.addItem(ID);
+                SelectObjectComboBox.addItem(ID);
             }
 
         } catch (Exception e) {
@@ -68,7 +73,7 @@ public class TopScreen extends javax.swing.JFrame {
         CloseInfoButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         InfoTextArea = new javax.swing.JTextArea();
-        SelectComboBox = new javax.swing.JComboBox<>();
+        SelectObjectComboBox = new javax.swing.JComboBox<>();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         EndTestButton = new javax.swing.JButton();
         DisplayTestButton = new javax.swing.JButton();
@@ -99,9 +104,9 @@ public class TopScreen extends javax.swing.JFrame {
         InfoTextArea.setText("Information");
         jScrollPane1.setViewportView(InfoTextArea);
 
-        SelectComboBox.addActionListener(new java.awt.event.ActionListener() {
+        SelectObjectComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SelectComboBoxActionPerformed(evt);
+                SelectObjectComboBoxActionPerformed(evt);
             }
         });
 
@@ -128,7 +133,7 @@ public class TopScreen extends javax.swing.JFrame {
                 .addGroup(InfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1)
                     .addGroup(InfoPanelLayout.createSequentialGroup()
-                        .addComponent(SelectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(SelectObjectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(DisplayTestButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -151,7 +156,7 @@ public class TopScreen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(InfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CloseInfoButton)
-                    .addComponent(SelectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(SelectObjectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(EndTestButton)
                     .addComponent(DisplayTestButton))
                 .addContainerGap())
@@ -224,15 +229,17 @@ public class TopScreen extends javax.swing.JFrame {
     private void InstrumentInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InstrumentInfoButtonActionPerformed
 
         try {
+            this.objectType = LastObjectTypeButtonSelected.INSTRUMENT;
+            
             JDBCqueries queries = new JDBCqueries();
 
-            queries.getInstrumentMfgInfo((String) SelectComboBox.getSelectedItem(), this.instrument);
-            queries.getInstrumentDeploymentInfo((String) SelectComboBox.getSelectedItem(), this.instrument);
+            queries.getInstrumentMfgInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
+            queries.getInstrumentDeploymentInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
 
             InfoTextArea.setText(this.instrument.toString());
 
             // Make Instrument Info Panel visible
-            SelectComboBox.setVisible(true);
+            SelectObjectComboBox.setVisible(true);
             InfoPanel.setVisible(true);
         } catch (Exception e) {
             // handle the error
@@ -244,16 +251,31 @@ public class TopScreen extends javax.swing.JFrame {
         }   //end finally
     }//GEN-LAST:event_InstrumentInfoButtonActionPerformed
 
-    private void SelectComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectComboBoxActionPerformed
+    private void SelectObjectComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectObjectComboBoxActionPerformed
 
-         try {
+        try {
+
+            switch (this.objectType) {
+                case INSTRUMENT:
+                    System.out.println("INSTRUMENT pressed");
+                    break;
+
+                case CARTRIDGE:
+                    System.out.println("CARTRIDGE pressed");
+                    break;
+
+                default:
+                    System.out.println("Unknown button pressed");
+                    break;
+            }
+
             this.instrument = null;
             this.instrument = new Instrument();
 
             // update Instrument Info Text Area with selected Instrument ID
             JDBCqueries queries = new JDBCqueries();
-            queries.getInstrumentMfgInfo((String) SelectComboBox.getSelectedItem(), this.instrument);
-            queries.getInstrumentDeploymentInfo((String) SelectComboBox.getSelectedItem(), this.instrument);
+            queries.getInstrumentMfgInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
+            queries.getInstrumentDeploymentInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
             InfoTextArea.setText(this.instrument.toString());
 
         } catch (Exception e) {
@@ -264,10 +286,10 @@ public class TopScreen extends javax.swing.JFrame {
             //finally block used to close resources
 
         }   //end finally 
-    }//GEN-LAST:event_SelectComboBoxActionPerformed
+    }//GEN-LAST:event_SelectObjectComboBoxActionPerformed
 
     private void InsertCartridgeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertCartridgeButtonActionPerformed
- 
+
         try {
             this.test = new TestInstance();
             this.cartridge = new Cartridge();
@@ -295,7 +317,7 @@ public class TopScreen extends javax.swing.JFrame {
 
             // update view
             CartridgeInfoButton.setVisible(true);
-            SelectComboBox.setVisible(false);
+            SelectObjectComboBox.setVisible(false);
             InsertCartridgeButton.setVisible(false);
             InfoPanel.setVisible(true);
             EndTestButton.setVisible(true);
@@ -343,16 +365,17 @@ public class TopScreen extends javax.swing.JFrame {
         }   //end finally try
     }
 
-
     private void CartridgeInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartridgeInfoButtonActionPerformed
 
         try {
+            this.objectType = LastObjectTypeButtonSelected.CARTRIDGE;
+            
             JDBCqueries queries = new JDBCqueries();
             queries.getCartridgeMfgInfo(this.cartridge);
             InfoTextArea.setText(this.cartridge.toString());
 
             // Make Instrument Info Panel visible
-            SelectComboBox.setVisible(false);
+//            SelectObjectComboBox.setVisible(false);
             InfoPanel.setVisible(true);
         } catch (Exception e) {
             // handle the error
@@ -426,7 +449,7 @@ public class TopScreen extends javax.swing.JFrame {
     private javax.swing.JTextArea InfoTextArea;
     private javax.swing.JButton InsertCartridgeButton;
     private javax.swing.JButton InstrumentInfoButton;
-    private javax.swing.JComboBox<String> SelectComboBox;
+    private javax.swing.JComboBox<String> SelectObjectComboBox;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

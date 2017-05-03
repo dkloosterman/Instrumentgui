@@ -93,7 +93,7 @@
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="jScrollPane1" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Component id="SelectComboBox" min="-2" pref="169" max="-2" attributes="0"/>
+                          <Component id="SelectObjectComboBox" min="-2" pref="169" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="DisplayTestButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -121,7 +121,7 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="CloseInfoButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="SelectComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="SelectObjectComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="EndTestButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="DisplayTestButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -160,9 +160,9 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JComboBox" name="SelectComboBox">
+        <Component class="javax.swing.JComboBox" name="SelectObjectComboBox">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SelectComboBoxActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SelectObjectComboBoxActionPerformed"/>
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>

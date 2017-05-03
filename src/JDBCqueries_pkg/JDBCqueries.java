@@ -85,7 +85,6 @@ public class JDBCqueries {
             //finally block used to close resources
 
         }   //end finally try
-//        return (display);
     }
 
     public void insertCartridge(Cartridge cartridge) {
@@ -115,7 +114,6 @@ public class JDBCqueries {
             //finally block used to close resources
 
         }   //end finally try
-
     }
 
     // Instrument quesries
@@ -210,7 +208,7 @@ public class JDBCqueries {
     }
 
     // Test Instance queries
-    public long insertTestInstance(TestInstance test) {
+    public long insertClinicalTestInstance(TestInstance test) {
 
         try {
             /*
