@@ -40,6 +40,7 @@ public class TopScreen extends javax.swing.JFrame {
             CartridgeInfoButton.setVisible(false);
             EndTestButton.setVisible(false);
             DisplayTestButton.setVisible(false);
+            jButton1.setVisible(false);
 
             // load combobox with all instr IDs
             ArrayList<String> allInstrIDs = new ArrayList<String>();
@@ -78,6 +79,7 @@ public class TopScreen extends javax.swing.JFrame {
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         EndTestButton = new javax.swing.JButton();
         DisplayTestButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         InstrumentInfoButton = new javax.swing.JButton();
         InsertCartridgeButton = new javax.swing.JButton();
         CartridgeInfoButton = new javax.swing.JButton();
@@ -125,6 +127,8 @@ public class TopScreen extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Get Image");
+
         javax.swing.GroupLayout InfoPanelLayout = new javax.swing.GroupLayout(InfoPanel);
         InfoPanel.setLayout(InfoPanelLayout);
         InfoPanelLayout.setHorizontalGroup(
@@ -139,13 +143,15 @@ public class TopScreen extends javax.swing.JFrame {
                         .addComponent(DisplayTestButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(EndTestButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
                         .addComponent(CloseInfoButton)))
                 .addContainerGap())
             .addGroup(InfoPanelLayout.createSequentialGroup()
                 .addGap(251, 251, 251)
                 .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(247, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         InfoPanelLayout.setVerticalGroup(
             InfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,7 +165,8 @@ public class TopScreen extends javax.swing.JFrame {
                     .addComponent(CloseInfoButton)
                     .addComponent(SelectObjectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(EndTestButton)
-                    .addComponent(DisplayTestButton))
+                    .addComponent(DisplayTestButton)
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
 
@@ -192,15 +199,15 @@ public class TopScreen extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(InsertCartridgeButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 583, Short.MAX_VALUE)
                 .addComponent(CartridgeInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(InstrumentInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(206, 206, 206)
-                .addComponent(InfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap(248, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGap(200, 200, 200)
+                .addComponent(InfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -338,6 +345,7 @@ public class TopScreen extends javax.swing.JFrame {
             InsertCartridgeButton.setVisible(false);
             InfoPanel.setVisible(true);
             EndTestButton.setVisible(true);
+            jButton1.setVisible(true);
             DisplayTestButton.setVisible(true);
         } catch (Exception e) {
             // handle the error
@@ -417,6 +425,7 @@ public class TopScreen extends javax.swing.JFrame {
         InsertCartridgeButton.setVisible(true);
         CartridgeInfoButton.setVisible(false);
         EndTestButton.setVisible(false);
+        jButton1.setVisible(false);
         DisplayTestButton.setVisible(false);
         this.test = null;
         this.cartridge = null;
@@ -476,6 +485,7 @@ public class TopScreen extends javax.swing.JFrame {
     private javax.swing.JButton InstrumentInfoButton;
     private javax.swing.JComboBox<String> SelectObjectComboBox;
     private javax.swing.Box.Filler filler1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

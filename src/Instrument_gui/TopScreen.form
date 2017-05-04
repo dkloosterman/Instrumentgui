@@ -36,16 +36,16 @@
           <Group type="102" attributes="0">
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Component id="InsertCartridgeButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="583" max="32767" attributes="0"/>
               <Component id="CartridgeInfoButton" min="-2" pref="43" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="InstrumentInfoButton" min="-2" pref="43" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
-          <Group type="102" attributes="0">
-              <EmptySpace min="-2" pref="206" max="-2" attributes="0"/>
-              <Component id="InfoPanel" max="32767" attributes="0"/>
-              <EmptySpace pref="248" max="32767" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="200" max="-2" attributes="0"/>
+              <Component id="InfoPanel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -98,7 +98,9 @@
                           <Component id="DisplayTestButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="EndTestButton" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="100" max="32767" attributes="0"/>
                           <Component id="CloseInfoButton" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -107,7 +109,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="251" max="-2" attributes="0"/>
                   <Component id="filler1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="247" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -124,6 +126,7 @@
                       <Component id="SelectObjectComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="EndTestButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="DisplayTestButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -193,6 +196,11 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DisplayTestButtonActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButton1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Get Image"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
