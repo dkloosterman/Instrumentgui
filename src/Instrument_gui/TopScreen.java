@@ -439,18 +439,17 @@ public class TopScreen extends javax.swing.JFrame {
 
     private void GetImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GetImageButtonActionPerformed
         try {
-//            this.test = new TestInstance();
-//            this.cartridge = new Cartridge();
-//
-//            // temp code until real cartridges exist
-//            this.createTestCartridge(this.cartridge);
 
             // update Instrument Info Text Area with selected Instrument ID
             JDBCqueries queries = new JDBCqueries();
-            
-//            String getClinicalTestImage(long clinical_test_instance_counter, String targetFile)
-            String filePath = queries.getClinicalTestImage(this.test.getRaw_assay_data(), ".\\retrievedTestImage.tif");
-            System.out.println("Retrieved clinical test file at: " + filePath);
+
+            String filePath = ".\\retrievedTestImage.tif";
+            long fileLength = queries.getClinicalTestImage(this.test.getRaw_assay_data(), filePath);
+            System.out.println("Retrieved clinical test file to: " + filePath);
+            InfoTextArea.setText(InfoTextArea.getText()
+                    + "\n\nRetrieved clinical test file to: " + filePath
+                    + " of length " + fileLength);
+            GetImageButton.setVisible(false);
 
         } catch (Exception e) {
             // handle the error

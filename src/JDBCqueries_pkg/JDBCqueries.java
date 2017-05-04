@@ -278,10 +278,10 @@ public class JDBCqueries {
         }   //end finally try
     }
 
-    public String getClinicalTestImage(long clinical_test_instance_counter, String targetFile) {
+    public long getClinicalTestImage(long clinical_test_instance_counter, String targetFile) {
 
-//        PreparedStatement psmnt = null;
-
+        long lengthOfFile = 0;
+        
         try {
             /*
                 CREATE TABLE Clinical_Test_Images (
@@ -291,25 +291,26 @@ public class JDBCqueries {
                        PRIMARY KEY (image_id )
                 );
              */
-//            targetFile = ".\\retrievedTestImage.tif";
-            File file=new File(targetFile);
-            FileOutputStream fos=new FileOutputStream(file);
+            File file = new File(targetFile);
+            FileOutputStream fos = new FileOutputStream(file);
             byte b[];
             Blob blob;
-            
-            sql = "SELECT * FROM Clinical_Test_Images WHERE clinical_test_image_counter = " + clinical_test_instance_counter;
-            PreparedStatement psmnt=conn.prepareStatement(sql); 
-             rs=psmnt.executeQuery();
-            
-            while(rs.next()){
-                blob=rs.getBlob("image");
-                b=blob.getBytes(1,(int)blob.length());
+
+            sql = "SELECT * FROM Clinical_Test_Images WHERE clinical_test_image_counter = "
+                    + clinical_test_instance_counter;
+            PreparedStatement psmnt = conn.prepareStatement(sql);
+            rs = psmnt.executeQuery();
+
+            while (rs.next()) {
+                blob = rs.getBlob("image");
+                b = blob.getBytes(1, (int) blob.length());
                 fos.write(b);
+                lengthOfFile = blob.length();
             }
-            
+
             psmnt.close();
             fos.close();
-            
+
         } catch (SQLException e) {
             // handle the error
             System.out.println("\n" + "SQL Exception " + e.getMessage());
@@ -321,7 +322,7 @@ public class JDBCqueries {
         } finally {
             //finally block used to close resources
 
-            return (targetFile);
+            return (lengthOfFile);
         }
     }
 
@@ -363,10 +364,10 @@ public class JDBCqueries {
             } else {
                 System.out.println("unsucessfull to upload image.");
             }
-            
+
             psmnt.close();
             fis.close();
-            
+
         } catch (SQLException e) {
             // handle the error
             System.out.println("\n" + "SQL Exception " + e.getMessage());
