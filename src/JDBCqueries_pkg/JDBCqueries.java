@@ -297,7 +297,7 @@ public class JDBCqueries {
             byte b[];
             Blob blob;
             
-            sql = "SELECT * FROM Clinical_Test_Images WHERE image = " + clinical_test_instance_counter;
+            sql = "SELECT * FROM Clinical_Test_Images WHERE clinical_test_image_counter = " + clinical_test_instance_counter;
             PreparedStatement psmnt=conn.prepareStatement(sql); 
              rs=psmnt.executeQuery();
             
