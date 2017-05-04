@@ -99,7 +99,7 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="EndTestButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                          <Component id="GetImageButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace pref="100" max="32767" attributes="0"/>
                           <Component id="CloseInfoButton" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -126,7 +126,7 @@
                       <Component id="SelectObjectComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="EndTestButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="DisplayTestButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="GetImageButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -197,10 +197,13 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DisplayTestButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="GetImageButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Get Image"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="GetImageButtonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

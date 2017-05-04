@@ -40,7 +40,7 @@ public class TopScreen extends javax.swing.JFrame {
             CartridgeInfoButton.setVisible(false);
             EndTestButton.setVisible(false);
             DisplayTestButton.setVisible(false);
-            jButton1.setVisible(false);
+            GetImageButton.setVisible(false);
 
             // load combobox with all instr IDs
             ArrayList<String> allInstrIDs = new ArrayList<String>();
@@ -79,7 +79,7 @@ public class TopScreen extends javax.swing.JFrame {
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         EndTestButton = new javax.swing.JButton();
         DisplayTestButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        GetImageButton = new javax.swing.JButton();
         InstrumentInfoButton = new javax.swing.JButton();
         InsertCartridgeButton = new javax.swing.JButton();
         CartridgeInfoButton = new javax.swing.JButton();
@@ -127,7 +127,12 @@ public class TopScreen extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Get Image");
+        GetImageButton.setText("Get Image");
+        GetImageButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GetImageButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout InfoPanelLayout = new javax.swing.GroupLayout(InfoPanel);
         InfoPanel.setLayout(InfoPanelLayout);
@@ -144,7 +149,7 @@ public class TopScreen extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(EndTestButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)
+                        .addComponent(GetImageButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
                         .addComponent(CloseInfoButton)))
                 .addContainerGap())
@@ -166,7 +171,7 @@ public class TopScreen extends javax.swing.JFrame {
                     .addComponent(SelectObjectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(EndTestButton)
                     .addComponent(DisplayTestButton)
-                    .addComponent(jButton1))
+                    .addComponent(GetImageButton))
                 .addContainerGap())
         );
 
@@ -253,7 +258,6 @@ public class TopScreen extends javax.swing.JFrame {
 //            for (String ID : allIDs) {
 //                SelectObjectComboBox.addItem(ID);
 //            }
-
             SelectObjectComboBox.setVisible(true);
             InfoPanel.setVisible(true);
         } catch (Exception e) {
@@ -283,7 +287,7 @@ public class TopScreen extends javax.swing.JFrame {
                     queries.getInstrumentDeploymentInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
                     InfoTextArea.setText(this.instrument.toString());
 
-                    System.out.println("INSTRUMENT pressed");
+//                    System.out.println("INSTRUMENT pressed");
                     break;
 
 //                case CARTRIDGE:
@@ -296,7 +300,6 @@ public class TopScreen extends javax.swing.JFrame {
 //
 //                    System.out.println("CARTRIDGE pressed");
 //                    break;
-
                 default:
                     System.out.println("Unknown button pressed");
                     break;
@@ -345,7 +348,7 @@ public class TopScreen extends javax.swing.JFrame {
             InsertCartridgeButton.setVisible(false);
             InfoPanel.setVisible(true);
             EndTestButton.setVisible(true);
-            jButton1.setVisible(true);
+            GetImageButton.setVisible(true);
             DisplayTestButton.setVisible(true);
         } catch (Exception e) {
             // handle the error
@@ -406,7 +409,6 @@ public class TopScreen extends javax.swing.JFrame {
 //            for (String ID : allIDs) {
 //                SelectObjectComboBox.addItem(ID);
 //            }
-
             SelectObjectComboBox.setVisible(false);
 
             InfoPanel.setVisible(true);
@@ -425,7 +427,7 @@ public class TopScreen extends javax.swing.JFrame {
         InsertCartridgeButton.setVisible(true);
         CartridgeInfoButton.setVisible(false);
         EndTestButton.setVisible(false);
-        jButton1.setVisible(false);
+        GetImageButton.setVisible(false);
         DisplayTestButton.setVisible(false);
         this.test = null;
         this.cartridge = null;
@@ -434,6 +436,31 @@ public class TopScreen extends javax.swing.JFrame {
     private void DisplayTestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DisplayTestButtonActionPerformed
         InfoTextArea.setText(this.test.toString());
     }//GEN-LAST:event_DisplayTestButtonActionPerformed
+
+    private void GetImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GetImageButtonActionPerformed
+        try {
+//            this.test = new TestInstance();
+//            this.cartridge = new Cartridge();
+//
+//            // temp code until real cartridges exist
+//            this.createTestCartridge(this.cartridge);
+
+            // update Instrument Info Text Area with selected Instrument ID
+            JDBCqueries queries = new JDBCqueries();
+            
+//            String getClinicalTestImage(long clinical_test_instance_counter, String targetFile)
+            String filePath = queries.getClinicalTestImage(this.test.getRaw_assay_data(), ".\\retrievedTestImage.tif");
+            System.out.println("Retrieved clinical test file at: " + filePath);
+
+        } catch (Exception e) {
+            // handle the error
+            System.out.println("\n" + "General Exception " + e.getMessage());
+            System.exit(0);
+        } finally {
+            //finally block used to close resources
+
+        }   //end finally 
+    }//GEN-LAST:event_GetImageButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -479,13 +506,13 @@ public class TopScreen extends javax.swing.JFrame {
     private javax.swing.JButton CloseInfoButton;
     private javax.swing.JButton DisplayTestButton;
     private javax.swing.JButton EndTestButton;
+    private javax.swing.JButton GetImageButton;
     private javax.swing.JPanel InfoPanel;
     private javax.swing.JTextArea InfoTextArea;
     private javax.swing.JButton InsertCartridgeButton;
     private javax.swing.JButton InstrumentInfoButton;
     private javax.swing.JComboBox<String> SelectObjectComboBox;
     private javax.swing.Box.Filler filler1;
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

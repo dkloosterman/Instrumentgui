@@ -31,7 +31,7 @@ public class TestInstance {
        clinical_test_timestamp TIMESTAMP,
        PRIMARY KEY (cartridge_id ) );
      */
-    long clinical_test_instancce_counter = 0;
+    long clinical_test_instance_counter = 0;
     String cartridge_id = null;
     String instrument_id = null;
     String patient_id = null;
@@ -97,7 +97,7 @@ public class TestInstance {
     @Override
     public String toString() {
         return "Test Instance"
-                + "\n   clinical_test_instancce_counter = \t\t" + clinical_test_instancce_counter
+                + "\n   clinical_test_instance_counter = \t\t" + clinical_test_instance_counter
                 + "\n   cartridge_id = \t\t" + cartridge_id
                 + "\n   instrument_id = \t" + instrument_id
                 + "\n   patient_id = \t\t" + patient_id
@@ -110,12 +110,12 @@ public class TestInstance {
                 + dicom.toString();
     }
 
-    public long getClinical_test_instancce_counter() {
-        return clinical_test_instancce_counter;
+    public long getClinical_test_instance_counter() {
+        return clinical_test_instance_counter;
     }
 
-    public void setClinical_test_instancce_counter(long clinical_test_instancce_counter) {
-        this.clinical_test_instancce_counter = clinical_test_instancce_counter;
+    public void setClinical_test_instance_counter(long clinical_test_instancce_counter) {
+        this.clinical_test_instance_counter = clinical_test_instancce_counter;
     }
 
     public String getCartridge_id() {

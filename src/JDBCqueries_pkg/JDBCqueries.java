@@ -115,9 +115,8 @@ public class JDBCqueries {
         return (allIDs);
     }
 
-   
     public void insertCartridge(Cartridge cartridge) {
- 
+
         try {
             sql = "INSERT INTO Cartridge_Manufactured VALUES "
                     + "('" + cartridge.getCartridge_id()
@@ -148,7 +147,7 @@ public class JDBCqueries {
     // Instrument quesries
     public void getInstrumentDeploymentInfo(String instrID, Instrument instrument) {
 
-         try {
+        try {
             // get and display data for seleted Instrument ID
             sql = "SELECT * FROM Instrument_Deployed WHERE instrument_id = " + instrID;
             rs = stmt.executeQuery(sql);
@@ -260,7 +259,7 @@ public class JDBCqueries {
             rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
-                test.setClinical_test_instancce_counter(rs.getLong("clinical_test_instance_counter"));
+                test.setClinical_test_instance_counter(rs.getLong("clinical_test_instance_counter"));
 
             }
 
@@ -275,8 +274,55 @@ public class JDBCqueries {
         } finally {
             //finally block used to close resources
 
-            return (test.getClinical_test_instancce_counter());
+            return (test.getClinical_test_instance_counter());
         }   //end finally try
+    }
+
+    public String getClinicalTestImage(long clinical_test_instance_counter, String targetFile) {
+
+//        PreparedStatement psmnt = null;
+
+        try {
+            /*
+                CREATE TABLE Clinical_Test_Images (
+                       clinical_test_image_counter        BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+                       image           blob,
+                       image_timestamp VARCHAR (25),
+                       PRIMARY KEY (image_id )
+                );
+             */
+//            targetFile = ".\\retrievedTestImage.tif";
+            File file=new File(targetFile);
+            FileOutputStream fos=new FileOutputStream(file);
+            byte b[];
+            Blob blob;
+            
+            sql = "SELECT * FROM Clinical_Test_Images WHERE image = " + clinical_test_instance_counter;
+            PreparedStatement psmnt=conn.prepareStatement(sql); 
+             rs=psmnt.executeQuery();
+            
+            while(rs.next()){
+                blob=rs.getBlob("image");
+                b=blob.getBytes(1,(int)blob.length());
+                fos.write(b);
+            }
+            
+            psmnt.close();
+            fos.close();
+            
+        } catch (SQLException e) {
+            // handle the error
+            System.out.println("\n" + "SQL Exception " + e.getMessage());
+            System.exit(0);
+        } catch (Exception e) {
+            // handle the error
+            System.out.println("\n" + "General Exception " + e.getMessage());
+            System.exit(0);
+        } finally {
+            //finally block used to close resources
+
+            return (targetFile);
+        }
     }
 
     public long insertClinicalTestImage(DICOM dicom) {
@@ -317,7 +363,10 @@ public class JDBCqueries {
             } else {
                 System.out.println("unsucessfull to upload image.");
             }
-
+            
+            psmnt.close();
+            fis.close();
+            
         } catch (SQLException e) {
             // handle the error
             System.out.println("\n" + "SQL Exception " + e.getMessage());
