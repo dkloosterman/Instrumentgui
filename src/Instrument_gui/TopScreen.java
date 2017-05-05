@@ -31,15 +31,13 @@ public class TopScreen extends javax.swing.JFrame {
     public TopScreen() {
         initComponents();
 
-        String display = null;
-
-        try {
+         try {
             this.instrument = new Instrument();
 
             InfoPanel.setVisible(false);
             CartridgeInfoButton.setVisible(false);
             EndTestButton.setVisible(false);
-            DisplayTestButton.setVisible(false);
+            TestInfoButton.setVisible(false);
             GetImageButton.setVisible(false);
 
             // load combobox with all instr IDs
@@ -78,11 +76,11 @@ public class TopScreen extends javax.swing.JFrame {
         SelectObjectComboBox = new javax.swing.JComboBox<>();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         EndTestButton = new javax.swing.JButton();
-        DisplayTestButton = new javax.swing.JButton();
-        GetImageButton = new javax.swing.JButton();
         InstrumentInfoButton = new javax.swing.JButton();
         InsertCartridgeButton = new javax.swing.JButton();
         CartridgeInfoButton = new javax.swing.JButton();
+        TestInfoButton = new javax.swing.JButton();
+        GetImageButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SensoDx Topscreen");
@@ -120,20 +118,6 @@ public class TopScreen extends javax.swing.JFrame {
             }
         });
 
-        DisplayTestButton.setText("Display Test");
-        DisplayTestButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DisplayTestButtonActionPerformed(evt);
-            }
-        });
-
-        GetImageButton.setText("Get Image");
-        GetImageButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GetImageButtonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout InfoPanelLayout = new javax.swing.GroupLayout(InfoPanel);
         InfoPanel.setLayout(InfoPanelLayout);
         InfoPanelLayout.setHorizontalGroup(
@@ -143,20 +127,16 @@ public class TopScreen extends javax.swing.JFrame {
                 .addGroup(InfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1)
                     .addGroup(InfoPanelLayout.createSequentialGroup()
-                        .addComponent(SelectObjectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(DisplayTestButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(EndTestButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(GetImageButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(SelectObjectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(CloseInfoButton)))
                 .addContainerGap())
             .addGroup(InfoPanelLayout.createSequentialGroup()
                 .addGap(251, 251, 251)
                 .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(368, Short.MAX_VALUE))
         );
         InfoPanelLayout.setVerticalGroup(
             InfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,14 +144,12 @@ public class TopScreen extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(InfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CloseInfoButton)
                     .addComponent(SelectObjectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(EndTestButton)
-                    .addComponent(DisplayTestButton)
-                    .addComponent(GetImageButton))
+                    .addComponent(EndTestButton))
                 .addContainerGap())
         );
 
@@ -197,6 +175,20 @@ public class TopScreen extends javax.swing.JFrame {
             }
         });
 
+        TestInfoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Instrument_gui/test.png"))); // NOI18N
+        TestInfoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TestInfoButtonActionPerformed(evt);
+            }
+        });
+
+        GetImageButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Instrument_gui/GetImage.png"))); // NOI18N
+        GetImageButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GetImageButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -204,30 +196,33 @@ public class TopScreen extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(InsertCartridgeButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 583, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(GetImageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(TestInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(CartridgeInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(InstrumentInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                .addGap(200, 200, 200)
+                .addGap(150, 150, 150)
                 .addComponent(InfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(183, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(CartridgeInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
-                        .addComponent(InfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 141, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(InstrumentInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(InsertCartridgeButton))))
+                .addGap(50, 50, 50)
+                .addComponent(InfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(InstrumentInfoButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(CartridgeInfoButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(TestInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(InsertCartridgeButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(GetImageButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(19, 19, 19))
         );
 
@@ -341,6 +336,9 @@ public class TopScreen extends javax.swing.JFrame {
                 }
 
             }
+            else{
+                InfoTextArea.setText("Error: Unable to run test because no input clinical test image found");
+            }
 
             // update view
             CartridgeInfoButton.setVisible(true);
@@ -349,7 +347,7 @@ public class TopScreen extends javax.swing.JFrame {
             InfoPanel.setVisible(true);
             EndTestButton.setVisible(true);
             GetImageButton.setVisible(true);
-            DisplayTestButton.setVisible(true);
+            TestInfoButton.setVisible(true);
         } catch (Exception e) {
             // handle the error
             System.out.println("\n" + "General Exception " + e.getMessage());
@@ -428,14 +426,10 @@ public class TopScreen extends javax.swing.JFrame {
         CartridgeInfoButton.setVisible(false);
         EndTestButton.setVisible(false);
         GetImageButton.setVisible(false);
-        DisplayTestButton.setVisible(false);
+       TestInfoButton.setVisible(false);
         this.test = null;
         this.cartridge = null;
     }//GEN-LAST:event_EndTestButtonActionPerformed
-
-    private void DisplayTestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DisplayTestButtonActionPerformed
-        InfoTextArea.setText(this.test.toString());
-    }//GEN-LAST:event_DisplayTestButtonActionPerformed
 
     private void GetImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GetImageButtonActionPerformed
         try {
@@ -449,7 +443,7 @@ public class TopScreen extends javax.swing.JFrame {
             InfoTextArea.setText(InfoTextArea.getText()
                     + "\n\nRetrieved clinical test file to: " + filePath
                     + " of length " + fileLength);
-            GetImageButton.setVisible(false);
+//            GetImageButton.setVisible(false);
 
         } catch (Exception e) {
             // handle the error
@@ -460,6 +454,11 @@ public class TopScreen extends javax.swing.JFrame {
 
         }   //end finally 
     }//GEN-LAST:event_GetImageButtonActionPerformed
+
+    private void TestInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TestInfoButtonActionPerformed
+        InfoTextArea.setText(this.test.toString());
+        TestInfoButton.setVisible(true);
+    }//GEN-LAST:event_TestInfoButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -503,7 +502,6 @@ public class TopScreen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CartridgeInfoButton;
     private javax.swing.JButton CloseInfoButton;
-    private javax.swing.JButton DisplayTestButton;
     private javax.swing.JButton EndTestButton;
     private javax.swing.JButton GetImageButton;
     private javax.swing.JPanel InfoPanel;
@@ -511,6 +509,7 @@ public class TopScreen extends javax.swing.JFrame {
     private javax.swing.JButton InsertCartridgeButton;
     private javax.swing.JButton InstrumentInfoButton;
     private javax.swing.JComboBox<String> SelectObjectComboBox;
+    private javax.swing.JButton TestInfoButton;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
