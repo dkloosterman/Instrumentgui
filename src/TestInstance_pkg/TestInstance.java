@@ -77,9 +77,11 @@ public class TestInstance {
                     = queries.insertClinicalTestImage(this.dicom);
 
             if (insertImage_id > 0) {
-                queries.insertClinicalTestInstance(this);
+                
                 this.setAnalysis_result(Math.random());   // temp code here until algorithms integrated
                 this.setRaw_assay_data(this.dicom.getClinicalTestImage_id());
+
+                queries.insertClinicalTestInstance(this);
 
             } else {
                 testResult = false;
