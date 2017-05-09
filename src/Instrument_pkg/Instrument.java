@@ -28,6 +28,7 @@ public class Instrument {
     CREATE TABLE Instrument_Deployed (
        instrument_id VARCHAR (20),
        installation_timestamp TIMESTAMP,
+       deployment_type VARCHAR (20),
        customer_id VARCHAR (20),
        customer_name VARCHAR (50),
        customer_location TEXT,
@@ -38,7 +39,6 @@ public class Instrument {
        assay_types_enabled VARCHAR (50),
        PRIMARY KEY (instrument_id )  );
      */
-    
     // Instrument Mfg. Info
     String instrument_id = null;
     Date manufactured_timestamp = null;
@@ -50,6 +50,7 @@ public class Instrument {
     // Instrument Deployment Info
     //    String instrument_id;
     Date installation_timestamp = null;
+    String deployment_type = null;
     String customer_id = null;
     String customer_name = null;
     String customer_location = null;
@@ -64,25 +65,25 @@ public class Instrument {
 
     @Override
     public String toString() {
-        
+
         String binaryAssayTypesEnabled = TestInstance.convertIntegerToBinaryString(assay_types_enabled, ASSAY_FIELD_LENGTH);
-                
-        return  "Instrument Manufacturing Information" 
+
+        return "Instrument Manufacturing Information"
                 + "\n   instrument_id =\t" + instrument_id
-                + "\n   manufactured_timestamp =\t" + manufactured_timestamp 
-                + "\n   manufactured_location =\t" + manufactured_location 
+                + "\n   manufactured_timestamp =\t" + manufactured_timestamp
+                + "\n   manufactured_location =\t" + manufactured_location
                 + "\n   subsystem_1_id =\t" + subsystem_1_id
-                + "\n   subsystem_2_id =\t" + subsystem_2_id 
+                + "\n   subsystem_2_id =\t" + subsystem_2_id
                 + "\n   subsystem_3_id =\t" + subsystem_3_id
-                
-                + "\n\nInstrument Deployment Information" 
-                + "\n   installation_timestamp =\t" + installation_timestamp 
+                + "\n\nInstrument Deployment Information"
+                + "\n   installation_timestamp =\t" + installation_timestamp
+                + "\n   deployment_type =\t" + deployment_type
                 + "\n   customer_id =\t" + customer_id
-                + "\n   customer_name =\t" + customer_name 
-                + "\n   customer_location =\t" + customer_location 
+                + "\n   customer_name =\t" + customer_name
+                + "\n   customer_location =\t" + customer_location
                 + "\n   contact_telephone =\t" + contact_telephone
-                + "\n   contact_email =\t" + contact_email 
-                + "\n   customer_since =\t" + customer_since 
+                + "\n   contact_email =\t" + contact_email
+                + "\n   customer_since =\t" + customer_since
                 + "\n   assay_types_enabled =\t" + binaryAssayTypesEnabled;
     }
 
@@ -196,6 +197,14 @@ public class Instrument {
 
     public void setInstrument_id(String instrument_id) {
         this.instrument_id = instrument_id;
+    }
+
+    public String getDeployment_type() {
+        return deployment_type;
+    }
+
+    public void setDeployment_type(String deployment_type) {
+        this.deployment_type = deployment_type;
     }
 
 }

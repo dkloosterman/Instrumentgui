@@ -155,6 +155,7 @@ public class JDBCqueries {
             while (rs.next()) {
                 instrument.setInstrument_id(rs.getString("instrument_id"));
                 instrument.setInstallation_timestamp(rs.getTimestamp("installation_timestamp"));
+                instrument.setDeployment_type(rs.getString("deployment_type"));
                 instrument.setCustomer_id(rs.getString("customer_id"));
                 instrument.setCustomer_name(rs.getString("customer_name"));
                 instrument.setCustomer_location(rs.getString("customer_location"));

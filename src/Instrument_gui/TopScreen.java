@@ -443,7 +443,6 @@ public class TopScreen extends javax.swing.JFrame {
             InfoTextArea.setText(InfoTextArea.getText()
                     + "\n\nRetrieved clinical test file to: " + filePath
                     + " of length " + fileLength);
-//            GetImageButton.setVisible(false);
 
         } catch (Exception e) {
             // handle the error
@@ -456,6 +455,7 @@ public class TopScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_GetImageButtonActionPerformed
 
     private void TestInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TestInfoButtonActionPerformed
+        SelectObjectComboBox.setVisible(false);
         InfoTextArea.setText(this.test.toString());
         TestInfoButton.setVisible(true);
     }//GEN-LAST:event_TestInfoButtonActionPerformed
