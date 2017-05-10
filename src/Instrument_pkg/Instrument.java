@@ -14,6 +14,12 @@ import java.util.Date;
  * @author David Kloosterman
  */
 public class Instrument {
+    
+    public enum DeploymentType {
+        LDT, ResearchAndDevelopment, Product, Manufacturing
+    };
+//    DeploymentType objectType = DeploymentType.INSTRUMENT;
+
 
     /*  This is what the database tables look like
     CREATE TABLE Instrument_Manufactured ( 
@@ -28,7 +34,7 @@ public class Instrument {
     CREATE TABLE Instrument_Deployed (
        instrument_id VARCHAR (20),
        installation_timestamp TIMESTAMP,
-       deployment_type VARCHAR (20),
+       deployment_type VARCHAR (25),
        customer_id VARCHAR (20),
        customer_name VARCHAR (50),
        customer_location TEXT,
