@@ -46,8 +46,9 @@ public class TestInstance {
     public DICOM dicom = null;
     JDBCqueries queries = null;
 
-    public TestInstance() {
+    public TestInstance(String pathToRawAssayFile) {
         this.dicom = new DICOM();
+        this.dicom.setClinicalTestFilePathInInstrument(pathToRawAssayFile);
         this.queries = new JDBCqueries();
 
     }

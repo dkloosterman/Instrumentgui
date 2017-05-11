@@ -14,7 +14,7 @@ import java.io.*;
  */
 public class TopScreen extends javax.swing.JFrame {
 
-    private static final String TESTFILE_SAMPLE = ".\\TestImage.tif";
+    public static final String TESTFILE_SAMPLE = ".\\TestImage.tif";
 
     private enum LastObjectTypeButtonSelected {
         INSTRUMENT, CARTRIDGE, TEST_INSTANCE, TEST_IMAGE, PATIENT
@@ -313,7 +313,6 @@ public class TopScreen extends javax.swing.JFrame {
     private void InsertCartridgeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertCartridgeButtonActionPerformed
 
         try {
-            this.test = new TestInstance();
             this.cartridge = new Cartridge();
 
             // temp code until real cartridges exist
@@ -326,8 +325,8 @@ public class TopScreen extends javax.swing.JFrame {
 
             File f = new File(TESTFILE_SAMPLE);
             if (f.exists() && !f.isDirectory()) {
-                //             temp sample clinical test file
-                this.test.dicom.setClinicalTestFilePathInInstrument(TESTFILE_SAMPLE);
+                           
+                this.test = new TestInstance(TESTFILE_SAMPLE);
 
                 if (test.processTest(this.instrument, this.cartridge)) {
                     InfoTextArea.setText(this.test.getTestResultString() + "\n\n" + this.test.toString());

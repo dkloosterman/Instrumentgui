@@ -60,7 +60,7 @@ public class JDBCqueries {
         try {
 
             // get and display data for seleted Instrument ID
-            sql = "SELECT * FROM Cartridge_Manufactured WHERE cartridge_id = " + forCartID;
+            sql = "SELECT * FROM Cartridge_Manufactured WHERE cartridge_id = '" + forCartID + "'";
             rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
@@ -149,7 +149,7 @@ public class JDBCqueries {
 
         try {
             // get and display data for seleted Instrument ID
-            sql = "SELECT * FROM Instrument_Deployed WHERE instrument_id = " + instrID;
+            sql = "SELECT * FROM Instrument_Deployed WHERE instrument_id = '" + instrID + "'";
             rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
@@ -219,7 +219,7 @@ public class JDBCqueries {
 
         try {
             // get and display data for seleted Instrument ID
-            sql = "SELECT * FROM Instrument_Manufactured WHERE instrument_id = " + forInstrID;
+            sql = "SELECT * FROM Instrument_Manufactured WHERE instrument_id = '" + forInstrID + "'";
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 instrument.setInstrument_id(rs.getString("instrument_id"));
@@ -264,7 +264,7 @@ public class JDBCqueries {
             // get and display data for seleted Instrument ID
             stmt.executeUpdate(sql);
 
-            sql = "SELECT * FROM Clinical_Test_Instance WHERE cartridge_id = " + test.getCartridge_id();
+            sql = "SELECT * FROM Clinical_Test_Instance WHERE cartridge_id = '" + test.getCartridge_id() + "'";
             rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
@@ -305,8 +305,8 @@ public class JDBCqueries {
             byte b[];
             Blob blob;
 
-            sql = "SELECT * FROM Clinical_Test_Images WHERE clinical_test_image_counter = "
-                    + clinical_test_instance_counter;
+            sql = "SELECT * FROM Clinical_Test_Images WHERE clinical_test_image_counter = '"
+                    + clinical_test_instance_counter + "'";
             PreparedStatement psmnt = conn.prepareStatement(sql);
             rs = psmnt.executeQuery();
 
@@ -361,7 +361,7 @@ public class JDBCqueries {
             psmnt.setString(2, currentTimestamp);
             int s = psmnt.executeUpdate();
             if (s > 0) {
-                sql = "SELECT * FROM Clinical_Test_Images WHERE image_timestamp = " + currentTimestamp;
+                sql = "SELECT * FROM Clinical_Test_Images WHERE image_timestamp = '" + currentTimestamp + "'";
                 rs = stmt.executeQuery(sql);
 
                 while (rs.next()) {
