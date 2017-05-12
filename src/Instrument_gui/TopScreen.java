@@ -374,6 +374,7 @@ public class TopScreen extends javax.swing.JFrame {
             cartID = cartID.replace("-", "");
             cartridge.setCartridge_id(cartID);
             cartridge.setManufactured_timestamp(new Timestamp(System.currentTimeMillis()));
+            cartridge.setDeployment_type(Cartridge.DeploymentType.Virtual.toString());
             cartridge.setManufactured_location("Perinton, NY");
             cartridge.setAssay_type(test.CARDIAC_WELLNESS_TEST);
             cartridge.setSubsystem_1_id("0000000010000002");
