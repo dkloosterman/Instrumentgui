@@ -15,6 +15,7 @@ import java.io.*;
 public class TopScreen extends javax.swing.JFrame {
 
     public static final String TESTFILE_SAMPLE = ".\\TestImage.tif";
+//    public static final String TESTFILE_SAMPLE = null;
 
     private enum LastObjectTypeButtonSelected {
         INSTRUMENT, CARTRIDGE, TEST_INSTANCE, TEST_IMAGE, PATIENT
@@ -31,7 +32,7 @@ public class TopScreen extends javax.swing.JFrame {
     public TopScreen() {
         initComponents();
 
-         try {
+        try {
             this.instrument = new Instrument();
 
             InfoPanel.setVisible(false);
@@ -322,22 +323,27 @@ public class TopScreen extends javax.swing.JFrame {
             JDBCqueries queries = new JDBCqueries();
             queries.insertCartridge(this.cartridge);
             queries.getCartridgeMfgInfo(this.cartridge.getCartridge_id(), this.cartridge);
+            if (TESTFILE_SAMPLE != null) {
+                File f = new File(TESTFILE_SAMPLE);
+                if (f.exists() && !f.isDirectory()) {
 
-            File f = new File(TESTFILE_SAMPLE);
-            if (f.exists() && !f.isDirectory()) {
-                           
-                this.test = new TestInstance(TESTFILE_SAMPLE);
+                    this.test = new TestInstance(TESTFILE_SAMPLE);
 
-                if (test.processTest(this.instrument, this.cartridge)) {
-                    InfoTextArea.setText(this.test.getTestResultString() + "\n\n" + this.test.toString());
+                    if (test.processTest(this.instrument, this.cartridge)) {
+                        InfoTextArea.setText(this.test.getTestResultString() + "\n\n" + this.test.toString());
+                    } else {
+                        InfoTextArea.setText(this.test.getTestResultString());
+                    }
+
                 } else {
-                    InfoTextArea.setText(this.test.getTestResultString());
+                    InfoTextArea.setText("Error: Unable to run test because input clinical test image "
+                            + TESTFILE_SAMPLE + " not found");
                 }
-
             }
-            else{
-                InfoTextArea.setText("Error: Unable to run test because no input clinical test image found");
-            }
+            else {
+                    InfoTextArea.setText("Error: Unable to run test because input clinical test image "
+                            + "is set to null");
+                }
 
             // update view
             CartridgeInfoButton.setVisible(true);
@@ -426,7 +432,7 @@ public class TopScreen extends javax.swing.JFrame {
         CartridgeInfoButton.setVisible(false);
         EndTestButton.setVisible(false);
         GetImageButton.setVisible(false);
-       TestInfoButton.setVisible(false);
+        TestInfoButton.setVisible(false);
         this.test = null;
         this.cartridge = null;
     }//GEN-LAST:event_EndTestButtonActionPerformed
