@@ -15,7 +15,6 @@ import java.io.*;
 public class TopScreen extends javax.swing.JFrame {
 
     public static final String TESTFILE_SAMPLE = ".\\TestImage.tif";
-//    public static final String TESTFILE_SAMPLE = null;
 
     private enum LastObjectTypeButtonSelected {
         INSTRUMENT, CARTRIDGE, TEST_INSTANCE, TEST_IMAGE, PATIENT
