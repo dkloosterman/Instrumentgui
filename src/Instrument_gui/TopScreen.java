@@ -4,6 +4,7 @@ import Cartridge_pkg.Cartridge;
 import Instrument_pkg.Instrument;
 import TestInstance_pkg.TestInstance;
 import JDBCqueries_pkg.JDBCqueries;
+import Errors_pkg.Errors;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.io.*;
