@@ -336,14 +336,33 @@ public class TopScreen extends javax.swing.JFrame {
                     }
 
                 } else {
-                    InfoTextArea.setText("Error: Unable to run test because input clinical test image "
-                            + TESTFILE_SAMPLE + " not found");
+                    Errors error = new Errors();
+
+                    error.buildErrorObject_ClinicalTestImageNotFound(this.instrument.getInstrument_id(),
+                            this.cartridge.getCartridge_id(),
+                            null,
+                            TESTFILE_SAMPLE);
+
+                    queries.insertError(error);
+
+                    InfoTextArea.setText(error.toString());
+                    error = null;
                 }
+            } else {
+                Errors error = new Errors();
+
+                error.buildErrorObject_ClinicalTestImageSetToNull(this.instrument.getInstrument_id(),
+                        this.cartridge.getCartridge_id(),
+                        null);
+
+                queries.insertError(error);
+
+                InfoTextArea.setText(error.toString());
+                error = null;
+
+                InfoTextArea.setText("Error: Unable to run test because input clinical test image "
+                        + "is set to null");
             }
-            else {
-                    InfoTextArea.setText("Error: Unable to run test because input clinical test image "
-                            + "is set to null");
-                }
 
             // update view
             CartridgeInfoButton.setVisible(true);
