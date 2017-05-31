@@ -17,11 +17,6 @@ public class InstrumentUI extends javax.swing.JFrame {
 
     public static final String TESTFILE_SAMPLE = ".\\TestImage.tif";
 
-    private enum LastObjectTypeButtonSelected {
-        INSTRUMENT, CARTRIDGE, TEST_INSTANCE, TEST_IMAGE, PATIENT
-    };
-    LastObjectTypeButtonSelected objectType = LastObjectTypeButtonSelected.INSTRUMENT;
-
     TestInstance test;
     Cartridge cartridge;
     Instrument instrument;
@@ -238,8 +233,6 @@ public class InstrumentUI extends javax.swing.JFrame {
     private void InstrumentInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InstrumentInfoButtonActionPerformed
 
         try {
-            this.objectType = LastObjectTypeButtonSelected.INSTRUMENT;
-
             JDBCqueries queries = new JDBCqueries();
 
             queries.getInstrumentMfgInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
@@ -247,13 +240,6 @@ public class InstrumentUI extends javax.swing.JFrame {
 
             InfoTextArea.setText(this.instrument.toString());
 
-//            // Make Instrument Info Panel visible
-//            SelectObjectComboBox.removeAllItems();
-//            ArrayList<String> allIDs = new ArrayList<String>();
-//            allIDs = queries.getAllInstrumentIDs();
-//            for (String ID : allIDs) {
-//                SelectObjectComboBox.addItem(ID);
-//            }
             SelectObjectComboBox.setVisible(true);
             InfoPanel.setVisible(true);
         } catch (Exception e) {
@@ -271,35 +257,13 @@ public class InstrumentUI extends javax.swing.JFrame {
         try {
             JDBCqueries queries = new JDBCqueries();
 
-            switch (this.objectType) {
-                case INSTRUMENT:
-                    // load combobox with all instr IDs  
+            this.instrument = null;
+            this.instrument = new Instrument();
 
-                    this.instrument = null;
-                    this.instrument = new Instrument();
-
-                    // update Instrument Info Text Area with selected Instrument ID
-                    queries.getInstrumentMfgInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
-                    queries.getInstrumentDeploymentInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
-                    InfoTextArea.setText(this.instrument.toString());
-
-//                    System.out.println("INSTRUMENT pressed");
-                    break;
-
-//                case CARTRIDGE:
-//                    this.cartridge = null;
-//                    this.cartridge = new Cartridge();
-//
-//                    // update Instrument Info Text Area with selected  ID
-//                    queries.getCartridgeMfgInfo((String) SelectObjectComboBox.getSelectedItem(), this.cartridge);
-//                    InfoTextArea.setText(this.cartridge.toString());
-//
-//                    System.out.println("CARTRIDGE pressed");
-//                    break;
-                default:
-                    System.out.println("Unknown button pressed");
-                    break;
-            }
+            // update Instrument Info Text Area with selected Instrument ID
+            queries.getInstrumentMfgInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
+            queries.getInstrumentDeploymentInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
+            InfoTextArea.setText(this.instrument.toString());
 
         } catch (Exception e) {
             // handle the error
@@ -419,19 +383,11 @@ public class InstrumentUI extends javax.swing.JFrame {
     private void CartridgeInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartridgeInfoButtonActionPerformed
 
         try {
-            this.objectType = LastObjectTypeButtonSelected.CARTRIDGE;
 
             JDBCqueries queries = new JDBCqueries();
             queries.getCartridgeMfgInfo(this.cartridge.getCartridge_id(), this.cartridge);
             InfoTextArea.setText(this.cartridge.toString());
 
-//            // Make Instrument Info Panel visible
-//            SelectObjectComboBox.removeAllItems();
-//            ArrayList<String> allIDs = new ArrayList<String>();
-//            allIDs = queries.getAllCartridgeIDs();
-//            for (String ID : allIDs) {
-//                SelectObjectComboBox.addItem(ID);
-//            }
             SelectObjectComboBox.setVisible(false);
 
             InfoPanel.setVisible(true);
