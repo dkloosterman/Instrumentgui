@@ -13,7 +13,7 @@ import java.io.*;
  *
  * @author David Kloosterman
  */
-public class TopScreen extends javax.swing.JFrame {
+public class InstrumentUI extends javax.swing.JFrame {
 
     public static final String TESTFILE_SAMPLE = ".\\TestImage.tif";
 
@@ -29,7 +29,7 @@ public class TopScreen extends javax.swing.JFrame {
     /**
      * Creates new form TopScreen
      */
-    public TopScreen() {
+    public InstrumentUI() {
         initComponents();
 
         try {
@@ -502,13 +502,13 @@ public class TopScreen extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TopScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InstrumentUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TopScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InstrumentUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TopScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InstrumentUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TopScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InstrumentUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -517,7 +517,7 @@ public class TopScreen extends javax.swing.JFrame {
             @Override
             public void run() {
 
-                new TopScreen().setVisible(true);
+                new InstrumentUI().setVisible(true);
             }
         });
 
