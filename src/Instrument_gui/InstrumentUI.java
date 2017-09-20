@@ -11,7 +11,7 @@ import java.io.*;
 
 /**
  *
- * @author David Kloosterman
+ * @author David Kloosterman  test 2
  */
 public class InstrumentUI extends javax.swing.JFrame {
 
