@@ -11,7 +11,7 @@ import java.io.*;
 
 /**
  *
- * @author David Kloosterman  test 2
+ * @author David Kloosterman
  */
 public class InstrumentUI extends javax.swing.JFrame {
 
@@ -79,7 +79,7 @@ public class InstrumentUI extends javax.swing.JFrame {
         GetImageButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SensoDx Topscreen, test 2");
+        setTitle("SensoDx Topscreen, test 3");
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(900, 600));
         setSize(new java.awt.Dimension(900, 600));
