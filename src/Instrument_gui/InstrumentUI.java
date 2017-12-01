@@ -8,6 +8,8 @@ import Errors_pkg.Errors;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.io.*;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +21,8 @@ import java.util.concurrent.TimeUnit;
 public class InstrumentUI extends javax.swing.JFrame {
 
     public static final String TESTFILE_SAMPLE = ".\\TestImage.tif";
+    public static final int WatchFolderRateMS = 1000;
+    public static final String WatchFolderLocation = ".\\WatchFolder";
 
     TestInstance test;
     Cartridge cartridge;
@@ -33,7 +37,7 @@ public class InstrumentUI extends javax.swing.JFrame {
         try {
             this.instrument = new Instrument();
 
-            InfoPanel.setVisible(false);
+            leftSideInfoPanel.setVisible(false);
             CartridgeInfoButton.setVisible(false);
             EndTestButton.setVisible(false);
             TestInfoButton.setVisible(false);
@@ -48,7 +52,7 @@ public class InstrumentUI extends javax.swing.JFrame {
             for (String ID : allInstrIDs) {
                 SelectObjectComboBox.addItem(ID);
             }
-            
+
             // setup watch folder
             //  set up schedule to update the lower text area
             ScheduledExecutorService execService
@@ -59,7 +63,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                 //The repetitive task... 
                 this.watchFolder();
 
-            }, 0, 3000L, TimeUnit.MILLISECONDS);
+            }, 0, WatchFolderRateMS, TimeUnit.MILLISECONDS);
 
         } catch (Exception e) {
             // handle the error
@@ -80,24 +84,24 @@ public class InstrumentUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        InfoPanel = new javax.swing.JPanel();
+        leftSideInfoPanel = new javax.swing.JPanel();
         CloseInfoButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         InfoTextArea = new javax.swing.JTextArea();
         SelectObjectComboBox = new javax.swing.JComboBox<>();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         EndTestButton = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
+        rightSide = new javax.swing.JPanel();
+        righ_1_Panel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         watchFolderTextArea = new javax.swing.JTextArea();
-        jPanel4 = new javax.swing.JPanel();
+        right_2_Panel = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTextArea2 = new javax.swing.JTextArea();
-        jPanel5 = new javax.swing.JPanel();
+        right_3_Panel = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        jPanel6 = new javax.swing.JPanel();
+        instrumentButtons = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         InsertCartridgeButton = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -113,8 +117,8 @@ public class InstrumentUI extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(900, 600));
         getContentPane().setLayout(new java.awt.GridLayout(1, 2));
 
-        InfoPanel.setBackground(new java.awt.Color(204, 204, 255));
-        InfoPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        leftSideInfoPanel.setBackground(new java.awt.Color(204, 204, 255));
+        leftSideInfoPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         CloseInfoButton.setText("Close");
         CloseInfoButton.addActionListener(new java.awt.event.ActionListener() {
@@ -143,95 +147,83 @@ public class InstrumentUI extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout InfoPanelLayout = new javax.swing.GroupLayout(InfoPanel);
-        InfoPanel.setLayout(InfoPanelLayout);
-        InfoPanelLayout.setHorizontalGroup(
-            InfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(InfoPanelLayout.createSequentialGroup()
-                .addGroup(InfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(InfoPanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout leftSideInfoPanelLayout = new javax.swing.GroupLayout(leftSideInfoPanel);
+        leftSideInfoPanel.setLayout(leftSideInfoPanelLayout);
+        leftSideInfoPanelLayout.setHorizontalGroup(
+            leftSideInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(leftSideInfoPanelLayout.createSequentialGroup()
+                .addGroup(leftSideInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(leftSideInfoPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(EndTestButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(SelectObjectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(CloseInfoButton))
-                    .addGroup(InfoPanelLayout.createSequentialGroup()
+                    .addGroup(leftSideInfoPanelLayout.createSequentialGroup()
                         .addGap(251, 251, 251)
                         .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 6308, Short.MAX_VALUE))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
-        InfoPanelLayout.setVerticalGroup(
-            InfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, InfoPanelLayout.createSequentialGroup()
+        leftSideInfoPanelLayout.setVerticalGroup(
+            leftSideInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leftSideInfoPanelLayout.createSequentialGroup()
                 .addGap(5, 5, 5)
                 .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 4223, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(InfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(leftSideInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CloseInfoButton)
                     .addComponent(SelectObjectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(EndTestButton))
                 .addContainerGap())
         );
 
-        getContentPane().add(InfoPanel);
+        getContentPane().add(leftSideInfoPanel);
 
-        jPanel2.setLayout(new java.awt.GridLayout(4, 1));
+        rightSide.setLayout(new java.awt.GridLayout(4, 1));
+
+        righ_1_Panel.setLayout(new java.awt.GridLayout());
 
         jScrollPane2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         watchFolderTextArea.setColumns(20);
         watchFolderTextArea.setRows(5);
+        watchFolderTextArea.setText("Panel 1");
         jScrollPane2.setViewportView(watchFolderTextArea);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 2190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 713, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
+        righ_1_Panel.add(jScrollPane2);
 
-        jPanel2.add(jPanel1);
+        rightSide.add(righ_1_Panel);
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel4.setLayout(new java.awt.GridLayout(1, 0));
+        right_2_Panel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        right_2_Panel.setLayout(new java.awt.GridLayout(1, 0));
 
         jTextArea2.setColumns(20);
         jTextArea2.setRows(5);
-        jTextArea2.setText("Another text area");
+        jTextArea2.setText("Panel 2");
         jScrollPane4.setViewportView(jTextArea2);
 
-        jPanel4.add(jScrollPane4);
+        right_2_Panel.add(jScrollPane4);
 
-        jPanel2.add(jPanel4);
+        rightSide.add(right_2_Panel);
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel5.setLayout(new java.awt.GridLayout(1, 0));
+        right_3_Panel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        right_3_Panel.setLayout(new java.awt.GridLayout(1, 0));
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
-        jTextArea1.setText("This is a text area");
+        jTextArea1.setText("Panel 3");
         jScrollPane3.setViewportView(jTextArea1);
 
-        jPanel5.add(jScrollPane3);
+        right_3_Panel.add(jScrollPane3);
 
-        jPanel2.add(jPanel5);
+        rightSide.add(right_3_Panel);
 
-        jPanel6.setLayout(new java.awt.GridLayout(2, 1));
+        instrumentButtons.setLayout(new java.awt.GridLayout(2, 1));
 
         InsertCartridgeButton.setBackground(new java.awt.Color(255, 255, 153));
         InsertCartridgeButton.setText("Press here to simulate inserting a cartridge");
@@ -244,7 +236,7 @@ public class InstrumentUI extends javax.swing.JFrame {
         });
         jPanel7.add(InsertCartridgeButton);
 
-        jPanel6.add(jPanel7);
+        instrumentButtons.add(jPanel7);
 
         jPanel3.setLayout(new java.awt.GridLayout(1, 4));
 
@@ -280,18 +272,18 @@ public class InstrumentUI extends javax.swing.JFrame {
         });
         jPanel3.add(InstrumentInfoButton);
 
-        jPanel6.add(jPanel3);
+        instrumentButtons.add(jPanel3);
 
-        jPanel2.add(jPanel6);
+        rightSide.add(instrumentButtons);
 
-        getContentPane().add(jPanel2);
+        getContentPane().add(rightSide);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void CloseInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseInfoButtonActionPerformed
 
-        InfoPanel.setVisible(false);
+        leftSideInfoPanel.setVisible(false);
     }//GEN-LAST:event_CloseInfoButtonActionPerformed
 
     private void SelectObjectComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectObjectComboBoxActionPerformed
@@ -352,7 +344,7 @@ public class InstrumentUI extends javax.swing.JFrame {
     }
 
     private void EndTestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EndTestButtonActionPerformed
-        InfoPanel.setVisible(false);
+        leftSideInfoPanel.setVisible(false);
         InsertCartridgeButton.setVisible(true);
         CartridgeInfoButton.setVisible(false);
         EndTestButton.setVisible(false);
@@ -372,7 +364,7 @@ public class InstrumentUI extends javax.swing.JFrame {
 
             SelectObjectComboBox.setVisible(false);
 
-            InfoPanel.setVisible(true);
+            leftSideInfoPanel.setVisible(true);
         } catch (Exception e) {
             // handle the error
             System.out.println("\n" + "General Exception " + e.getMessage());
@@ -400,7 +392,7 @@ public class InstrumentUI extends javax.swing.JFrame {
             InfoTextArea.setText(this.instrument.toString());
 
             SelectObjectComboBox.setVisible(true);
-            InfoPanel.setVisible(true);
+            leftSideInfoPanel.setVisible(true);
         } catch (Exception e) {
             // handle the error
             System.out.println("\n" + "General Exception " + e.getMessage());
@@ -439,9 +431,9 @@ public class InstrumentUI extends javax.swing.JFrame {
                     Errors error = new Errors();
 
                     error.buildErrorObject_ClinicalTestImageNotFound(this.instrument.getInstrument_id(),
-                        this.cartridge.getCartridge_id(),
-                        null,
-                        TESTFILE_SAMPLE);
+                            this.cartridge.getCartridge_id(),
+                            null,
+                            TESTFILE_SAMPLE);
 
                     queries.insertError(error);
 
@@ -452,8 +444,8 @@ public class InstrumentUI extends javax.swing.JFrame {
                 Errors error = new Errors();
 
                 error.buildErrorObject_ClinicalTestImageSetToNull(this.instrument.getInstrument_id(),
-                    this.cartridge.getCartridge_id(),
-                    null);
+                        this.cartridge.getCartridge_id(),
+                        null);
 
                 queries.insertError(error);
 
@@ -461,14 +453,14 @@ public class InstrumentUI extends javax.swing.JFrame {
                 error = null;
 
                 InfoTextArea.setText("Error: Unable to run test because input clinical test image "
-                    + "is set to null");
+                        + "is set to null");
             }
 
             // update view
             CartridgeInfoButton.setVisible(true);
             SelectObjectComboBox.setVisible(false);
             InsertCartridgeButton.setVisible(false);
-            InfoPanel.setVisible(true);
+            leftSideInfoPanel.setVisible(true);
             EndTestButton.setVisible(true);
             GetImageButton.setVisible(true);
             TestInfoButton.setVisible(true);
@@ -492,8 +484,8 @@ public class InstrumentUI extends javax.swing.JFrame {
             long fileLength = queries.getClinicalTestImage(this.test.getRaw_assay_data(), filePath);
             System.out.println("Retrieved clinical test file to: " + filePath);
             InfoTextArea.setText(InfoTextArea.getText()
-                + "\n\nRetrieved clinical test file to: " + filePath
-                + " of length " + fileLength);
+                    + "\n\nRetrieved clinical test file to: " + filePath
+                    + " of length " + fileLength);
 
         } catch (Exception e) {
             // handle the error
@@ -506,11 +498,23 @@ public class InstrumentUI extends javax.swing.JFrame {
     }//GEN-LAST:event_GetImageButtonActionPerformed
 
     static int counter = 0;
-    
-    private void watchFolder(){
-        watchFolderTextArea.setText("Hello" + ++counter);
+
+    private void watchFolder() {
+        watchFolderTextArea.setText("" +  ++counter);
+
+        File folder = new File(WatchFolderLocation);
+        File[] listOfFiles = folder.listFiles();
+
+        Arrays.sort(listOfFiles, Comparator.comparingLong(File::lastModified));
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isFile()) {
+                watchFolderTextArea.setText(watchFolderTextArea.getText() + '\n' + "File " + listOfFiles[i].getName());
+            } else if (listOfFiles[i].isDirectory()) {
+                watchFolderTextArea.setText(watchFolderTextArea.getText() + '\n' + "Directory " + listOfFiles[i].getName());
+            }
+        }
     }
-            
+
     /**
      * @param args the command line arguments
      */
@@ -555,19 +559,14 @@ public class InstrumentUI extends javax.swing.JFrame {
     private javax.swing.JButton CloseInfoButton;
     private javax.swing.JButton EndTestButton;
     private javax.swing.JButton GetImageButton;
-    private javax.swing.JPanel InfoPanel;
     private javax.swing.JTextArea InfoTextArea;
     private javax.swing.JButton InsertCartridgeButton;
     private javax.swing.JButton InstrumentInfoButton;
     private javax.swing.JComboBox<String> SelectObjectComboBox;
     private javax.swing.JButton TestInfoButton;
     private javax.swing.Box.Filler filler1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel instrumentButtons;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -575,6 +574,11 @@ public class InstrumentUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JPanel leftSideInfoPanel;
+    private javax.swing.JPanel righ_1_Panel;
+    private javax.swing.JPanel rightSide;
+    private javax.swing.JPanel right_2_Panel;
+    private javax.swing.JPanel right_3_Panel;
     private javax.swing.JTextArea watchFolderTextArea;
     // End of variables declaration//GEN-END:variables
 }
