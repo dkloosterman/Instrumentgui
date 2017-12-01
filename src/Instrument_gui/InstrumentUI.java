@@ -21,8 +21,8 @@ import java.util.concurrent.TimeUnit;
 public class InstrumentUI extends javax.swing.JFrame {
 
     public static final String TESTFILE_SAMPLE = ".\\TestImage.tif";
-    public static final int WatchFolderRateMS = 1000;
-    public static final String WatchFolderLocation = ".\\WatchFolder";
+    public static final int WATCH_FOLDER_RATE_MS = 1000;
+    public static final String WATCH_FOLDER_LOCATION = ".\\WatchFolder";
 
     TestInstance test;
     Cartridge cartridge;
@@ -63,7 +63,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                 //The repetitive task... 
                 this.watchFolder();
 
-            }, 0, WatchFolderRateMS, TimeUnit.MILLISECONDS);
+            }, 0, WATCH_FOLDER_RATE_MS, TimeUnit.MILLISECONDS);
 
         } catch (Exception e) {
             // handle the error
@@ -186,7 +186,7 @@ public class InstrumentUI extends javax.swing.JFrame {
 
         rightSide.setLayout(new java.awt.GridLayout(4, 1));
 
-        righ_1_Panel.setLayout(new java.awt.GridLayout());
+        righ_1_Panel.setLayout(new java.awt.GridLayout(1, 0));
 
         jScrollPane2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -498,19 +498,50 @@ public class InstrumentUI extends javax.swing.JFrame {
     }//GEN-LAST:event_GetImageButtonActionPerformed
 
     static int counter = 0;
+    File folder = new File(WATCH_FOLDER_LOCATION);
 
     private void watchFolder() {
-        watchFolderTextArea.setText("" +  ++counter);
-
-        File folder = new File(WatchFolderLocation);
         File[] listOfFiles = folder.listFiles();
 
         Arrays.sort(listOfFiles, Comparator.comparingLong(File::lastModified));
-        for (int i = 0; i < listOfFiles.length; i++) {
-            if (listOfFiles[i].isFile()) {
-                watchFolderTextArea.setText(watchFolderTextArea.getText() + '\n' + "File " + listOfFiles[i].getName());
-            } else if (listOfFiles[i].isDirectory()) {
-                watchFolderTextArea.setText(watchFolderTextArea.getText() + '\n' + "Directory " + listOfFiles[i].getName());
+        for (File aFile : listOfFiles) {
+
+            String saveText = watchFolderTextArea.getText();
+            java.util.Date date = new java.util.Date();
+
+            if (aFile.isFile()) {
+                try {
+                    String buildFile = "";
+                    
+                    File newFile = new File(WATCH_FOLDER_LOCATION + '\\' + aFile.getName());
+                    try (BufferedReader reader = new BufferedReader(new FileReader(newFile))) {
+                        String lineInFile;
+                        
+                        while ((lineInFile = reader.readLine()) != null) {
+                            buildFile += lineInFile + '\n';
+                        }                      
+                    }
+                    
+                    watchFolderTextArea.setText("File submitted: \"" + aFile.getName() + 
+                                                    "\" at " + date.toString() + '\n' + 
+                                                    buildFile + 
+                                                    '\n' + saveText);
+                    
+                    if (newFile.delete()) {
+                        System.out.println("File deleted successfully");
+                    } else {
+                        System.out.println("Failed to delete the file");
+                    }
+                } catch (Exception e) {
+                    // handle the error
+                    System.out.println("General Exception " + e.getMessage());
+
+                } finally {
+                } //end finally
+            } else if (aFile.isDirectory()) {
+                watchFolderTextArea.setText("Directory submitted: \"" + aFile.getName() + 
+                                            "\" at " + date.toString() + '\n' + 
+                                            '\n' + saveText);
             }
         }
     }
