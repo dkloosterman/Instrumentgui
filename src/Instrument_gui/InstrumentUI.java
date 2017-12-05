@@ -571,7 +571,6 @@ public class InstrumentUI extends javax.swing.JFrame {
         boolean fileProcessed = false;
 
         System.out.println("Prepare to pares: " + xmlFile);
-/////////////////
 
         try {
 
@@ -590,6 +589,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                 boolean bImage2 = false;
                 boolean bImage3 = false;
                 boolean bTimestamp = false;
+                boolean bTestJobNumber = false;
                 boolean bFirmwareStatus = false;
                 boolean bDebugDisplayMessage = false;
 
@@ -631,6 +631,8 @@ public class InstrumentUI extends javax.swing.JFrame {
                         bImage3 = true;
                     } else if (qName.equalsIgnoreCase("Timestamp")) {
                         bTimestamp = true;
+                    } else if (qName.equalsIgnoreCase("TestJobNumber")) {
+                        bTestJobNumber = true;
                     } else if (qName.equalsIgnoreCase("FirmwareStatus")) {
                         bFirmwareStatus = true;
                     } else if (qName.equalsIgnoreCase("DebugDisplayMessage")) {
@@ -682,6 +684,9 @@ public class InstrumentUI extends javax.swing.JFrame {
                     } else if (bTimestamp) {
                         System.out.println("Timestamp : " + new String(ch, start, length));
                         bTimestamp = false;
+                    } else if (bTestJobNumber) {
+                        System.out.println("TestJobNumber : " + new String(ch, start, length));
+                        bTestJobNumber = false;
                     } else if (bFirmwareStatus) {
                         System.out.println("FormwareStatus : " + new String(ch, start, length));
                         jTextArea2.setText(new String(ch, start, length));
