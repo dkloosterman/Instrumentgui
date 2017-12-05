@@ -93,25 +93,25 @@ public class InstrumentUI extends javax.swing.JFrame {
 
         leftSideInfoPanel = new javax.swing.JPanel();
         CloseInfoButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        Info_ScrollPane = new javax.swing.JScrollPane();
         InfoTextArea = new javax.swing.JTextArea();
         SelectObjectComboBox = new javax.swing.JComboBox<>();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         EndTestButton = new javax.swing.JButton();
         rightSide = new javax.swing.JPanel();
-        righ_1_Panel = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        WatchFolderPanel = new javax.swing.JPanel();
+        WatchFolderScrollPane = new javax.swing.JScrollPane();
         watchFolderTextArea = new javax.swing.JTextArea();
-        right_2_Panel = new javax.swing.JPanel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
-        right_3_Panel = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        Panel1_Panel = new javax.swing.JPanel();
+        Panel1_ScrollPane = new javax.swing.JScrollPane();
+        Panel1_TextArea = new javax.swing.JTextArea();
+        Panel2_Panel = new javax.swing.JPanel();
+        Panel2_ScrollPane = new javax.swing.JScrollPane();
+        Panel2_TextArea = new javax.swing.JTextArea();
         instrumentButtons = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
+        InsertCartridge_Panel = new javax.swing.JPanel();
         InsertCartridgeButton = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        Buttons_Panel = new javax.swing.JPanel();
         GetImageButton = new javax.swing.JButton();
         TestInfoButton = new javax.swing.JButton();
         CartridgeInfoButton = new javax.swing.JButton();
@@ -134,12 +134,12 @@ public class InstrumentUI extends javax.swing.JFrame {
             }
         });
 
-        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+        Info_ScrollPane.setBackground(new java.awt.Color(255, 255, 255));
 
         InfoTextArea.setColumns(20);
         InfoTextArea.setRows(5);
         InfoTextArea.setText("Information");
-        jScrollPane1.setViewportView(InfoTextArea);
+        Info_ScrollPane.setViewportView(InfoTextArea);
 
         SelectObjectComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -171,7 +171,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                         .addGap(251, 251, 251)
                         .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 6308, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1))
+                    .addComponent(Info_ScrollPane))
                 .addContainerGap())
         );
         leftSideInfoPanelLayout.setVerticalGroup(
@@ -180,7 +180,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 4223, Short.MAX_VALUE)
+                .addComponent(Info_ScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 4223, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(leftSideInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(CloseInfoButton)
@@ -193,42 +193,42 @@ public class InstrumentUI extends javax.swing.JFrame {
 
         rightSide.setLayout(new java.awt.GridLayout(4, 1));
 
-        righ_1_Panel.setLayout(new java.awt.GridLayout(1, 0));
+        WatchFolderPanel.setLayout(new java.awt.GridLayout(1, 0));
 
-        jScrollPane2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        WatchFolderScrollPane.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         watchFolderTextArea.setColumns(20);
         watchFolderTextArea.setRows(5);
-        watchFolderTextArea.setText("Panel 1");
-        jScrollPane2.setViewportView(watchFolderTextArea);
+        watchFolderTextArea.setText("Watch Folder");
+        WatchFolderScrollPane.setViewportView(watchFolderTextArea);
 
-        righ_1_Panel.add(jScrollPane2);
+        WatchFolderPanel.add(WatchFolderScrollPane);
 
-        rightSide.add(righ_1_Panel);
+        rightSide.add(WatchFolderPanel);
 
-        right_2_Panel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        right_2_Panel.setLayout(new java.awt.GridLayout(1, 0));
+        Panel1_Panel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Panel1_Panel.setLayout(new java.awt.GridLayout(1, 0));
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jTextArea2.setText("Panel 2");
-        jScrollPane4.setViewportView(jTextArea2);
+        Panel1_TextArea.setColumns(20);
+        Panel1_TextArea.setRows(5);
+        Panel1_TextArea.setText("Panel 1");
+        Panel1_ScrollPane.setViewportView(Panel1_TextArea);
 
-        right_2_Panel.add(jScrollPane4);
+        Panel1_Panel.add(Panel1_ScrollPane);
 
-        rightSide.add(right_2_Panel);
+        rightSide.add(Panel1_Panel);
 
-        right_3_Panel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        right_3_Panel.setLayout(new java.awt.GridLayout(1, 0));
+        Panel2_Panel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Panel2_Panel.setLayout(new java.awt.GridLayout(1, 0));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("Panel 3");
-        jScrollPane3.setViewportView(jTextArea1);
+        Panel2_TextArea.setColumns(20);
+        Panel2_TextArea.setRows(5);
+        Panel2_TextArea.setText("Panel 2");
+        Panel2_ScrollPane.setViewportView(Panel2_TextArea);
 
-        right_3_Panel.add(jScrollPane3);
+        Panel2_Panel.add(Panel2_ScrollPane);
 
-        rightSide.add(right_3_Panel);
+        rightSide.add(Panel2_Panel);
 
         instrumentButtons.setLayout(new java.awt.GridLayout(2, 1));
 
@@ -241,11 +241,11 @@ public class InstrumentUI extends javax.swing.JFrame {
                 InsertCartridgeButtonActionPerformed(evt);
             }
         });
-        jPanel7.add(InsertCartridgeButton);
+        InsertCartridge_Panel.add(InsertCartridgeButton);
 
-        instrumentButtons.add(jPanel7);
+        instrumentButtons.add(InsertCartridge_Panel);
 
-        jPanel3.setLayout(new java.awt.GridLayout(1, 4));
+        Buttons_Panel.setLayout(new java.awt.GridLayout(1, 4));
 
         GetImageButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Instrument_gui/GetImage.png"))); // NOI18N
         GetImageButton.addActionListener(new java.awt.event.ActionListener() {
@@ -253,7 +253,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                 GetImageButtonActionPerformed(evt);
             }
         });
-        jPanel3.add(GetImageButton);
+        Buttons_Panel.add(GetImageButton);
 
         TestInfoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Instrument_gui/test.png"))); // NOI18N
         TestInfoButton.addActionListener(new java.awt.event.ActionListener() {
@@ -261,7 +261,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                 TestInfoButtonActionPerformed(evt);
             }
         });
-        jPanel3.add(TestInfoButton);
+        Buttons_Panel.add(TestInfoButton);
 
         CartridgeInfoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Instrument_gui/Cartridge.png"))); // NOI18N
         CartridgeInfoButton.addActionListener(new java.awt.event.ActionListener() {
@@ -269,7 +269,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                 CartridgeInfoButtonActionPerformed(evt);
             }
         });
-        jPanel3.add(CartridgeInfoButton);
+        Buttons_Panel.add(CartridgeInfoButton);
 
         InstrumentInfoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Instrument_gui/Instrument.png"))); // NOI18N
         InstrumentInfoButton.addActionListener(new java.awt.event.ActionListener() {
@@ -277,9 +277,9 @@ public class InstrumentUI extends javax.swing.JFrame {
                 InstrumentInfoButtonActionPerformed(evt);
             }
         });
-        jPanel3.add(InstrumentInfoButton);
+        Buttons_Panel.add(InstrumentInfoButton);
 
-        instrumentButtons.add(jPanel3);
+        instrumentButtons.add(Buttons_Panel);
 
         rightSide.add(instrumentButtons);
 
@@ -590,8 +590,8 @@ public class InstrumentUI extends javax.swing.JFrame {
                 boolean bImage3 = false;
                 boolean bTimestamp = false;
                 boolean bTestJobNumber = false;
-                boolean bFirmwareStatus = false;
-                boolean bDebugDisplayMessage = false;
+                boolean bInfoPanel1 = false;
+                boolean bInfoPanel2 = false;
 
                 String Instrument_attr_name = "";
                 String Instrument_attr_value = "";
@@ -633,10 +633,10 @@ public class InstrumentUI extends javax.swing.JFrame {
                         bTimestamp = true;
                     } else if (qName.equalsIgnoreCase("TestJobNumber")) {
                         bTestJobNumber = true;
-                    } else if (qName.equalsIgnoreCase("FirmwareStatus")) {
-                        bFirmwareStatus = true;
-                    } else if (qName.equalsIgnoreCase("DebugDisplayMessage")) {
-                        bDebugDisplayMessage = true;
+                    } else if (qName.equalsIgnoreCase("InfoPanel1")) {
+                        bInfoPanel1 = true;
+                    } else if (qName.equalsIgnoreCase("InfoPanel2")) {
+                        bInfoPanel2 = true;
                     }
 
                 }
@@ -687,14 +687,14 @@ public class InstrumentUI extends javax.swing.JFrame {
                     } else if (bTestJobNumber) {
                         System.out.println("TestJobNumber : " + new String(ch, start, length));
                         bTestJobNumber = false;
-                    } else if (bFirmwareStatus) {
-                        System.out.println("FormwareStatus : " + new String(ch, start, length));
-                        jTextArea2.setText(new String(ch, start, length));
-                        bFirmwareStatus = false;
-                    } else if (bDebugDisplayMessage) {
-                        System.out.println("DebugDisplayMessage : " + new String(ch, start, length));
-                        jTextArea1.setText(new String(ch, start, length));
-                        bDebugDisplayMessage = false;
+                    } else if (bInfoPanel1) {
+                        System.out.println("InfoPanel1 : " + new String(ch, start, length));
+                        Panel1_TextArea.setText(new String(ch, start, length));
+                        bInfoPanel1 = false;
+                    } else if (bInfoPanel2) {
+                        System.out.println("InfoPanel2 : " + new String(ch, start, length));
+                        Panel2_TextArea.setText(new String(ch, start, length));
+                        bInfoPanel2 = false;
                     }
 
                 }
@@ -753,30 +753,30 @@ public class InstrumentUI extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Buttons_Panel;
     private javax.swing.JButton CartridgeInfoButton;
     private javax.swing.JButton CloseInfoButton;
     private javax.swing.JButton EndTestButton;
     private javax.swing.JButton GetImageButton;
     private javax.swing.JTextArea InfoTextArea;
+    private javax.swing.JScrollPane Info_ScrollPane;
     private javax.swing.JButton InsertCartridgeButton;
+    private javax.swing.JPanel InsertCartridge_Panel;
     private javax.swing.JButton InstrumentInfoButton;
+    private javax.swing.JPanel Panel1_Panel;
+    private javax.swing.JScrollPane Panel1_ScrollPane;
+    private javax.swing.JTextArea Panel1_TextArea;
+    private javax.swing.JPanel Panel2_Panel;
+    private javax.swing.JScrollPane Panel2_ScrollPane;
+    private javax.swing.JTextArea Panel2_TextArea;
     private javax.swing.JComboBox<String> SelectObjectComboBox;
     private javax.swing.JButton TestInfoButton;
+    private javax.swing.JPanel WatchFolderPanel;
+    private javax.swing.JScrollPane WatchFolderScrollPane;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JPanel instrumentButtons;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JPanel leftSideInfoPanel;
-    private javax.swing.JPanel righ_1_Panel;
     private javax.swing.JPanel rightSide;
-    private javax.swing.JPanel right_2_Panel;
-    private javax.swing.JPanel right_3_Panel;
     private javax.swing.JTextArea watchFolderTextArea;
     // End of variables declaration//GEN-END:variables
 }
