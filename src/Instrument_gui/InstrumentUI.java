@@ -14,6 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+// for SAX Parser
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
@@ -579,11 +580,6 @@ public class InstrumentUI extends javax.swing.JFrame {
 
             DefaultHandler handler = new DefaultHandler() {
 
-                boolean bfname = false;
-                boolean blname = false;
-                boolean bnname = false;
-                boolean bsalary = false;
-
                 boolean bSensoDx = false;
                 boolean bTest = false;
                 boolean bInstrument = false;
@@ -594,35 +590,51 @@ public class InstrumentUI extends javax.swing.JFrame {
                 boolean bImage2 = false;
                 boolean bImage3 = false;
                 boolean bTimestamp = false;
-                boolean bTimestampAttributes = false;
-                boolean bFormwareStatus = false;
+                boolean bFirmwareStatus = false;
                 boolean bDebugDisplayMessage = false;
 
-                String Timestamp_attr_name = "";
-                String Timestamp_attr_value = "";
+                String Instrument_attr_name = "";
+                String Instrument_attr_value = "";
+                String Cartridge_attr_name = "";
+                String Cartridge_attr_value = "";
 
                 public void startElement(String uri, String localName, String qName,
                         Attributes attributes) throws SAXException {
 
                     System.out.println("Start Element :" + qName);
 
-                    if (qName.equalsIgnoreCase("FIRSTNAME")) {
-                        bfname = true;
-                    } else if (qName.equalsIgnoreCase("LASTNAME")) {
-                        blname = true;
-                    } else if (qName.equalsIgnoreCase("NICKNAME")) {
-                        bnname = true;
-                    } else if (qName.equalsIgnoreCase("SALARY")) {
-                        bsalary = true;
+                    if (qName.equalsIgnoreCase("SensoDx")) {
+                        bSensoDx = true;
+                    } else if (qName.equalsIgnoreCase("Test")) {
+                        bTest = true;
                     } else if (qName.equalsIgnoreCase("Instrument")) {
                         bInstrument = true;
+                        Instrument_attr_name = attributes.getQName(0);
+                        Instrument_attr_value = attributes.getValue(0);
+                        System.out.println("\t Instrument attr : " + Instrument_attr_name + " = " + Instrument_attr_value);
+
+                    } else if (qName.equalsIgnoreCase("Cartridge")) {
+                        bCartridge = true;
+                        Cartridge_attr_name = attributes.getQName(0);
+                        Cartridge_attr_value = attributes.getValue(0);
+                        System.out.println("\t Cartridge attr : " + Cartridge_attr_name + " = " + Cartridge_attr_value);
+
                     } else if (qName.equalsIgnoreCase("AssayType")) {
                         bAssayType = true;
+                    } else if (qName.equalsIgnoreCase("TestImages")) {
+                        bTestImages = true;
+                    } else if (qName.equalsIgnoreCase("Image1")) {
+                        bImage1 = true;
+                    } else if (qName.equalsIgnoreCase("Image2")) {
+                        bImage2 = true;
+                    } else if (qName.equalsIgnoreCase("Image3")) {
+                        bImage3 = true;
                     } else if (qName.equalsIgnoreCase("Timestamp")) {
                         bTimestamp = true;
-                        bTimestampAttributes = true;
-                        Timestamp_attr_name = attributes.getQName(0);
-                        Timestamp_attr_value = attributes.getValue(0);
+                    } else if (qName.equalsIgnoreCase("FirmwareStatus")) {
+                        bFirmwareStatus = true;
+                    } else if (qName.equalsIgnoreCase("DebugDisplayMessage")) {
+                        bDebugDisplayMessage = true;
                     }
 
                 }
@@ -631,24 +643,16 @@ public class InstrumentUI extends javax.swing.JFrame {
                         String qName) throws SAXException {
 
                     System.out.println("End Element :" + qName);
+                    
+                    if (qName.equalsIgnoreCase("Test")) {
+                        System.out.println("END OF TEST INPUT");
+                    }
 
                 }
 
                 public void characters(char ch[], int start, int length) throws SAXException {
 
-                    if (bfname) {
-                        System.out.println("First Name : " + new String(ch, start, length));
-                        bfname = false;
-                    } else if (blname) {
-                        System.out.println("Last Name : " + new String(ch, start, length));
-                        blname = false;
-                    } else if (bnname) {
-                        System.out.println("Nick Name : " + new String(ch, start, length));
-                        bnname = false;
-                    } else if (bsalary) {
-                        System.out.println("Salary : " + new String(ch, start, length));
-                        bsalary = false;
-                    } else if (bSensoDx) {
+                    if (bSensoDx) {
                         System.out.println("SensoDx : " + new String(ch, start, length));
                         bSensoDx = false;
                     } else if (bTest) {
@@ -677,13 +681,14 @@ public class InstrumentUI extends javax.swing.JFrame {
                         bImage3 = false;
                     } else if (bTimestamp) {
                         System.out.println("Timestamp : " + new String(ch, start, length));
-                        System.out.println("\t Timestamp attr : " + Timestamp_attr_name + " = " + Timestamp_attr_value);
                         bTimestamp = false;
-                    } else if (bFormwareStatus) {
+                    } else if (bFirmwareStatus) {
                         System.out.println("FormwareStatus : " + new String(ch, start, length));
-                        bFormwareStatus = false;
+                        jTextArea2.setText(new String(ch, start, length));
+                        bFirmwareStatus = false;
                     } else if (bDebugDisplayMessage) {
                         System.out.println("DebugDisplayMessage : " + new String(ch, start, length));
+                        jTextArea1.setText(new String(ch, start, length));
                         bDebugDisplayMessage = false;
                     }
 
@@ -691,7 +696,6 @@ public class InstrumentUI extends javax.swing.JFrame {
 
             };
 
-//       saxParser.parse(".\\newXMLDocument.xml", handler);
             saxParser.parse(xmlFile, handler);
 
         } catch (Exception e) {
