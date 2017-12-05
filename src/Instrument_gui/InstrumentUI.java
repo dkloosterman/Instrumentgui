@@ -645,7 +645,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                         String qName) throws SAXException {
 
                     System.out.println("End Element :" + qName);
-                    
+
                     if (qName.equalsIgnoreCase("Test")) {
                         System.out.println("END OF TEST INPUT");
                     }
@@ -653,6 +653,8 @@ public class InstrumentUI extends javax.swing.JFrame {
                 }
 
                 public void characters(char ch[], int start, int length) throws SAXException {
+
+                    java.util.Date date = new java.util.Date();
 
                     if (bSensoDx) {
                         System.out.println("SensoDx : " + new String(ch, start, length));
@@ -689,11 +691,17 @@ public class InstrumentUI extends javax.swing.JFrame {
                         bTestJobNumber = false;
                     } else if (bInfoPanel1) {
                         System.out.println("InfoPanel1 : " + new String(ch, start, length));
-                        Panel1_TextArea.setText(new String(ch, start, length));
+                        String history = Panel1_TextArea.getText();
+                        Panel1_TextArea.setText(date.toString() + '\n'
+                                + new String(ch, start, length)  + '\n' + '\n'
+                                + history);
                         bInfoPanel1 = false;
                     } else if (bInfoPanel2) {
                         System.out.println("InfoPanel2 : " + new String(ch, start, length));
-                        Panel2_TextArea.setText(new String(ch, start, length));
+                        String history = Panel2_TextArea.getText();
+                        Panel2_TextArea.setText(date.toString() + '\n'
+                                + new String(ch, start, length)  + '\n' + '\n'
+                                + history);
                         bInfoPanel2 = false;
                     }
 
