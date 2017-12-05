@@ -14,6 +14,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
 /**
  *
  * @author David Kloosterman
@@ -512,21 +518,35 @@ public class InstrumentUI extends javax.swing.JFrame {
             if (aFile.isFile()) {
                 try {
                     String buildFile = "";
-                    
+
                     File newFile = new File(WATCH_FOLDER_LOCATION + '\\' + aFile.getName());
                     try (BufferedReader reader = new BufferedReader(new FileReader(newFile))) {
                         String lineInFile;
-                        
+
                         while ((lineInFile = reader.readLine()) != null) {
                             buildFile += lineInFile + '\n';
-                        }                      
+                        }
+
+                        String extension = aFile.getName().substring(aFile.getName().lastIndexOf(".") + 1).toLowerCase();
+
+                        switch (extension) {
+                            case ("xml"):
+                                System.out.println("Submitted XML File");
+                                processXMLfile(WATCH_FOLDER_LOCATION + '\\' + aFile.getName());
+                                break;
+                            default:
+                                System.out.println("Submitted File Type: " + extension);
+                                break;
+
+                        }
+
                     }
-                    
-                    watchFolderTextArea.setText("File submitted: \"" + aFile.getName() + 
-                                                    "\" at " + date.toString() + '\n' + 
-                                                    buildFile + 
-                                                    '\n' + saveText);
-                    
+
+                    watchFolderTextArea.setText("File submitted: \"" + aFile.getName()
+                            + "\" at " + date.toString() + '\n'
+                            + buildFile
+                            + '\n' + saveText);
+
                     if (newFile.delete()) {
                         System.out.println("File deleted successfully");
                     } else {
@@ -539,11 +559,149 @@ public class InstrumentUI extends javax.swing.JFrame {
                 } finally {
                 } //end finally
             } else if (aFile.isDirectory()) {
-                watchFolderTextArea.setText("Directory submitted: \"" + aFile.getName() + 
-                                            "\" at " + date.toString() + '\n' + 
-                                            '\n' + saveText);
+                watchFolderTextArea.setText("Directory submitted: \"" + aFile.getName()
+                        + "\" at " + date.toString() + '\n'
+                        + '\n' + saveText);
             }
         }
+    }
+
+    private boolean processXMLfile(String xmlFile) {
+        boolean fileProcessed = false;
+
+        System.out.println("Prepare to pares: " + xmlFile);
+/////////////////
+
+        try {
+
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            SAXParser saxParser = factory.newSAXParser();
+
+            DefaultHandler handler = new DefaultHandler() {
+
+                boolean bfname = false;
+                boolean blname = false;
+                boolean bnname = false;
+                boolean bsalary = false;
+
+                boolean bSensoDx = false;
+                boolean bTest = false;
+                boolean bInstrument = false;
+                boolean bCartridge = false;
+                boolean bAssayType = false;
+                boolean bTestImages = false;
+                boolean bImage1 = false;
+                boolean bImage2 = false;
+                boolean bImage3 = false;
+                boolean bTimestamp = false;
+                boolean bTimestampAttributes = false;
+                boolean bFormwareStatus = false;
+                boolean bDebugDisplayMessage = false;
+
+                String Timestamp_attr_name = "";
+                String Timestamp_attr_value = "";
+
+                public void startElement(String uri, String localName, String qName,
+                        Attributes attributes) throws SAXException {
+
+                    System.out.println("Start Element :" + qName);
+
+                    if (qName.equalsIgnoreCase("FIRSTNAME")) {
+                        bfname = true;
+                    } else if (qName.equalsIgnoreCase("LASTNAME")) {
+                        blname = true;
+                    } else if (qName.equalsIgnoreCase("NICKNAME")) {
+                        bnname = true;
+                    } else if (qName.equalsIgnoreCase("SALARY")) {
+                        bsalary = true;
+                    } else if (qName.equalsIgnoreCase("Instrument")) {
+                        bInstrument = true;
+                    } else if (qName.equalsIgnoreCase("AssayType")) {
+                        bAssayType = true;
+                    } else if (qName.equalsIgnoreCase("Timestamp")) {
+                        bTimestamp = true;
+                        bTimestampAttributes = true;
+                        Timestamp_attr_name = attributes.getQName(0);
+                        Timestamp_attr_value = attributes.getValue(0);
+                    }
+
+                }
+
+                public void endElement(String uri, String localName,
+                        String qName) throws SAXException {
+
+                    System.out.println("End Element :" + qName);
+
+                }
+
+                public void characters(char ch[], int start, int length) throws SAXException {
+
+                    if (bfname) {
+                        System.out.println("First Name : " + new String(ch, start, length));
+                        bfname = false;
+                    } else if (blname) {
+                        System.out.println("Last Name : " + new String(ch, start, length));
+                        blname = false;
+                    } else if (bnname) {
+                        System.out.println("Nick Name : " + new String(ch, start, length));
+                        bnname = false;
+                    } else if (bsalary) {
+                        System.out.println("Salary : " + new String(ch, start, length));
+                        bsalary = false;
+                    } else if (bSensoDx) {
+                        System.out.println("SensoDx : " + new String(ch, start, length));
+                        bSensoDx = false;
+                    } else if (bTest) {
+                        System.out.println("Test : " + new String(ch, start, length));
+                        bTest = false;
+                    } else if (bInstrument) {
+                        System.out.println("Instrument : " + new String(ch, start, length));
+                        bInstrument = false;
+                    } else if (bCartridge) {
+                        System.out.println("Cartridge : " + new String(ch, start, length));
+                        bCartridge = false;
+                    } else if (bAssayType) {
+                        System.out.println("AssayType : " + new String(ch, start, length));
+                        bAssayType = false;
+                    } else if (bTestImages) {
+                        System.out.println("TestImages : " + new String(ch, start, length));
+                        bTestImages = false;
+                    } else if (bImage1) {
+                        System.out.println("Image1 : " + new String(ch, start, length));
+                        bImage1 = false;
+                    } else if (bImage2) {
+                        System.out.println("Image2 : " + new String(ch, start, length));
+                        bImage2 = false;
+                    } else if (bImage3) {
+                        System.out.println("Image3 : " + new String(ch, start, length));
+                        bImage3 = false;
+                    } else if (bTimestamp) {
+                        System.out.println("Timestamp : " + new String(ch, start, length));
+                        System.out.println("\t Timestamp attr : " + Timestamp_attr_name + " = " + Timestamp_attr_value);
+                        bTimestamp = false;
+                    } else if (bFormwareStatus) {
+                        System.out.println("FormwareStatus : " + new String(ch, start, length));
+                        bFormwareStatus = false;
+                    } else if (bDebugDisplayMessage) {
+                        System.out.println("DebugDisplayMessage : " + new String(ch, start, length));
+                        bDebugDisplayMessage = false;
+                    }
+
+                }
+
+            };
+
+//       saxParser.parse(".\\newXMLDocument.xml", handler);
+            saxParser.parse(xmlFile, handler);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+/////////////////
+        fileProcessed = true;
+
+        return (fileProcessed);
     }
 
     /**
