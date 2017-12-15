@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -110,7 +111,7 @@ public class InstrumentUI extends javax.swing.JFrame {
         Panel2_TextArea = new javax.swing.JTextArea();
         instrumentButtons = new javax.swing.JPanel();
         InsertCartridge_Panel = new javax.swing.JPanel();
-        InsertCartridgeButton = new javax.swing.JButton();
+        SimulateInsertCartridgeButton = new javax.swing.JButton();
         Buttons_Panel = new javax.swing.JPanel();
         GetImageButton = new javax.swing.JButton();
         TestInfoButton = new javax.swing.JButton();
@@ -232,16 +233,16 @@ public class InstrumentUI extends javax.swing.JFrame {
 
         instrumentButtons.setLayout(new java.awt.GridLayout(2, 1));
 
-        InsertCartridgeButton.setBackground(new java.awt.Color(255, 255, 153));
-        InsertCartridgeButton.setText("Press here to simulate inserting a cartridge");
-        InsertCartridgeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        InsertCartridgeButton.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        InsertCartridgeButton.addActionListener(new java.awt.event.ActionListener() {
+        SimulateInsertCartridgeButton.setBackground(new java.awt.Color(255, 255, 153));
+        SimulateInsertCartridgeButton.setText("Press here to simulate inserting a cartridge");
+        SimulateInsertCartridgeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        SimulateInsertCartridgeButton.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        SimulateInsertCartridgeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                InsertCartridgeButtonActionPerformed(evt);
+                SimulateInsertCartridgeButtonActionPerformed(evt);
             }
         });
-        InsertCartridge_Panel.add(InsertCartridgeButton);
+        InsertCartridge_Panel.add(SimulateInsertCartridgeButton);
 
         instrumentButtons.add(InsertCartridge_Panel);
 
@@ -316,7 +317,7 @@ public class InstrumentUI extends javax.swing.JFrame {
         }   //end finally 
     }//GEN-LAST:event_SelectObjectComboBoxActionPerformed
 
-    public void createTestCartridge(Cartridge cartridge) {
+    private void createTestCartridge(Cartridge cartridge) {
 
         try {
             // temp code : create a cartridge ID from the current timestamp
@@ -352,7 +353,7 @@ public class InstrumentUI extends javax.swing.JFrame {
 
     private void EndTestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EndTestButtonActionPerformed
         leftSideInfoPanel.setVisible(false);
-        InsertCartridgeButton.setVisible(true);
+        SimulateInsertCartridgeButton.setVisible(true);
         CartridgeInfoButton.setVisible(false);
         EndTestButton.setVisible(false);
         GetImageButton.setVisible(false);
@@ -410,23 +411,28 @@ public class InstrumentUI extends javax.swing.JFrame {
         }   //end finally
     }//GEN-LAST:event_InstrumentInfoButtonActionPerformed
 
-    private void InsertCartridgeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertCartridgeButtonActionPerformed
+    private void SimulateInsertCartridgeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SimulateInsertCartridgeButtonActionPerformed
 
         try {
+            JDBCqueries queries = new JDBCqueries();
+            
             this.cartridge = new Cartridge();
 
             // temp code until real cartridges exist
             this.createTestCartridge(this.cartridge);
 
             // update Instrument Info Text Area with selected Instrument ID
-            JDBCqueries queries = new JDBCqueries();
             queries.insertCartridge(this.cartridge);
             queries.getCartridgeMfgInfo(this.cartridge.getCartridge_id(), this.cartridge);
+            
+            List<String> imagePaths = new ArrayList<>();
+            imagePaths.add(TESTFILE_SAMPLE);
+            
             if (TESTFILE_SAMPLE != null) {
                 File f = new File(TESTFILE_SAMPLE);
                 if (f.exists() && !f.isDirectory()) {
 
-                    this.test = new TestInstance(TESTFILE_SAMPLE);
+                    this.test = new TestInstance(imagePaths);
 
                     if (test.processTest(this.instrument, this.cartridge)) {
                         InfoTextArea.setText(this.test.getTestResultString() + "\n\n" + this.test.toString());
@@ -466,7 +472,7 @@ public class InstrumentUI extends javax.swing.JFrame {
             // update view
             CartridgeInfoButton.setVisible(true);
             SelectObjectComboBox.setVisible(false);
-            InsertCartridgeButton.setVisible(false);
+            SimulateInsertCartridgeButton.setVisible(false);
             leftSideInfoPanel.setVisible(true);
             EndTestButton.setVisible(true);
             GetImageButton.setVisible(true);
@@ -479,7 +485,7 @@ public class InstrumentUI extends javax.swing.JFrame {
             //finally block used to close resources
 
         }   //end finally
-    }//GEN-LAST:event_InsertCartridgeButtonActionPerformed
+    }//GEN-LAST:event_SimulateInsertCartridgeButtonActionPerformed
 
     private void GetImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GetImageButtonActionPerformed
         try {
@@ -768,7 +774,6 @@ public class InstrumentUI extends javax.swing.JFrame {
     private javax.swing.JButton GetImageButton;
     private javax.swing.JTextArea InfoTextArea;
     private javax.swing.JScrollPane Info_ScrollPane;
-    private javax.swing.JButton InsertCartridgeButton;
     private javax.swing.JPanel InsertCartridge_Panel;
     private javax.swing.JButton InstrumentInfoButton;
     private javax.swing.JPanel Panel1_Panel;
@@ -778,6 +783,7 @@ public class InstrumentUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane Panel2_ScrollPane;
     private javax.swing.JTextArea Panel2_TextArea;
     private javax.swing.JComboBox<String> SelectObjectComboBox;
+    private javax.swing.JButton SimulateInsertCartridgeButton;
     private javax.swing.JButton TestInfoButton;
     private javax.swing.JPanel WatchFolderPanel;
     private javax.swing.JScrollPane WatchFolderScrollPane;
