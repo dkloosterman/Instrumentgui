@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -29,6 +30,8 @@ import org.xml.sax.helpers.DefaultHandler;
 public class InstrumentUI extends javax.swing.JFrame {
 
     public static final String TESTFILE_SAMPLE = ".\\TestImage.tif";
+    public static final String TESTFILE_SAMPLE_2 = ".\\TestImage_2.tif";
+
     public static final int WATCH_FOLDER_RATE_MS = 1000;
     public static final String WATCH_FOLDER_LOCATION = ".\\WatchFolder";
 
@@ -415,24 +418,29 @@ public class InstrumentUI extends javax.swing.JFrame {
 
         try {
             JDBCqueries queries = new JDBCqueries();
-            
+
             this.cartridge = new Cartridge();
 
             // temp code until real cartridges exist
             this.createTestCartridge(this.cartridge);
 
-            // update Instrument Info Text Area with selected Instrument ID
             queries.insertCartridge(this.cartridge);
             queries.getCartridgeMfgInfo(this.cartridge.getCartridge_id(), this.cartridge);
-            
+
             List<String> imagePaths = new ArrayList<>();
             imagePaths.add(TESTFILE_SAMPLE);
-            
+            imagePaths.add(TESTFILE_SAMPLE_2);
+
             if (TESTFILE_SAMPLE != null) {
                 File f = new File(TESTFILE_SAMPLE);
                 if (f.exists() && !f.isDirectory()) {
 
                     this.test = new TestInstance(imagePaths);
+
+                    this.test.setPatient_id("1234567890123456");
+                    this.test.setTechnician_id("Joe D. Technician");
+                    this.test.setDoctor_id("Jane Doctor");
+                    this.test.setClinical_test_timestamp(new Timestamp(System.currentTimeMillis()));
 
                     if (test.processTest(this.instrument, this.cartridge)) {
                         InfoTextArea.setText(this.test.getTestResultString() + "\n\n" + this.test.toString());
@@ -493,12 +501,21 @@ public class InstrumentUI extends javax.swing.JFrame {
             // update Instrument Info Text Area with selected Instrument ID
             JDBCqueries queries = new JDBCqueries();
 
-            String filePath = ".\\retrievedTestImage.tif";
-            long fileLength = queries.getClinicalTestImage(this.test.getRaw_assay_data(), filePath);
-            System.out.println("Retrieved clinical test file to: " + filePath);
-            InfoTextArea.setText(InfoTextArea.getText()
-                    + "\n\nRetrieved clinical test file to: " + filePath
-                    + " of length " + fileLength);
+            List<String> imagePaths = this.test.dicom.getClinicalTestFilePathsInInstrument();
+            Iterator<String> iterator = imagePaths.iterator();
+
+            while (iterator.hasNext()) {
+                File imageFile = new File(iterator.next());
+                String fileName = imageFile.getName();
+                FileInputStream fis = new FileInputStream(imageFile);
+
+                String filePath = ".\\retrieved\\" + fileName + ".tif";
+                long fileLength = queries.getClinicalTestImage(this.test.getRaw_assay_data(), filePath);
+                System.out.println("Retrieved clinical test file to: " + filePath);
+                InfoTextArea.setText(InfoTextArea.getText()
+                        + "\n\nRetrieved clinical test file to: " + filePath
+                        + " of length " + fileLength);
+            }
 
         } catch (Exception e) {
             // handle the error
@@ -510,7 +527,7 @@ public class InstrumentUI extends javax.swing.JFrame {
         }   //end finally
     }//GEN-LAST:event_GetImageButtonActionPerformed
 
-    static int counter = 0;
+//    static int counter = 0;
     File folder = new File(WATCH_FOLDER_LOCATION);
 
     private void watchFolder() {
@@ -576,7 +593,7 @@ public class InstrumentUI extends javax.swing.JFrame {
     private boolean processXMLfile(String xmlFile) {
         boolean fileProcessed = false;
 
-        System.out.println("Prepare to pares: " + xmlFile);
+        System.out.println("Prepare to parse: " + xmlFile);
 
         try {
 
@@ -699,14 +716,14 @@ public class InstrumentUI extends javax.swing.JFrame {
                         System.out.println("InfoPanel1 : " + new String(ch, start, length));
                         String history = Panel1_TextArea.getText();
                         Panel1_TextArea.setText(date.toString() + '\n'
-                                + new String(ch, start, length)  + '\n' + '\n'
+                                + new String(ch, start, length) + '\n' + '\n'
                                 + history);
                         bInfoPanel1 = false;
                     } else if (bInfoPanel2) {
                         System.out.println("InfoPanel2 : " + new String(ch, start, length));
                         String history = Panel2_TextArea.getText();
                         Panel2_TextArea.setText(date.toString() + '\n'
-                                + new String(ch, start, length)  + '\n' + '\n'
+                                + new String(ch, start, length) + '\n' + '\n'
                                 + history);
                         bInfoPanel2 = false;
                     }
