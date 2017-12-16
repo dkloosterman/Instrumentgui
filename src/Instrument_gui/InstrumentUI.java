@@ -31,6 +31,7 @@ public class InstrumentUI extends javax.swing.JFrame {
 
     public static final String TESTFILE_SAMPLE = ".\\TestImage.tif";
     public static final String TESTFILE_SAMPLE_2 = ".\\TestImage_2.tif";
+    public static final String TESTFILE_SAMPLE_3 = ".\\Test.txt";
 
     public static final int WATCH_FOLDER_RATE_MS = 1000;
     public static final String WATCH_FOLDER_LOCATION = ".\\WatchFolder";
@@ -430,6 +431,7 @@ public class InstrumentUI extends javax.swing.JFrame {
             List<String> imagePaths = new ArrayList<>();
             imagePaths.add(TESTFILE_SAMPLE);
             imagePaths.add(TESTFILE_SAMPLE_2);
+            imagePaths.add(TESTFILE_SAMPLE_3);
 
             if (TESTFILE_SAMPLE != null) {
                 File f = new File(TESTFILE_SAMPLE);
@@ -502,14 +504,11 @@ public class InstrumentUI extends javax.swing.JFrame {
             JDBCqueries queries = new JDBCqueries();
 
             List<String> imagePaths = this.test.dicom.getClinicalTestFilePathsInInstrument();
-            Iterator<String> iterator = imagePaths.iterator();
 
-            while (iterator.hasNext()) {
-                File imageFile = new File(iterator.next());
+            for (String image : imagePaths) {
+                File imageFile = new File(image);
                 String fileName = imageFile.getName();
-                FileInputStream fis = new FileInputStream(imageFile);
-
-                String filePath = ".\\retrieved\\" + fileName + ".tif";
+                String filePath = ".\\retrieved\\" + fileName;
                 long fileLength = queries.getClinicalTestImage(this.test.getRaw_assay_data(), filePath);
                 System.out.println("Retrieved clinical test file to: " + filePath);
                 InfoTextArea.setText(InfoTextArea.getText()
