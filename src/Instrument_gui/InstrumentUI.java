@@ -433,24 +433,31 @@ public class InstrumentUI extends javax.swing.JFrame {
             imagePaths.add(TESTFILE_SAMPLE_2);
             imagePaths.add(TESTFILE_SAMPLE_3);
 
-            if (TESTFILE_SAMPLE != null) {
-                File f = new File(TESTFILE_SAMPLE);
-                if (f.exists() && !f.isDirectory()) {
+            boolean validImages = true;
+            for (String image : imagePaths) {
 
-                    this.test = new TestInstance(imagePaths);
+                if (image == null) {
+                    validImages = false;
 
-                    this.test.setPatient_id("1234567890123456");
-                    this.test.setTechnician_id("Joe D. Technician");
-                    this.test.setDoctor_id("Jane Doctor");
-                    this.test.setClinical_test_timestamp(new Timestamp(System.currentTimeMillis()));
+                    Errors error = new Errors();
 
-                    if (test.processTest(this.instrument, this.cartridge)) {
-                        InfoTextArea.setText(this.test.getTestResultString() + "\n\n" + this.test.toString());
-                    } else {
-                        InfoTextArea.setText(this.test.getTestResultString());
-                    }
+                    error.buildErrorObject_ClinicalTestImageSetToNull(this.instrument.getInstrument_id(),
+                            this.cartridge.getCartridge_id(),
+                            null);
 
-                } else {
+                    queries.insertError(error);
+
+                    InfoTextArea.setText(error.toString());
+
+                    InfoTextArea.setText("Error: Unable to run test because input clinical test image "
+                            + "is set to null");
+                    break;
+                }
+
+                File f = new File(image);
+                if (!f.exists() || f.isDirectory()) {
+                    validImages = false;
+
                     Errors error = new Errors();
 
                     error.buildErrorObject_ClinicalTestImageNotFound(this.instrument.getInstrument_id(),
@@ -461,22 +468,25 @@ public class InstrumentUI extends javax.swing.JFrame {
                     queries.insertError(error);
 
                     InfoTextArea.setText(error.toString());
-                    error = null;
+                    break;
                 }
-            } else {
-                Errors error = new Errors();
+           }
 
-                error.buildErrorObject_ClinicalTestImageSetToNull(this.instrument.getInstrument_id(),
-                        this.cartridge.getCartridge_id(),
-                        null);
+            if (validImages == true) {
 
-                queries.insertError(error);
+                this.test = new TestInstance(imagePaths);
 
-                InfoTextArea.setText(error.toString());
-                error = null;
+                this.test.setPatient_id("1234567890123456");
+                this.test.setTechnician_id("Joe D. Technician");
+                this.test.setDoctor_id("Jane Doctor");
+                this.test.setClinical_test_timestamp(new Timestamp(System.currentTimeMillis()));
 
-                InfoTextArea.setText("Error: Unable to run test because input clinical test image "
-                        + "is set to null");
+                if (test.processTest(this.instrument, this.cartridge)) {
+                    InfoTextArea.setText(this.test.getTestResultString() + "\n\n" + this.test.toString());
+                } else {
+                    InfoTextArea.setText(this.test.getTestResultString());
+                }
+
             }
 
             // update view
@@ -504,7 +514,7 @@ public class InstrumentUI extends javax.swing.JFrame {
             JDBCqueries queries = new JDBCqueries();
 
             List<TestImage> images = this.test.dicom.getTestImages();
-            
+
             for (TestImage image : images) {
                 File imageFile = new File(image.getTestImagePath());
                 String fileName = imageFile.getName();
@@ -619,8 +629,8 @@ public class InstrumentUI extends javax.swing.JFrame {
                 String Instrument_attr_value = "";
                 String Cartridge_attr_name = "";
                 String Cartridge_attr_value = "";
-                
-                List<String> imagePaths = new ArrayList<>();              
+
+                List<String> imagePaths = new ArrayList<>();
 
                 public void startElement(String uri, String localName, String qName,
                         Attributes attributes) throws SAXException {
