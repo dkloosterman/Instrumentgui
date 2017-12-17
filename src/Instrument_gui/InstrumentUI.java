@@ -2,7 +2,7 @@ package Instrument_gui;
 
 import Cartridge_pkg.Cartridge;
 import Instrument_pkg.Instrument;
-import TestInstance_pkg.TestInstance;
+import TestInstance_pkg.*;
 import JDBCqueries_pkg.JDBCqueries;
 import Errors_pkg.Errors;
 import java.sql.Timestamp;
@@ -503,13 +503,13 @@ public class InstrumentUI extends javax.swing.JFrame {
             // update Instrument Info Text Area with selected Instrument ID
             JDBCqueries queries = new JDBCqueries();
 
-            List<String> imagePaths = this.test.dicom.getClinicalTestFilePathsInInstrument();
-
-            for (String image : imagePaths) {
-                File imageFile = new File(image);
+            List<TestImage> images = this.test.dicom.getTestImages();
+            
+            for (TestImage image : images) {
+                File imageFile = new File(image.getTestImagePath());
                 String fileName = imageFile.getName();
                 String filePath = ".\\retrieved\\" + fileName;
-                long fileLength = queries.getClinicalTestImage(this.test.getRaw_assay_data(), filePath);
+                long fileLength = queries.getClinicalTestImage(image.getClinicalTestImage_id(), filePath);
                 System.out.println("Retrieved clinical test file to: " + filePath);
                 InfoTextArea.setText(InfoTextArea.getText()
                         + "\n\nRetrieved clinical test file to: " + filePath
@@ -619,6 +619,8 @@ public class InstrumentUI extends javax.swing.JFrame {
                 String Instrument_attr_value = "";
                 String Cartridge_attr_name = "";
                 String Cartridge_attr_value = "";
+                
+                List<String> imagePaths = new ArrayList<>();              
 
                 public void startElement(String uri, String localName, String qName,
                         Attributes attributes) throws SAXException {
