@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -30,6 +29,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class InstrumentUI extends javax.swing.JFrame {
 
     public static final String TESTFILE_SAMPLE = ".\\TestImage.tif";
+//    public static final String TESTFILE_SAMPLE = null;    
     public static final String TESTFILE_SAMPLE_2 = ".\\TestImage_2.tif";
     public static final String TESTFILE_SAMPLE_3 = ".\\Test.txt";
 
@@ -449,8 +449,8 @@ public class InstrumentUI extends javax.swing.JFrame {
 
                     InfoTextArea.setText(error.toString());
 
-                    InfoTextArea.setText("Error: Unable to run test because input clinical test image "
-                            + "is set to null");
+//                    InfoTextArea.setText("Error: Unable to run test because input clinical test image "
+//                            + "is set to null");
                     break;
                 }
 
@@ -510,7 +510,6 @@ public class InstrumentUI extends javax.swing.JFrame {
     private void GetImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GetImageButtonActionPerformed
         try {
 
-            // update Instrument Info Text Area with selected Instrument ID
             JDBCqueries queries = new JDBCqueries();
 
             List<TestImage> images = this.test.dicom.getTestImages();
