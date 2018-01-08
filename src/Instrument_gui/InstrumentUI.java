@@ -705,12 +705,23 @@ public class InstrumentUI extends javax.swing.JFrame {
                         FileWriter fw = null;
                         try {
                             JDBCqueries queries = new JDBCqueries();
-//                            isCartridgeIDvalid = "TestCart"; // uncomment for testing only
+                            //isCartridgeIDvalid = "TestCart"; // uncomment for testing only
                             boolean result = queries.isCartridgeValidToUse(isCartridgeIDvalid);
 
-                            fw = new FileWriter(MC_WATCH_FOLDER_LOCATION + "\\validCartridge.txt");
+                            fw = new FileWriter(MC_WATCH_FOLDER_LOCATION + "\\validCartridge.xml");
                             bw = new BufferedWriter(fw);
-                            bw.write(isCartridgeIDvalid + " is Valid? - " + result);
+                            String resultString = "<SensoDx>\n"
+                                    + "   <CartridgeID>"
+                                    + isCartridgeIDvalid
+                                    + "</CartridgeID>\n"
+                                    + "   <isCartridgeValid_response>"
+                                    + result
+                                    + "</isCartridgeValid_response>\n"
+                                    + "</SensoDx>\n\n";
+
+                            bw.write(resultString);
+                            Panel2_TextArea.setText(resultString + Panel2_TextArea.getText());
+
                             System.out.println(isCartridgeIDvalid + " is Valid? - " + result);
 
                         } catch (Exception e) {
@@ -718,15 +729,12 @@ public class InstrumentUI extends javax.swing.JFrame {
                             System.out.println("\n" + "General Exception " + e.getMessage());
                         } finally {
                             try {
-
                                 if (bw != null) {
                                     bw.close();
                                 }
-
                                 if (fw != null) {
                                     fw.close();
                                 }
-
                             } catch (IOException ex) {
                                 ex.printStackTrace();
                             }
