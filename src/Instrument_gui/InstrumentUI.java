@@ -34,7 +34,9 @@ public class InstrumentUI extends javax.swing.JFrame {
     public static final String TESTFILE_SAMPLE_3 = ".\\Test.txt";
 
     public static final int WATCH_FOLDER_RATE_MS = 1000;
-    public static final String WATCH_FOLDER_LOCATION = ".\\WatchFolder";
+    public static final String APP_WATCH_FOLDER_LOCATION = ".\\AppWatchFolder";
+    public static final String MC_WATCH_FOLDER_LOCATION = ".\\MC_WatchFolder";
+    File folder = new File(APP_WATCH_FOLDER_LOCATION);
 
     TestInstance test;
     Cartridge cartridge;
@@ -65,7 +67,26 @@ public class InstrumentUI extends javax.swing.JFrame {
                 SelectObjectComboBox.addItem(ID);
             }
 
-            // setup watch folder
+            // create App watch folder if it's not already there
+            File file = new File(APP_WATCH_FOLDER_LOCATION);
+            if (!file.exists()) {
+                if (file.mkdir()) {
+                    System.out.println("Directory " + APP_WATCH_FOLDER_LOCATION + " is created!");
+                } else {
+                    System.out.println("Failed to create directory: " + APP_WATCH_FOLDER_LOCATION);
+                }
+            }
+
+            // create Machine Control watch folder if it's not already there
+            File MCfile = new File(MC_WATCH_FOLDER_LOCATION);
+            if (!MCfile.exists()) {
+                if (MCfile.mkdir()) {
+                    System.out.println("Directory " + MC_WATCH_FOLDER_LOCATION + " is created!");
+                } else {
+                    System.out.println("Failed to create directory: " + MC_WATCH_FOLDER_LOCATION);
+                }
+            }
+
             //  set up schedule to update the lower text area
             ScheduledExecutorService execService
                     = Executors.newScheduledThreadPool(1);
@@ -73,7 +94,7 @@ public class InstrumentUI extends javax.swing.JFrame {
             execService.scheduleAtFixedRate(() -> {
 
                 //The repetitive task... 
-                this.watchFolder();
+                this.appWatchFolder();
 
             }, 0, WATCH_FOLDER_RATE_MS, TimeUnit.MILLISECONDS);
 
@@ -380,7 +401,7 @@ public class InstrumentUI extends javax.swing.JFrame {
         } catch (Exception e) {
             // handle the error
             System.out.println("\n" + "General Exception " + e.getMessage());
-            System.exit(0);
+//            System.exit(0);
         } finally {
             //finally block used to close resources
 
@@ -470,7 +491,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                     InfoTextArea.setText(error.toString());
                     break;
                 }
-           }
+            }
 
             if (validImages == true) {
 
@@ -535,10 +556,7 @@ public class InstrumentUI extends javax.swing.JFrame {
         }   //end finally
     }//GEN-LAST:event_GetImageButtonActionPerformed
 
-//    static int counter = 0;
-    File folder = new File(WATCH_FOLDER_LOCATION);
-
-    private void watchFolder() {
+    private void appWatchFolder() {
         File[] listOfFiles = folder.listFiles();
 
         Arrays.sort(listOfFiles, Comparator.comparingLong(File::lastModified));
@@ -551,7 +569,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                 try {
                     String buildFile = "";
 
-                    File newFile = new File(WATCH_FOLDER_LOCATION + '\\' + aFile.getName());
+                    File newFile = new File(APP_WATCH_FOLDER_LOCATION + '\\' + aFile.getName());
                     try (BufferedReader reader = new BufferedReader(new FileReader(newFile))) {
                         String lineInFile;
 
@@ -564,7 +582,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                         switch (extension) {
                             case ("xml"):
                                 System.out.println("Submitted XML File");
-                                processXMLfile(WATCH_FOLDER_LOCATION + '\\' + aFile.getName());
+                                processXMLfile(APP_WATCH_FOLDER_LOCATION + '\\' + aFile.getName());
                                 break;
                             default:
                                 System.out.println("Submitted File Type: " + extension);
@@ -580,9 +598,9 @@ public class InstrumentUI extends javax.swing.JFrame {
                             + '\n' + saveText);
 
                     if (newFile.delete()) {
-                        System.out.println("File deleted successfully");
+                        System.out.println("File deleted successfully from: " + APP_WATCH_FOLDER_LOCATION);
                     } else {
-                        System.out.println("Failed to delete the file");
+                        System.out.println("Failed to delete the file from: " + APP_WATCH_FOLDER_LOCATION);
                     }
                 } catch (Exception e) {
                     // handle the error
@@ -616,18 +634,18 @@ public class InstrumentUI extends javax.swing.JFrame {
                 boolean bCartridge = false;
                 boolean bAssayType = false;
                 boolean bTestImages = false;
-                boolean bImage1 = false;
-                boolean bImage2 = false;
-                boolean bImage3 = false;
+                boolean bImage = false;
                 boolean bTimestamp = false;
                 boolean bTestJobNumber = false;
                 boolean bInfoPanel1 = false;
                 boolean bInfoPanel2 = false;
+                boolean bIsCartridgeValid = false;
 
                 String Instrument_attr_name = "";
                 String Instrument_attr_value = "";
                 String Cartridge_attr_name = "";
                 String Cartridge_attr_value = "";
+                String isCartridgeIDvalid = "";
 
                 List<String> imagePaths = new ArrayList<>();
 
@@ -656,12 +674,8 @@ public class InstrumentUI extends javax.swing.JFrame {
                         bAssayType = true;
                     } else if (qName.equalsIgnoreCase("TestImages")) {
                         bTestImages = true;
-                    } else if (qName.equalsIgnoreCase("Image1")) {
-                        bImage1 = true;
-                    } else if (qName.equalsIgnoreCase("Image2")) {
-                        bImage2 = true;
-                    } else if (qName.equalsIgnoreCase("Image3")) {
-                        bImage3 = true;
+                    } else if (qName.equalsIgnoreCase("Image")) {
+                        bImage = true;
                     } else if (qName.equalsIgnoreCase("Timestamp")) {
                         bTimestamp = true;
                     } else if (qName.equalsIgnoreCase("TestJobNumber")) {
@@ -670,6 +684,8 @@ public class InstrumentUI extends javax.swing.JFrame {
                         bInfoPanel1 = true;
                     } else if (qName.equalsIgnoreCase("InfoPanel2")) {
                         bInfoPanel2 = true;
+                    } else if (qName.equalsIgnoreCase("isCartridgeValid")) {
+                        bIsCartridgeValid = true;
                     }
 
                 }
@@ -681,8 +697,41 @@ public class InstrumentUI extends javax.swing.JFrame {
 
                     if (qName.equalsIgnoreCase("Test")) {
                         System.out.println("END OF TEST INPUT");
-                    }
 
+                    } else if (qName.equalsIgnoreCase("isCartridgeValid")) {
+                        System.out.println("END OF isCartridgeValid");
+
+                        BufferedWriter bw = null;
+                        FileWriter fw = null;
+                        try {
+                            JDBCqueries queries = new JDBCqueries();
+//                            isCartridgeIDvalid = "TestCart"; // uncomment for testing only
+                            boolean result = queries.isCartridgeValidToUse(isCartridgeIDvalid);
+
+                            fw = new FileWriter(MC_WATCH_FOLDER_LOCATION + "\\validCartridge.txt");
+                            bw = new BufferedWriter(fw);
+                            bw.write(isCartridgeIDvalid + " is Valid? - " + result);
+                            System.out.println(isCartridgeIDvalid + " is Valid? - " + result);
+
+                        } catch (Exception e) {
+                            // handle the error
+                            System.out.println("\n" + "General Exception " + e.getMessage());
+                        } finally {
+                            try {
+
+                                if (bw != null) {
+                                    bw.close();
+                                }
+
+                                if (fw != null) {
+                                    fw.close();
+                                }
+
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+                        }   //end finally
+                    }
                 }
 
                 public void characters(char ch[], int start, int length) throws SAXException {
@@ -707,15 +756,9 @@ public class InstrumentUI extends javax.swing.JFrame {
                     } else if (bTestImages) {
                         System.out.println("TestImages : " + new String(ch, start, length));
                         bTestImages = false;
-                    } else if (bImage1) {
-                        System.out.println("Image1 : " + new String(ch, start, length));
-                        bImage1 = false;
-                    } else if (bImage2) {
-                        System.out.println("Image2 : " + new String(ch, start, length));
-                        bImage2 = false;
-                    } else if (bImage3) {
-                        System.out.println("Image3 : " + new String(ch, start, length));
-                        bImage3 = false;
+                    } else if (bImage) {
+                        System.out.println("Image : " + new String(ch, start, length));
+                        bImage = false;
                     } else if (bTimestamp) {
                         System.out.println("Timestamp : " + new String(ch, start, length));
                         bTimestamp = false;
@@ -736,6 +779,10 @@ public class InstrumentUI extends javax.swing.JFrame {
                                 + new String(ch, start, length) + '\n' + '\n'
                                 + history);
                         bInfoPanel2 = false;
+                    } else if (bIsCartridgeValid) {
+                        isCartridgeIDvalid = new String(ch, start, length);
+                        System.out.println("isCartridgeValid : " + isCartridgeIDvalid);
+                        bIsCartridgeValid = false;
                     }
 
                 }
@@ -768,16 +815,24 @@ public class InstrumentUI extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InstrumentUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InstrumentUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InstrumentUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InstrumentUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InstrumentUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InstrumentUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InstrumentUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InstrumentUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

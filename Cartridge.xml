@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SensoDx>
+  <InfoPanel1>Request to know if Cartridge is Valid</InfoPanel1>
+  <InfoPanel2>Put result in MC watch folder</InfoPanel2>
+  <isCartridgeValid>12345</isCartridgeValid>
+</SensoDx>

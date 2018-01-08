@@ -6,9 +6,9 @@
       <AssayType>OralCancer</AssayType>
     </Cartridge>
     <TestImages>
-      <Image1>../TestImages/20171106_172030005_1.jpg</Image1>
-      <Image2>../TestImages/20171106_172030005_2.jpg</Image2>
-      <Image3>../TestImages/20171106_172030005_3.jpg</Image3>
+      <Image>../TestImages/20171106_172030005_1.jpg</Image>
+      <Image>../TestImages/20171106_172030005_2.jpg</Image>
+      <Image>../TestImages/20171106_172030005_3.jpg</Image>
     </TestImages>
     <Timestamp>20171107_093559001</Timestamp>
     <TestJobNumber>20171107_093550001_20171016_1</TestJobNumber>
