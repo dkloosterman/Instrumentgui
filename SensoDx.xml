@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <SensoDx>
   <Test>
-    <Instrument InstrumentID="20171016_1"/>
-    <Cartridge CartridgeID="20170704_26">
+    <Instrument InstrumentID="2017040300001" />
+    <Cartridge CartridgeID="TrustMe">
       <AssayType>OralCancer</AssayType>
     </Cartridge>
     <TestImages>
-      <Image>../TestImages/20171106_172030005_1.jpg</Image>
-      <Image>../TestImages/20171106_172030005_2.jpg</Image>
-      <Image>../TestImages/20171106_172030005_3.jpg</Image>
+      <Image>./TestImage.tif</Image>
+      <Image>./Test.txt</Image>
+      <Image>./TestImage_2.tif</Image>
     </TestImages>
     <Timestamp>20171107_093559001</Timestamp>
     <TestJobNumber>20171107_093550001_20171016_1</TestJobNumber>

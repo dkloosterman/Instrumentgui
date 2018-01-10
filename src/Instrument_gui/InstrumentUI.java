@@ -38,9 +38,11 @@ public class InstrumentUI extends javax.swing.JFrame {
     public static final String MC_WATCH_FOLDER_LOCATION = ".\\MC_WatchFolder";
     File folder = new File(APP_WATCH_FOLDER_LOCATION);
 
-    TestInstance test;
+    public TestInstance test;
     Cartridge cartridge;
     Instrument instrument;
+
+    public static final boolean TRUST_MY_CARTRIDGE = true;
 
     /**
      * Creates new form TopScreen
@@ -342,7 +344,7 @@ public class InstrumentUI extends javax.swing.JFrame {
         }   //end finally 
     }//GEN-LAST:event_SelectObjectComboBoxActionPerformed
 
-    private void createTestCartridge(Cartridge cartridge) {
+    private void createTestCartridge(Cartridge cartridge, Cartridge.DeploymentType deployType) {
 
         try {
             // temp code : create a cartridge ID from the current timestamp
@@ -359,7 +361,7 @@ public class InstrumentUI extends javax.swing.JFrame {
             cartID = cartID.replace("-", "");
             cartridge.setCartridge_id(cartID);
             cartridge.setManufactured_timestamp(new Timestamp(System.currentTimeMillis()));
-            cartridge.setDeployment_type(Cartridge.DeploymentType.Virtual.toString());
+            cartridge.setDeployment_type(deployType.toString());
             cartridge.setManufactured_location("Perinton, NY");
             cartridge.setAssay_type(test.CARDIAC_WELLNESS_TEST);
             cartridge.setSubsystem_1_id("0000000010000002");
@@ -444,7 +446,7 @@ public class InstrumentUI extends javax.swing.JFrame {
             this.cartridge = new Cartridge();
 
             // temp code until real cartridges exist
-            this.createTestCartridge(this.cartridge);
+            this.createTestCartridge(this.cartridge, Cartridge.DeploymentType.Virtual);
 
             queries.insertCartridge(this.cartridge);
             queries.getCartridgeMfgInfo(this.cartridge.getCartridge_id(), this.cartridge);
@@ -646,6 +648,8 @@ public class InstrumentUI extends javax.swing.JFrame {
                 String Cartridge_attr_name = "";
                 String Cartridge_attr_value = "";
                 String isCartridgeIDvalid = "";
+                List<String> testImages;
+                String imagePath = null;
 
                 List<String> imagePaths = new ArrayList<>();
 
@@ -657,6 +661,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                     if (qName.equalsIgnoreCase("SensoDx")) {
                         bSensoDx = true;
                     } else if (qName.equalsIgnoreCase("Test")) {
+                        testImages = new ArrayList<>();
                         bTest = true;
                     } else if (qName.equalsIgnoreCase("Instrument")) {
                         bInstrument = true;
@@ -696,6 +701,56 @@ public class InstrumentUI extends javax.swing.JFrame {
                     System.out.println("End Element :" + qName);
 
                     if (qName.equalsIgnoreCase("Test")) {
+                        Cartridge cartridge = new Cartridge();
+                        Instrument instrument = new Instrument();
+                        JDBCqueries queries = new JDBCqueries();
+
+                        // if CartridgeID is TrustMe, create a "TrustMe" cartridge
+                        if (Cartridge_attr_value.equals("TrustMe")
+                                && TRUST_MY_CARTRIDGE == true) {
+                            createTestCartridge(cartridge, Cartridge.DeploymentType.TrustMe);
+
+                            queries.insertCartridge(cartridge);
+                        } else {
+                            cartridge.setCartridge_id(Cartridge_attr_value);
+                            queries.getCartridgeMfgInfo(Cartridge_attr_value, cartridge);
+                        }
+
+                        instrument.setInstrument_id(Instrument_attr_name);
+                        queries.getInstrumentMfgInfo(Instrument_attr_value, instrument);
+                        queries.getInstrumentDeploymentInfo(Instrument_attr_value, instrument);
+
+                        // verify >= 1 valid image
+                        if (!testImages.isEmpty()) {
+                            TestInstance test = new TestInstance(testImages);
+
+                            test.setPatient_id("XYZ_HF");
+                            test.setTechnician_id("Mike HF Technician");
+                            test.setDoctor_id("Susan HF Doctor");
+                            test.setClinical_test_timestamp(new Timestamp(System.currentTimeMillis()));
+
+                            if (test.processTest(instrument, cartridge)) {
+                                InfoTextArea.setText(test.getTestResultString() + "\n\n" + test.toString());
+                            } else {
+                                InfoTextArea.setText(test.getTestResultString());
+                            }
+
+                            // update view
+                            CartridgeInfoButton.setVisible(false);
+                            SelectObjectComboBox.setVisible(false);
+                            SimulateInsertCartridgeButton.setVisible(true);
+                            leftSideInfoPanel.setVisible(true);
+                            EndTestButton.setVisible(true);
+                            GetImageButton.setVisible(false);
+                            TestInfoButton.setVisible(false);
+
+                        } else {
+                            Panel2_TextArea.setText("Unable to process test with zero valid images provided\n"
+                                    + Panel2_TextArea.getText());
+                        }
+
+                        // create new TestInstance
+                        // call ProcessTest()
                         System.out.println("END OF TEST INPUT");
 
                     } else if (qName.equalsIgnoreCase("isCartridgeValid")) {
@@ -705,16 +760,15 @@ public class InstrumentUI extends javax.swing.JFrame {
                         FileWriter fw = null;
                         try {
                             JDBCqueries queries = new JDBCqueries();
-                            //isCartridgeIDvalid = "TestCart"; // uncomment for testing only
+//                            isCartridgeIDvalid = "TestCart"; // uncomment for testing only
                             boolean result = queries.isCartridgeValidToUse(isCartridgeIDvalid);
 
                             fw = new FileWriter(MC_WATCH_FOLDER_LOCATION + "\\validCartridge.xml");
                             bw = new BufferedWriter(fw);
                             String resultString = "<SensoDx>\n"
-                                    + "   <CartridgeID>"
+                                    + "   <isCartridgeValid_response cartridgeID=\""
                                     + isCartridgeIDvalid
-                                    + "</CartridgeID>\n"
-                                    + "   <isCartridgeValid_response>"
+                                    + "\">"
                                     + result
                                     + "</isCartridgeValid_response>\n"
                                     + "</SensoDx>\n\n";
@@ -739,6 +793,18 @@ public class InstrumentUI extends javax.swing.JFrame {
                                 ex.printStackTrace();
                             }
                         }   //end finally
+                    } else if (qName.equalsIgnoreCase("Image")) {
+                        File f = new File(imagePath);
+
+                        if (f.exists()) {
+                            testImages.add(imagePath);
+                        } else {
+                            Panel2_TextArea.setText("File " + imagePath + " not found!\n" + Panel2_TextArea.getText());
+                            System.out.println("File " + imagePath + " not found!");
+                        }
+
+                    } else if (qName.equalsIgnoreCase("TestImages")) {
+                        System.out.println("Test Images received: " + testImages.toString());
                     }
                 }
 
@@ -765,7 +831,8 @@ public class InstrumentUI extends javax.swing.JFrame {
                         System.out.println("TestImages : " + new String(ch, start, length));
                         bTestImages = false;
                     } else if (bImage) {
-                        System.out.println("Image : " + new String(ch, start, length));
+                        imagePath = new String(ch, start, length);
+                        System.out.println("Image : " + imagePath);
                         bImage = false;
                     } else if (bTimestamp) {
                         System.out.println("Timestamp : " + new String(ch, start, length));
@@ -775,17 +842,15 @@ public class InstrumentUI extends javax.swing.JFrame {
                         bTestJobNumber = false;
                     } else if (bInfoPanel1) {
                         System.out.println("InfoPanel1 : " + new String(ch, start, length));
-                        String history = Panel1_TextArea.getText();
                         Panel1_TextArea.setText(date.toString() + '\n'
                                 + new String(ch, start, length) + '\n' + '\n'
-                                + history);
+                                + Panel1_TextArea.getText());
                         bInfoPanel1 = false;
                     } else if (bInfoPanel2) {
                         System.out.println("InfoPanel2 : " + new String(ch, start, length));
-                        String history = Panel2_TextArea.getText();
                         Panel2_TextArea.setText(date.toString() + '\n'
                                 + new String(ch, start, length) + '\n' + '\n'
-                                + history);
+                                + Panel2_TextArea.getText());
                         bInfoPanel2 = false;
                     } else if (bIsCartridgeValid) {
                         isCartridgeIDvalid = new String(ch, start, length);

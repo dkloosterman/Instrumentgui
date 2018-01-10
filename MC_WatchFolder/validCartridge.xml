@@ -1,5 +1,4 @@
 <SensoDx>
-   <CartridgeID>12345</CartridgeID>
-   <isCartridgeValid_response>false</isCartridgeValid_response>
+   <isCartridgeValid_response cartridgeID="12345">false</isCartridgeValid_response>
 </SensoDx>
 
