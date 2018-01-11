@@ -581,6 +581,11 @@ public class InstrumentUI extends javax.swing.JFrame {
 
                         String extension = aFile.getName().substring(aFile.getName().lastIndexOf(".") + 1).toLowerCase();
 
+                        watchFolderTextArea.setText("File submitted: \"" + aFile.getName()
+                                + "\" at " + date.toString() + '\n'
+                                + buildFile
+                                + '\n' + saveText);
+
                         switch (extension) {
                             case ("xml"):
                                 System.out.println("Submitted XML File");
@@ -593,11 +598,6 @@ public class InstrumentUI extends javax.swing.JFrame {
                         }
 
                     }
-
-                    watchFolderTextArea.setText("File submitted: \"" + aFile.getName()
-                            + "\" at " + date.toString() + '\n'
-                            + buildFile
-                            + '\n' + saveText);
 
                     if (newFile.delete()) {
                         System.out.println("File deleted successfully from: " + APP_WATCH_FOLDER_LOCATION);
@@ -705,6 +705,9 @@ public class InstrumentUI extends javax.swing.JFrame {
                         Instrument instrument = new Instrument();
                         JDBCqueries queries = new JDBCqueries();
 
+                        Panel2_TextArea.setText("Processing a Diagnostic Test\n"
+                                + Panel2_TextArea.getText());
+
                         // if CartridgeID is TrustMe, create a "TrustMe" cartridge
                         if (Cartridge_attr_value.equals("TrustMe")
                                 && TRUST_MY_CARTRIDGE == true) {
@@ -751,6 +754,10 @@ public class InstrumentUI extends javax.swing.JFrame {
 
                         // create new TestInstance
                         // call ProcessTest()
+                        Panel2_TextArea.setText("Finished Processing a Diagnostic Test\n"
+                                    + Panel2_TextArea.getText());
+
+
                         System.out.println("END OF TEST INPUT");
 
                     } else if (qName.equalsIgnoreCase("isCartridgeValid")) {
@@ -775,13 +782,14 @@ public class InstrumentUI extends javax.swing.JFrame {
 
                             bw.write(resultString);
                             Panel2_TextArea.setText(resultString + Panel2_TextArea.getText());
-
+                        
                             System.out.println(isCartridgeIDvalid + " is Valid? - " + result);
 
                         } catch (Exception e) {
                             // handle the error
                             System.out.println("\n" + "General Exception " + e.getMessage());
                         } finally {
+                            
                             try {
                                 if (bw != null) {
                                     bw.close();
