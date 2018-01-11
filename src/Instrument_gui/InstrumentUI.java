@@ -738,7 +738,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                             // update view
                             CartridgeInfoButton.setVisible(false);
                             SelectObjectComboBox.setVisible(false);
-                            SimulateInsertCartridgeButton.setVisible(true);
+                            SimulateInsertCartridgeButton.setVisible(false);
                             leftSideInfoPanel.setVisible(true);
                             EndTestButton.setVisible(true);
                             GetImageButton.setVisible(false);
