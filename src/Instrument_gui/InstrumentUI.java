@@ -42,8 +42,6 @@ public class InstrumentUI extends javax.swing.JFrame {
     Cartridge cartridge;
     Instrument instrument;
 
-    public static final boolean TRUST_MY_CARTRIDGE = true;
-
     /**
      * Creates new form TopScreen
      */
@@ -708,9 +706,15 @@ public class InstrumentUI extends javax.swing.JFrame {
                         Panel2_TextArea.setText("Processing a Diagnostic Test\n"
                                 + Panel2_TextArea.getText());
 
+                        instrument.setInstrument_id(Instrument_attr_name);
+                        queries.getInstrumentMfgInfo(Instrument_attr_value, instrument);
+                        queries.getInstrumentDeploymentInfo(Instrument_attr_value, instrument);
+                        
+//                        instrument.setCartridgeTrustMeAllowed(false);
+
                         // if CartridgeID is TrustMe, create a "TrustMe" cartridge
                         if (Cartridge_attr_value.equals("TrustMe")
-                                && TRUST_MY_CARTRIDGE == true) {
+                                && instrument.getCartridgeTrustMeAllowed()){
                             createTestCartridge(cartridge, Cartridge.DeploymentType.TrustMe);
 
                             queries.insertCartridge(cartridge);
@@ -718,10 +722,6 @@ public class InstrumentUI extends javax.swing.JFrame {
                             cartridge.setCartridge_id(Cartridge_attr_value);
                             queries.getCartridgeMfgInfo(Cartridge_attr_value, cartridge);
                         }
-
-                        instrument.setInstrument_id(Instrument_attr_name);
-                        queries.getInstrumentMfgInfo(Instrument_attr_value, instrument);
-                        queries.getInstrumentDeploymentInfo(Instrument_attr_value, instrument);
 
                         // verify >= 1 valid image
                         if (!testImages.isEmpty()) {
@@ -755,8 +755,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                         // create new TestInstance
                         // call ProcessTest()
                         Panel2_TextArea.setText("Finished Processing a Diagnostic Test\n"
-                                    + Panel2_TextArea.getText());
-
+                                + Panel2_TextArea.getText());
 
                         System.out.println("END OF TEST INPUT");
 
@@ -782,14 +781,14 @@ public class InstrumentUI extends javax.swing.JFrame {
 
                             bw.write(resultString);
                             Panel2_TextArea.setText(resultString + Panel2_TextArea.getText());
-                        
+
                             System.out.println(isCartridgeIDvalid + " is Valid? - " + result);
 
                         } catch (Exception e) {
                             // handle the error
                             System.out.println("\n" + "General Exception " + e.getMessage());
                         } finally {
-                            
+
                             try {
                                 if (bw != null) {
                                     bw.close();
