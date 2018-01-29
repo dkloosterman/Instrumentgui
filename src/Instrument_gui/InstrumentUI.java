@@ -35,8 +35,11 @@ public class InstrumentUI extends javax.swing.JFrame {
 
     public static final int WATCH_FOLDER_RATE_MS = 1000;
     public static final String APP_WATCH_FOLDER_LOCATION = ".\\AppWatchFolder";
-    public static final String MC_WATCH_FOLDER_LOCATION = ".\\MC_WatchFolder";
     File folder = new File(APP_WATCH_FOLDER_LOCATION);
+
+    public static final String MC_WATCH_FOLDER_LOCATION = ".\\MC_WatchFolder";
+
+    public static final String DIAG_ALG_WATCH_FOLDER_LOCATION = ".\\MC_WatchFolder";
 
     public TestInstance test;
     Cartridge cartridge;
@@ -84,6 +87,16 @@ public class InstrumentUI extends javax.swing.JFrame {
                     System.out.println("Directory " + MC_WATCH_FOLDER_LOCATION + " is created!");
                 } else {
                     System.out.println("Failed to create directory: " + MC_WATCH_FOLDER_LOCATION);
+                }
+            }
+
+            // create Diagnostic Algorithm watch folder if it's not already there
+            File DAfile = new File(DIAG_ALG_WATCH_FOLDER_LOCATION);
+            if (!DAfile.exists()) {
+                if (DAfile.mkdir()) {
+                    System.out.println("Directory " + DIAG_ALG_WATCH_FOLDER_LOCATION + " is created!");
+                } else {
+                    System.out.println("Failed to create directory: " + DIAG_ALG_WATCH_FOLDER_LOCATION);
                 }
             }
 
@@ -361,7 +374,7 @@ public class InstrumentUI extends javax.swing.JFrame {
             cartridge.setManufactured_timestamp(new Timestamp(System.currentTimeMillis()));
             cartridge.setDeployment_type(deployType.toString());
             cartridge.setManufactured_location("Perinton, NY");
-            cartridge.setAssay_type(test.CARDIAC_WELLNESS_TEST);
+            cartridge.setAssay_type(test.TRUST_ME);
             cartridge.setSubsystem_1_id("0000000010000002");
             cartridge.setSubsystem_2_id("0000000020000002");
             cartridge.setSubsystem_3_id("0000000030000002");
@@ -709,12 +722,11 @@ public class InstrumentUI extends javax.swing.JFrame {
                         instrument.setInstrument_id(Instrument_attr_name);
                         queries.getInstrumentMfgInfo(Instrument_attr_value, instrument);
                         queries.getInstrumentDeploymentInfo(Instrument_attr_value, instrument);
-                        
-//                        instrument.setCartridgeTrustMeAllowed(false);
 
+//                        instrument.setCartridgeTrustMeAllowed(false);
                         // if CartridgeID is TrustMe, create a "TrustMe" cartridge
                         if (Cartridge_attr_value.equals("TrustMe")
-                                && instrument.getCartridgeTrustMeAllowed()){
+                                && instrument.getCartridgeTrustMeAllowed()) {
                             createTestCartridge(cartridge, Cartridge.DeploymentType.TrustMe);
 
                             queries.insertCartridge(cartridge);
@@ -733,6 +745,55 @@ public class InstrumentUI extends javax.swing.JFrame {
                             test.setClinical_test_timestamp(new Timestamp(System.currentTimeMillis()));
 
                             if (test.processTest(instrument, cartridge)) {
+
+                                // reuest Diagnostic Test Result
+                                //    put test parameters in an xml file into watch folder
+                                BufferedWriter bw = null;
+                                FileWriter fw = null;
+                                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                                try {
+                                    String imagePathString = "";
+                                    for (TestImage image : test.dicom.getTestImages()) {
+                                        imagePathString += "<imagePath>\n"
+                                                + image.getTestImagePath()
+                                                + "</imagePath>\n";
+                                    }
+
+                                    fw = new FileWriter(DIAG_ALG_WATCH_FOLDER_LOCATION + "\\requestDiagResult.xml");
+                                    bw = new BufferedWriter(fw);
+                                    String resultString = "<SensoDx>\n"
+                                            + "<requestDiagResult>\n"
+                                            + "<assayType>\n"
+                                            + cartridge.getAssay_type()
+                                            + "</assayType>\n"
+                                            + "<testImages>\n"
+                                            + imagePathString
+                                            + "</testImages>\n"
+                                            + "<timestamp>\n"
+                                            + timestamp.toString()
+                                            + "</timestamp>\n"
+                                            + "</requestDiagResult>\n"
+                                            + "</SensoDx>\n\n";
+
+                                    bw.write(resultString);
+
+                                } catch (Exception e) {
+                                    // handle the error
+                                    System.out.println("\n" + "General Exception " + e.getMessage());
+                                } finally {
+
+                                    try {
+                                        if (bw != null) {
+                                            bw.close();
+                                        }
+                                        if (fw != null) {
+                                            fw.close();
+                                        }
+                                    } catch (IOException ex) {
+                                        ex.printStackTrace();
+                                    }
+                                }   //end finally
+////////////////////////////////////////////////////////////////////////////////
                                 InfoTextArea.setText(test.getTestResultString() + "\n\n" + test.toString());
                             } else {
                                 InfoTextArea.setText(test.getTestResultString());

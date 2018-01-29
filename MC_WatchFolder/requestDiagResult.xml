@@ -1,0 +1,17 @@
+<SensoDx>
+<requestDiagResult>
+<assayType>
+65535</assayType>
+<testImages>
+<imagePath>
+./TestImage.tif</imagePath>
+<imagePath>
+./Test.txt</imagePath>
+<imagePath>
+./TestImage_2.tif</imagePath>
+</testImages>
+<timestamp>
+2018-01-29 13:39:02.36</timestamp>
+</requestDiagResult>
+</SensoDx>
+
