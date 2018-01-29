@@ -40,6 +40,7 @@ public class InstrumentUI extends javax.swing.JFrame {
     public static final String MC_WATCH_FOLDER_LOCATION = ".\\MC_WatchFolder";
 
     public static final String DIAG_ALG_WATCH_FOLDER_LOCATION = ".\\MC_WatchFolder";
+    public static final boolean SIMULATE_DIAG_ALG_RESULT = true;
 
     public TestInstance test;
     Cartridge cartridge;
@@ -653,6 +654,9 @@ public class InstrumentUI extends javax.swing.JFrame {
                 boolean bInfoPanel1 = false;
                 boolean bInfoPanel2 = false;
                 boolean bIsCartridgeValid = false;
+                boolean bDiagTestResult = false;
+                boolean bTestID = false;
+                boolean bResultScore = false;
 
                 String Instrument_attr_name = "";
                 String Instrument_attr_value = "";
@@ -661,10 +665,10 @@ public class InstrumentUI extends javax.swing.JFrame {
                 String isCartridgeIDvalid = "";
                 List<String> testImages;
                 String imagePath = null;
+                String testJobID = "";
+                String testResultScore = "";
 
                 List<String> imagePaths = new ArrayList<>();
-                
-//                TestInstance test = new TestInstance(testImages);
 
                 public void startElement(String uri, String localName, String qName,
                         Attributes attributes) throws SAXException {
@@ -704,6 +708,12 @@ public class InstrumentUI extends javax.swing.JFrame {
                         bInfoPanel2 = true;
                     } else if (qName.equalsIgnoreCase("isCartridgeValid")) {
                         bIsCartridgeValid = true;
+                    } else if (qName.equalsIgnoreCase("DiagTestResult")) {
+                        bDiagTestResult = true;
+                    } else if (qName.equalsIgnoreCase("TestID")) {
+                        bTestID = true;
+                    } else if (qName.equalsIgnoreCase("ResultScore")) {
+                        bResultScore = true;
                     }
 
                 }
@@ -756,28 +766,28 @@ public class InstrumentUI extends javax.swing.JFrame {
                                 try {
                                     String imagePathString = "";
                                     for (TestImage image : test.dicom.getTestImages()) {
-                                        imagePathString += "<imagePath>\n"
+                                        imagePathString += "<ImagePath>\n"
                                                 + image.getTestImagePath()
-                                                + "</imagePath>\n";
+                                                + "</ImagePath>\n";
                                     }
 
                                     fw = new FileWriter(DIAG_ALG_WATCH_FOLDER_LOCATION + "\\requestDiagResult.xml");
                                     bw = new BufferedWriter(fw);
                                     String resultString = "<SensoDx>\n"
-                                            + "<requestDiagResult>\n"
-                                            + "<testID>\n"
+                                            + "<RequestDiagResult>\n"
+                                            + "<TestID>\n"
                                             + test.getClinical_test_instance_counter()
-                                            + "</testID>\n"
-                                            + "<assayType>\n"
+                                            + "</TestID>\n"
+                                            + "<AssayType>\n"
                                             + cartridge.getAssay_type()
-                                            + "</assayType>\n"
-                                            + "<testImages>\n"
+                                            + "</AssayType>\n"
+                                            + "<TestImages>\n"
                                             + imagePathString
-                                            + "</testImages>\n"
-                                            + "<timestamp>\n"
+                                            + "</TestImages>\n"
+                                            + "<Timestamp>\n"
                                             + timestamp.toString()
-                                            + "</timestamp>\n"
-                                            + "</requestDiagResult>\n"
+                                            + "</Timestamp>\n"
+                                            + "</RequestDiagResult>\n"
                                             + "</SensoDx>\n\n";
 
                                     bw.write(resultString);
@@ -799,6 +809,53 @@ public class InstrumentUI extends javax.swing.JFrame {
                                     }
                                 }   //end finally
 ////////////////////////////////////////////////////////////////////////////////
+
+                                if (SIMULATE_DIAG_ALG_RESULT) {
+                                    // write a response in watchfolder that contains diag test result
+                                    // into APP_WATCH_FOLDER_LOCATION
+                                    try {
+                                        String imagePathString = "";
+                                        for (TestImage image : test.dicom.getTestImages()) {
+                                            imagePathString += "<imagePath>\n"
+                                                    + image.getTestImagePath()
+                                                    + "</imagePath>\n";
+                                        }
+
+                                        fw = new FileWriter(APP_WATCH_FOLDER_LOCATION + "\\diagTestResult.xml");
+                                        bw = new BufferedWriter(fw);
+                                        String resultString = "<SensoDx>\n"
+                                                + "<DiagTestResult>\n"
+                                                + "<TestID>"
+                                                + test.getClinical_test_instance_counter()
+                                                + "</TestID>\n"
+                                                + "<ResultScore>"
+                                                + "333"
+                                                + "</ResultScore>\n"
+                                                + "<Timestamp>"
+                                                + timestamp.toString()
+                                                + "</Timestamp>\n"
+                                                + "</DiagTestResult>\n"
+                                                + "</SensoDx>\n\n";
+
+                                        bw.write(resultString);
+
+                                    } catch (Exception e) {
+                                        // handle the error
+                                        System.out.println("\n" + "General Exception " + e.getMessage());
+                                    } finally {
+
+                                        try {
+                                            if (bw != null) {
+                                                bw.close();
+                                            }
+                                            if (fw != null) {
+                                                fw.close();
+                                            }
+                                        } catch (IOException ex) {
+                                            ex.printStackTrace();
+                                        }
+                                    }   //end finally
+                                }
                                 InfoTextArea.setText(test.getTestResultString() + "\n\n" + test.toString());
                             } else {
                                 InfoTextArea.setText(test.getTestResultString());
@@ -878,6 +935,25 @@ public class InstrumentUI extends javax.swing.JFrame {
 
                     } else if (qName.equalsIgnoreCase("TestImages")) {
                         System.out.println("Test Images received: " + testImages.toString());
+                    } else if (qName.equalsIgnoreCase("DiagTestResult")) {
+                        System.out.println("DiagTestResult: ");
+                        
+                        JDBCqueries queries = new JDBCqueries();
+                        List<String> images = new ArrayList<>();
+                        TestInstance test = new TestInstance(images);
+                        
+                        queries.getTestInstanceInfo(testJobID, test, true);
+//                        Panel2_TextArea.setText(test.toString());
+                        
+                        test.setAnalysis_result(Double.parseDouble(testResultScore));
+                        queries.updateClinicalTestInstanceResultScore(test);
+//                        String temp1 = test.toString();
+                        
+//                        TestInstance test2 = new TestInstance(images);
+//                        queries.getTestInstanceInfo(testJobID, test2, true);
+//                        String temp2 = test2.toString();
+                        Panel1_TextArea.setText(test.toString());
+                        
                     }
                 }
 
@@ -929,6 +1005,14 @@ public class InstrumentUI extends javax.swing.JFrame {
                         isCartridgeIDvalid = new String(ch, start, length);
                         System.out.println("isCartridgeValid : " + isCartridgeIDvalid);
                         bIsCartridgeValid = false;
+                    }else if (bTestID) {
+                        testJobID = new String(ch, start, length);
+                        System.out.println("Test ID : " + testJobID);
+                        bTestID = false;
+                    }else if (bResultScore) {
+                        testResultScore = new String(ch, start, length);
+                        System.out.println("Result Score : " + testResultScore);
+                        bResultScore = false;
                     }
 
                 }
