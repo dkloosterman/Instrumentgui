@@ -943,15 +943,11 @@ public class InstrumentUI extends javax.swing.JFrame {
                         TestInstance test = new TestInstance(images);
                         
                         queries.getTestInstanceInfo(testJobID, test, true);
-//                        Panel2_TextArea.setText(test.toString());
-                        
+                       
                         test.setAnalysis_result(Double.parseDouble(testResultScore));
                         queries.updateClinicalTestInstanceResultScore(test);
-//                        String temp1 = test.toString();
-                        
-//                        TestInstance test2 = new TestInstance(images);
-//                        queries.getTestInstanceInfo(testJobID, test2, true);
-//                        String temp2 = test2.toString();
+
+                        queries.getTestInstanceInfo(testJobID, test, true);
                         Panel1_TextArea.setText(test.toString());
                         
                     }
