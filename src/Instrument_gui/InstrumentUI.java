@@ -663,6 +663,8 @@ public class InstrumentUI extends javax.swing.JFrame {
                 String imagePath = null;
 
                 List<String> imagePaths = new ArrayList<>();
+                
+//                TestInstance test = new TestInstance(testImages);
 
                 public void startElement(String uri, String localName, String qName,
                         Attributes attributes) throws SAXException {
@@ -763,6 +765,9 @@ public class InstrumentUI extends javax.swing.JFrame {
                                     bw = new BufferedWriter(fw);
                                     String resultString = "<SensoDx>\n"
                                             + "<requestDiagResult>\n"
+                                            + "<testID>\n"
+                                            + test.getClinical_test_instance_counter()
+                                            + "</testID>\n"
                                             + "<assayType>\n"
                                             + cartridge.getAssay_type()
                                             + "</assayType>\n"

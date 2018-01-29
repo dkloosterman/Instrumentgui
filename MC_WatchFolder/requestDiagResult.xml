@@ -1,5 +1,7 @@
 <SensoDx>
 <requestDiagResult>
+<testID>
+20</testID>
 <assayType>
 65535</assayType>
 <testImages>
@@ -11,7 +13,7 @@
 ./TestImage_2.tif</imagePath>
 </testImages>
 <timestamp>
-2018-01-29 13:39:02.36</timestamp>
+2018-01-29 13:57:57.205</timestamp>
 </requestDiagResult>
 </SensoDx>
 
