@@ -452,6 +452,67 @@ public class InstrumentUI extends javax.swing.JFrame {
 
     private void SimulateInsertCartridgeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SimulateInsertCartridgeButtonActionPerformed
 
+        JDBCqueries queries = new JDBCqueries();
+
+        this.cartridge = new Cartridge();
+
+        // temp code until real cartridges exist
+        this.createTestCartridge(this.cartridge, Cartridge.DeploymentType.Virtual);
+
+        queries.insertCartridge(this.cartridge);
+        /////////////////////////////////////
+        BufferedWriter bw = null;
+        FileWriter fw = null;
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        try {
+//            String imagePathString = "";
+//            for (TestImage image : test.dicom.getTestImages()) {
+//                imagePathString += "<ImagePath>\n"
+//                        + image.getTestImagePath()
+//                        + "</ImagePath>\n";
+//            }
+
+            fw = new FileWriter(APP_WATCH_FOLDER_LOCATION + "\\simulateJobSubmit.xml");
+            bw = new BufferedWriter(fw);
+            String resultString = "<SensoDx>\n"
+                    + "<Test>\n"
+                    + "<Instrument InstrumentID=\"" + this.instrument.getInstrument_id() + "\">"
+                    + "</Instrument>\n"
+                    + "<Cartridge CartridgeID=\"" + cartridge.getCartridge_id() + "\">"
+                    + "</Cartridge>\n"
+                    + "<TestImages>\n"
+                    + "<Image>" + TESTFILE_SAMPLE + "</Image>\n"
+                    + "<Image>" + TESTFILE_SAMPLE_2 + "</Image>\n"
+                    + "<Image>" + TESTFILE_SAMPLE_3 + "</Image>\n"
+                    + "</TestImages>\n"
+                    + "<Timestamp>" + timestamp.toString() + "</Timestamp>\n"
+                    + "</Test>\n"
+                    + "<InfoPanel1>" + "Simulating a test" + "</InfoPanel1>\n"
+                    + "<InfoPanel2>" + "Using Simulate Test button" + "</InfoPanel2>\n"
+                    + "</SensoDx>\n";
+
+            bw.write(resultString);
+
+        } catch (Exception e) {
+            // handle the error
+            System.out.println("\n" + "General Exception " + e.getMessage());
+        } finally {
+
+            try {
+                if (bw != null) {
+                    bw.close();
+                }
+                if (fw != null) {
+                    fw.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }   //end finally
+    }//GEN-LAST:event_SimulateInsertCartridgeButtonActionPerformed
+    /*
+    private void aSimulateInsertCartridgeButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                              
+
         try {
             JDBCqueries queries = new JDBCqueries();
 
@@ -516,7 +577,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                 this.test.setDoctor_id("Jane Doctor");
                 this.test.setClinical_test_timestamp(new Timestamp(System.currentTimeMillis()));
 
-                if (test.processTest(this.instrument, this.cartridge)) {
+                if (test.verifyTestParameters(this.instrument, this.cartridge)) {
                     InfoTextArea.setText(this.test.getTestResultString() + "\n\n" + this.test.toString());
                 } else {
                     InfoTextArea.setText(this.test.getTestResultString());
@@ -540,8 +601,8 @@ public class InstrumentUI extends javax.swing.JFrame {
             //finally block used to close resources
 
         }   //end finally
-    }//GEN-LAST:event_SimulateInsertCartridgeButtonActionPerformed
-
+    }                                                             
+     */
     private void GetImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GetImageButtonActionPerformed
         try {
 
@@ -756,9 +817,11 @@ public class InstrumentUI extends javax.swing.JFrame {
                             test.setDoctor_id("Susan HF Doctor");
                             test.setClinical_test_timestamp(new Timestamp(System.currentTimeMillis()));
 
-                            if (test.processTest(instrument, cartridge)) {
+                            if (test.verifyTestParameters(instrument, cartridge)) {
 
-                                // reuest Diagnostic Test Result
+                                queries.insertClinicalTestInstance(test);
+
+                                // request Diagnostic Test Result
                                 //    put test parameters in an xml file into watch folder
                                 BufferedWriter bw = null;
                                 FileWriter fw = null;
@@ -937,19 +1000,19 @@ public class InstrumentUI extends javax.swing.JFrame {
                         System.out.println("Test Images received: " + testImages.toString());
                     } else if (qName.equalsIgnoreCase("DiagTestResult")) {
                         System.out.println("DiagTestResult: ");
-                        
+
                         JDBCqueries queries = new JDBCqueries();
                         List<String> images = new ArrayList<>();
                         TestInstance test = new TestInstance(images);
-                        
+
                         queries.getTestInstanceInfo(testJobID, test, true);
-                       
+
                         test.setAnalysis_result(Double.parseDouble(testResultScore));
                         queries.updateClinicalTestInstanceResultScore(test);
 
                         queries.getTestInstanceInfo(testJobID, test, true);
                         Panel1_TextArea.setText(test.toString());
-                        
+
                     }
                 }
 
@@ -1001,11 +1064,11 @@ public class InstrumentUI extends javax.swing.JFrame {
                         isCartridgeIDvalid = new String(ch, start, length);
                         System.out.println("isCartridgeValid : " + isCartridgeIDvalid);
                         bIsCartridgeValid = false;
-                    }else if (bTestID) {
+                    } else if (bTestID) {
                         testJobID = new String(ch, start, length);
                         System.out.println("Test ID : " + testJobID);
                         bTestID = false;
-                    }else if (bResultScore) {
+                    } else if (bResultScore) {
                         testResultScore = new String(ch, start, length);
                         System.out.println("Result Score : " + testResultScore);
                         bResultScore = false;
