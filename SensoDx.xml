@@ -11,7 +11,6 @@
       <Image>./TestImage_2.tif</Image>
     </TestImages>
     <Timestamp>20171107_093559001</Timestamp>
-    <TestJobNumber>20171107_093550001_20171016_1</TestJobNumber>
   </Test>
   <InfoPanel1>Processing a Test</InfoPanel1>
   <InfoPanel2>Executed xyz in module abc</InfoPanel2>

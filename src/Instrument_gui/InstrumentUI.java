@@ -455,23 +455,13 @@ public class InstrumentUI extends javax.swing.JFrame {
         JDBCqueries queries = new JDBCqueries();
 
         this.cartridge = new Cartridge();
-
-        // temp code until real cartridges exist
         this.createTestCartridge(this.cartridge, Cartridge.DeploymentType.Virtual);
-
         queries.insertCartridge(this.cartridge);
-        /////////////////////////////////////
+        
         BufferedWriter bw = null;
         FileWriter fw = null;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         try {
-//            String imagePathString = "";
-//            for (TestImage image : test.dicom.getTestImages()) {
-//                imagePathString += "<ImagePath>\n"
-//                        + image.getTestImagePath()
-//                        + "</ImagePath>\n";
-//            }
-
             fw = new FileWriter(APP_WATCH_FOLDER_LOCATION + "\\simulateJobSubmit.xml");
             bw = new BufferedWriter(fw);
             String resultString = "<SensoDx>\n"
@@ -510,99 +500,7 @@ public class InstrumentUI extends javax.swing.JFrame {
             }
         }   //end finally
     }//GEN-LAST:event_SimulateInsertCartridgeButtonActionPerformed
-    /*
-    private void aSimulateInsertCartridgeButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                              
 
-        try {
-            JDBCqueries queries = new JDBCqueries();
-
-            this.cartridge = new Cartridge();
-
-            // temp code until real cartridges exist
-            this.createTestCartridge(this.cartridge, Cartridge.DeploymentType.Virtual);
-
-            queries.insertCartridge(this.cartridge);
-            queries.getCartridgeMfgInfo(this.cartridge.getCartridge_id(), this.cartridge);
-
-            List<String> imagePaths = new ArrayList<>();
-            imagePaths.add(TESTFILE_SAMPLE);
-            imagePaths.add(TESTFILE_SAMPLE_2);
-            imagePaths.add(TESTFILE_SAMPLE_3);
-
-            boolean validImages = true;
-            for (String image : imagePaths) {
-
-                if (image == null) {
-                    validImages = false;
-
-                    Errors error = new Errors();
-
-                    error.buildErrorObject_ClinicalTestImageSetToNull(this.instrument.getInstrument_id(),
-                            this.cartridge.getCartridge_id(),
-                            null);
-
-                    queries.insertError(error);
-
-                    InfoTextArea.setText(error.toString());
-
-//                    InfoTextArea.setText("Error: Unable to run test because input clinical test image "
-//                            + "is set to null");
-                    break;
-                }
-
-                File f = new File(image);
-                if (!f.exists() || f.isDirectory()) {
-                    validImages = false;
-
-                    Errors error = new Errors();
-
-                    error.buildErrorObject_ClinicalTestImageNotFound(this.instrument.getInstrument_id(),
-                            this.cartridge.getCartridge_id(),
-                            null,
-                            TESTFILE_SAMPLE);
-
-                    queries.insertError(error);
-
-                    InfoTextArea.setText(error.toString());
-                    break;
-                }
-            }
-
-            if (validImages == true) {
-
-                this.test = new TestInstance(imagePaths);
-
-                this.test.setPatient_id("1234567890123456");
-                this.test.setTechnician_id("Joe D. Technician");
-                this.test.setDoctor_id("Jane Doctor");
-                this.test.setClinical_test_timestamp(new Timestamp(System.currentTimeMillis()));
-
-                if (test.verifyTestParameters(this.instrument, this.cartridge)) {
-                    InfoTextArea.setText(this.test.getTestResultString() + "\n\n" + this.test.toString());
-                } else {
-                    InfoTextArea.setText(this.test.getTestResultString());
-                }
-
-            }
-
-            // update view
-            CartridgeInfoButton.setVisible(true);
-            SelectObjectComboBox.setVisible(false);
-            SimulateInsertCartridgeButton.setVisible(false);
-            leftSideInfoPanel.setVisible(true);
-            EndTestButton.setVisible(true);
-            GetImageButton.setVisible(true);
-            TestInfoButton.setVisible(true);
-        } catch (Exception e) {
-            // handle the error
-            System.out.println("\n" + "General Exception " + e.getMessage());
-            System.exit(0);
-        } finally {
-            //finally block used to close resources
-
-        }   //end finally
-    }                                                             
-     */
     private void GetImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GetImageButtonActionPerformed
         try {
 
@@ -711,7 +609,6 @@ public class InstrumentUI extends javax.swing.JFrame {
                 boolean bTestImages = false;
                 boolean bImage = false;
                 boolean bTimestamp = false;
-                boolean bTestJobNumber = false;
                 boolean bInfoPanel1 = false;
                 boolean bInfoPanel2 = false;
                 boolean bIsCartridgeValid = false;
@@ -761,8 +658,6 @@ public class InstrumentUI extends javax.swing.JFrame {
                         bImage = true;
                     } else if (qName.equalsIgnoreCase("Timestamp")) {
                         bTimestamp = true;
-                    } else if (qName.equalsIgnoreCase("TestJobNumber")) {
-                        bTestJobNumber = true;
                     } else if (qName.equalsIgnoreCase("InfoPanel1")) {
                         bInfoPanel1 = true;
                     } else if (qName.equalsIgnoreCase("InfoPanel2")) {
@@ -801,7 +696,6 @@ public class InstrumentUI extends javax.swing.JFrame {
                         if (Cartridge_attr_value.equals("TrustMe")
                                 && instrument.getCartridgeTrustMeAllowed()) {
                             createTestCartridge(cartridge, Cartridge.DeploymentType.TrustMe);
-
                             queries.insertCartridge(cartridge);
                         } else {
                             cartridge.setCartridge_id(Cartridge_attr_value);
@@ -812,9 +706,12 @@ public class InstrumentUI extends javax.swing.JFrame {
                         if (!testImages.isEmpty()) {
                             TestInstance test = new TestInstance(testImages);
 
+                            if(SIMULATE_DIAG_ALG_RESULT){
                             test.setPatient_id("XYZ_HF");
                             test.setTechnician_id("Mike HF Technician");
                             test.setDoctor_id("Susan HF Doctor");
+                            }
+                            
                             test.setClinical_test_timestamp(new Timestamp(System.currentTimeMillis()));
 
                             if (test.verifyTestParameters(instrument, cartridge)) {
@@ -871,19 +768,12 @@ public class InstrumentUI extends javax.swing.JFrame {
                                         ex.printStackTrace();
                                     }
                                 }   //end finally
-////////////////////////////////////////////////////////////////////////////////
 
                                 if (SIMULATE_DIAG_ALG_RESULT) {
                                     // write a response in watchfolder that contains diag test result
                                     // into APP_WATCH_FOLDER_LOCATION
                                     try {
-                                        String imagePathString = "";
-                                        for (TestImage image : test.dicom.getTestImages()) {
-                                            imagePathString += "<imagePath>\n"
-                                                    + image.getTestImagePath()
-                                                    + "</imagePath>\n";
-                                        }
-
+                                        String randomDiagResult = Double.toString(Math.random());
                                         fw = new FileWriter(APP_WATCH_FOLDER_LOCATION + "\\diagTestResult.xml");
                                         bw = new BufferedWriter(fw);
                                         String resultString = "<SensoDx>\n"
@@ -892,7 +782,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                                                 + test.getClinical_test_instance_counter()
                                                 + "</TestID>\n"
                                                 + "<ResultScore>"
-                                                + "333"
+                                                + randomDiagResult
                                                 + "</ResultScore>\n"
                                                 + "<Timestamp>"
                                                 + timestamp.toString()
@@ -919,9 +809,6 @@ public class InstrumentUI extends javax.swing.JFrame {
                                         }
                                     }   //end finally
                                 }
-                                InfoTextArea.setText(test.getTestResultString() + "\n\n" + test.toString());
-                            } else {
-                                InfoTextArea.setText(test.getTestResultString());
                             }
 
                             // update view
@@ -1005,14 +892,14 @@ public class InstrumentUI extends javax.swing.JFrame {
                         List<String> images = new ArrayList<>();
                         TestInstance test = new TestInstance(images);
 
-                        queries.getTestInstanceInfo(testJobID, test, true);
+                        boolean getTestImages = true;
+                        boolean deleteTestImages = true;
+                        queries.getTestInstanceInfo(testJobID, test, getTestImages, deleteTestImages);
 
                         test.setAnalysis_result(Double.parseDouble(testResultScore));
                         queries.updateClinicalTestInstanceResultScore(test);
-
-                        queries.getTestInstanceInfo(testJobID, test, true);
-                        Panel1_TextArea.setText(test.toString());
-
+                        
+                        InfoTextArea.setText(test.getTestResultString() + "\n\n" + test.toString());
                     }
                 }
 
@@ -1045,9 +932,6 @@ public class InstrumentUI extends javax.swing.JFrame {
                     } else if (bTimestamp) {
                         System.out.println("Timestamp : " + new String(ch, start, length));
                         bTimestamp = false;
-                    } else if (bTestJobNumber) {
-                        System.out.println("TestJobNumber : " + new String(ch, start, length));
-                        bTestJobNumber = false;
                     } else if (bInfoPanel1) {
                         System.out.println("InfoPanel1 : " + new String(ch, start, length));
                         Panel1_TextArea.setText(date.toString() + '\n'
