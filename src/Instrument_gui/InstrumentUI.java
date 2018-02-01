@@ -899,7 +899,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                         test.setAnalysis_result(Double.parseDouble(testResultScore));
                         queries.updateClinicalTestInstanceResultScore(test);
                         
-                        InfoTextArea.setText(test.getTestResultString() + "\n\n" + test.toString());
+                        InfoTextArea.setText(test.toString());
                     }
                 }
 
