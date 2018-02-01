@@ -1,7 +1,7 @@
 <SensoDx>
 <RequestDiagResult>
 <TestID>
-18</TestID>
+69</TestID>
 <AssayType>
 65535</AssayType>
 <TestImages>
@@ -13,7 +13,7 @@
 .\Test.txt</ImagePath>
 </TestImages>
 <Timestamp>
-2018-02-01 10:48:47.993</Timestamp>
+2018-02-01 14:31:46.858</Timestamp>
 </RequestDiagResult>
 </SensoDx>
 

@@ -55,11 +55,11 @@ public class InstrumentUI extends javax.swing.JFrame {
         try {
             this.instrument = new Instrument();
 
-            leftSideInfoPanel.setVisible(false);
-            CartridgeInfoButton.setVisible(false);
-            EndTestButton.setVisible(false);
-            TestInfoButton.setVisible(false);
-            GetImageButton.setVisible(false);
+            leftSideInfoPanel.setVisible(true);
+//            CartridgeInfoButton.setVisible(false);
+//            EndTestButton.setVisible(false);
+//            TestInfoButton.setVisible(false);
+//            GetImageButton.setVisible(false);
 
             // load combobox with all instr IDs
             ArrayList<String> allInstrIDs = new ArrayList<String>();
@@ -70,6 +70,10 @@ public class InstrumentUI extends javax.swing.JFrame {
             for (String ID : allInstrIDs) {
                 SelectObjectComboBox.addItem(ID);
             }
+            instrumentIDTextField.setText(this.instrument.getInstrument_id());
+            cartridgeIDTextField.setText("0");
+            imageIDTextField.setText("0");
+            testIDTextField.setText("0");
 
             // create App watch folder if it's not already there
             File file = new File(APP_WATCH_FOLDER_LOCATION);
@@ -132,12 +136,11 @@ public class InstrumentUI extends javax.swing.JFrame {
     private void initComponents() {
 
         leftSideInfoPanel = new javax.swing.JPanel();
-        CloseInfoButton = new javax.swing.JButton();
         Info_ScrollPane = new javax.swing.JScrollPane();
         InfoTextArea = new javax.swing.JTextArea();
         SelectObjectComboBox = new javax.swing.JComboBox<>();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
-        EndTestButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         rightSide = new javax.swing.JPanel();
         WatchFolderPanel = new javax.swing.JPanel();
         WatchFolderScrollPane = new javax.swing.JScrollPane();
@@ -156,6 +159,11 @@ public class InstrumentUI extends javax.swing.JFrame {
         TestInfoButton = new javax.swing.JButton();
         CartridgeInfoButton = new javax.swing.JButton();
         InstrumentInfoButton = new javax.swing.JButton();
+        QueryPanel = new javax.swing.JPanel();
+        imageIDTextField = new javax.swing.JTextField();
+        testIDTextField = new javax.swing.JTextField();
+        cartridgeIDTextField = new javax.swing.JTextField();
+        instrumentIDTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SensoDx Instrument");
@@ -166,13 +174,6 @@ public class InstrumentUI extends javax.swing.JFrame {
 
         leftSideInfoPanel.setBackground(new java.awt.Color(204, 204, 255));
         leftSideInfoPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        CloseInfoButton.setText("Close");
-        CloseInfoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CloseInfoButtonActionPerformed(evt);
-            }
-        });
 
         Info_ScrollPane.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -187,12 +188,7 @@ public class InstrumentUI extends javax.swing.JFrame {
             }
         });
 
-        EndTestButton.setText("End Test");
-        EndTestButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EndTestButtonActionPerformed(evt);
-            }
-        });
+        jLabel1.setText("Available Instruments");
 
         javax.swing.GroupLayout leftSideInfoPanelLayout = new javax.swing.GroupLayout(leftSideInfoPanel);
         leftSideInfoPanel.setLayout(leftSideInfoPanelLayout);
@@ -200,18 +196,18 @@ public class InstrumentUI extends javax.swing.JFrame {
             leftSideInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(leftSideInfoPanelLayout.createSequentialGroup()
                 .addGroup(leftSideInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Info_ScrollPane)
                     .addGroup(leftSideInfoPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(EndTestButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(SelectObjectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(CloseInfoButton))
-                    .addGroup(leftSideInfoPanelLayout.createSequentialGroup()
-                        .addGap(251, 251, 251)
-                        .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 6308, Short.MAX_VALUE))
-                    .addComponent(Info_ScrollPane))
+                        .addGroup(leftSideInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(leftSideInfoPanelLayout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addComponent(jLabel1)
+                                .addGap(36, 36, 36)
+                                .addComponent(SelectObjectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(leftSideInfoPanelLayout.createSequentialGroup()
+                                .addGap(251, 251, 251)
+                                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 6225, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         leftSideInfoPanelLayout.setVerticalGroup(
@@ -220,12 +216,11 @@ public class InstrumentUI extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(Info_ScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 4223, Short.MAX_VALUE)
+                .addComponent(Info_ScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 4226, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(leftSideInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CloseInfoButton)
                     .addComponent(SelectObjectComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(EndTestButton))
+                    .addComponent(jLabel1))
                 .addContainerGap())
         );
 
@@ -270,7 +265,7 @@ public class InstrumentUI extends javax.swing.JFrame {
 
         rightSide.add(Panel2_Panel);
 
-        instrumentButtons.setLayout(new java.awt.GridLayout(2, 1));
+        instrumentButtons.setLayout(new java.awt.GridLayout(3, 1));
 
         SimulateInsertCartridgeButton.setBackground(new java.awt.Color(255, 255, 153));
         SimulateInsertCartridgeButton.setText("Press here to simulate inserting a cartridge");
@@ -287,7 +282,7 @@ public class InstrumentUI extends javax.swing.JFrame {
 
         Buttons_Panel.setLayout(new java.awt.GridLayout(1, 4));
 
-        GetImageButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Instrument_gui/GetImage.png"))); // NOI18N
+        GetImageButton.setText("Image ID");
         GetImageButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 GetImageButtonActionPerformed(evt);
@@ -295,7 +290,7 @@ public class InstrumentUI extends javax.swing.JFrame {
         });
         Buttons_Panel.add(GetImageButton);
 
-        TestInfoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Instrument_gui/test.png"))); // NOI18N
+        TestInfoButton.setText("Diagnostic Test ID");
         TestInfoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TestInfoButtonActionPerformed(evt);
@@ -303,7 +298,7 @@ public class InstrumentUI extends javax.swing.JFrame {
         });
         Buttons_Panel.add(TestInfoButton);
 
-        CartridgeInfoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Instrument_gui/Cartridge.png"))); // NOI18N
+        CartridgeInfoButton.setText("Cartridge ID");
         CartridgeInfoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CartridgeInfoButtonActionPerformed(evt);
@@ -311,7 +306,7 @@ public class InstrumentUI extends javax.swing.JFrame {
         });
         Buttons_Panel.add(CartridgeInfoButton);
 
-        InstrumentInfoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Instrument_gui/Instrument.png"))); // NOI18N
+        InstrumentInfoButton.setText("Instrument ID");
         InstrumentInfoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 InstrumentInfoButtonActionPerformed(evt);
@@ -321,40 +316,36 @@ public class InstrumentUI extends javax.swing.JFrame {
 
         instrumentButtons.add(Buttons_Panel);
 
+        QueryPanel.setLayout(new java.awt.GridLayout(1, 4));
+
+        imageIDTextField.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        imageIDTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        imageIDTextField.setText("Test Image ID");
+        QueryPanel.add(imageIDTextField);
+
+        testIDTextField.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        testIDTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        testIDTextField.setText("Diagnostic Test ID");
+        QueryPanel.add(testIDTextField);
+
+        cartridgeIDTextField.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        cartridgeIDTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        cartridgeIDTextField.setText("Cartridge ID");
+        QueryPanel.add(cartridgeIDTextField);
+
+        instrumentIDTextField.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        instrumentIDTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        instrumentIDTextField.setText("Instrument ID");
+        QueryPanel.add(instrumentIDTextField);
+
+        instrumentButtons.add(QueryPanel);
+
         rightSide.add(instrumentButtons);
 
         getContentPane().add(rightSide);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void CloseInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseInfoButtonActionPerformed
-
-        leftSideInfoPanel.setVisible(false);
-    }//GEN-LAST:event_CloseInfoButtonActionPerformed
-
-    private void SelectObjectComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectObjectComboBoxActionPerformed
-
-        try {
-            JDBCqueries queries = new JDBCqueries();
-
-            this.instrument = null;
-            this.instrument = new Instrument();
-
-            // update Instrument Info Text Area with selected Instrument ID
-            queries.getInstrumentMfgInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
-            queries.getInstrumentDeploymentInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
-            InfoTextArea.setText(this.instrument.toString());
-
-        } catch (Exception e) {
-            // handle the error
-            System.out.println("\n" + "General Exception " + e.getMessage());
-            System.exit(0);
-        } finally {
-            //finally block used to close resources
-
-        }   //end finally 
-    }//GEN-LAST:event_SelectObjectComboBoxActionPerformed
 
     private void createTestCartridge(Cartridge cartridge, Cartridge.DeploymentType deployType) {
 
@@ -390,28 +381,18 @@ public class InstrumentUI extends javax.swing.JFrame {
         }   //end finally try
     }
 
-    private void EndTestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EndTestButtonActionPerformed
-        leftSideInfoPanel.setVisible(false);
-        SimulateInsertCartridgeButton.setVisible(true);
-        CartridgeInfoButton.setVisible(false);
-        EndTestButton.setVisible(false);
-        GetImageButton.setVisible(false);
-        TestInfoButton.setVisible(false);
-        this.test = null;
-        this.cartridge = null;
-    }//GEN-LAST:event_EndTestButtonActionPerformed
-
     private void CartridgeInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartridgeInfoButtonActionPerformed
 
         try {
 
             JDBCqueries queries = new JDBCqueries();
-            queries.getCartridgeMfgInfo(this.cartridge.getCartridge_id(), this.cartridge);
-            InfoTextArea.setText(this.cartridge.toString());
 
-            SelectObjectComboBox.setVisible(false);
+            if (queries.getCartridgeMfgInfo(cartridgeIDTextField.getText(), this.cartridge)) {
+                InfoTextArea.setText(this.cartridge.toString());
+            } else {
+                InfoTextArea.setText("Cartridge: " + cartridgeIDTextField.getText() + " not found in database");
+            }
 
-            leftSideInfoPanel.setVisible(true);
         } catch (Exception e) {
             // handle the error
             System.out.println("\n" + "General Exception " + e.getMessage());
@@ -423,9 +404,25 @@ public class InstrumentUI extends javax.swing.JFrame {
     }//GEN-LAST:event_CartridgeInfoButtonActionPerformed
 
     private void TestInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TestInfoButtonActionPerformed
-        SelectObjectComboBox.setVisible(false);
-        InfoTextArea.setText(this.test.toString());
-        TestInfoButton.setVisible(true);
+        try {
+            JDBCqueries queries = new JDBCqueries();
+
+            List<String> imagePaths = new ArrayList<String>();
+            TestInstance test = new TestInstance(imagePaths);
+
+            if (queries.getTestInstanceInfo(testIDTextField.getText(), test, true, true)) {
+                InfoTextArea.setText(test.toString());
+            } else {
+                InfoTextArea.setText("Test: " + testIDTextField.getText() + " not found in database");
+            }
+        } catch (Exception e) {
+            // handle the error
+            System.out.println("\n" + "General Exception " + e.getMessage());
+        } finally {
+            //finally block used to close resources
+
+        }   //end finally
+
     }//GEN-LAST:event_TestInfoButtonActionPerformed
 
     private void InstrumentInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InstrumentInfoButtonActionPerformed
@@ -433,13 +430,15 @@ public class InstrumentUI extends javax.swing.JFrame {
         try {
             JDBCqueries queries = new JDBCqueries();
 
-            queries.getInstrumentMfgInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
-            queries.getInstrumentDeploymentInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
+            if (queries.getInstrumentMfgInfo(instrumentIDTextField.getText(), this.instrument)
+                    && queries.getInstrumentDeploymentInfo(instrumentIDTextField.getText(), this.instrument)) {
 
-            InfoTextArea.setText(this.instrument.toString());
+                InfoTextArea.setText(this.instrument.toString());
 
-            SelectObjectComboBox.setVisible(true);
-            leftSideInfoPanel.setVisible(true);
+                SelectObjectComboBox.setVisible(true);
+            } else {
+                InfoTextArea.setText("Instrument: " + instrumentIDTextField.getText() + " not found in database");
+            }
         } catch (Exception e) {
             // handle the error
             System.out.println("\n" + "General Exception " + e.getMessage());
@@ -457,7 +456,7 @@ public class InstrumentUI extends javax.swing.JFrame {
         this.cartridge = new Cartridge();
         this.createTestCartridge(this.cartridge, Cartridge.DeploymentType.Virtual);
         queries.insertCartridge(this.cartridge);
-        
+
         BufferedWriter bw = null;
         FileWriter fw = null;
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -506,17 +505,16 @@ public class InstrumentUI extends javax.swing.JFrame {
 
             JDBCqueries queries = new JDBCqueries();
 
-            List<TestImage> images = this.test.dicom.getTestImages();
+            String filePath = ".\\retrieved\\" + imageIDTextField.getText() + ".tif";
+            long fileLength = queries.getClinicalTestImage(Long.parseLong(imageIDTextField.getText()), filePath);
 
-            for (TestImage image : images) {
-                File imageFile = new File(image.getTestImagePath());
-                String fileName = imageFile.getName();
-                String filePath = ".\\retrieved\\" + fileName;
-                long fileLength = queries.getClinicalTestImage(image.getClinicalTestImage_id(), filePath);
+            if (fileLength > 0) {
                 System.out.println("Retrieved clinical test file to: " + filePath);
                 InfoTextArea.setText(InfoTextArea.getText()
                         + "\n\nRetrieved clinical test file to: " + filePath
                         + " of length " + fileLength);
+            } else {
+                InfoTextArea.setText("Test Image: " + Long.parseLong(imageIDTextField.getText()) + " not found in database");
             }
 
         } catch (Exception e) {
@@ -528,6 +526,30 @@ public class InstrumentUI extends javax.swing.JFrame {
 
         }   //end finally
     }//GEN-LAST:event_GetImageButtonActionPerformed
+
+    private void SelectObjectComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectObjectComboBoxActionPerformed
+
+        try {
+            JDBCqueries queries = new JDBCqueries();
+
+            this.instrument = null;
+            this.instrument = new Instrument();
+
+            // update Instrument Info Text Area with selected Instrument ID
+            queries.getInstrumentMfgInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
+            queries.getInstrumentDeploymentInfo((String) SelectObjectComboBox.getSelectedItem(), this.instrument);
+            InfoTextArea.setText(this.instrument.toString());
+            instrumentIDTextField.setText(this.instrument.getInstrument_id());
+
+        } catch (Exception e) {
+            // handle the error
+            System.out.println("\n" + "General Exception " + e.getMessage());
+            System.exit(0);
+        } finally {
+            //finally block used to close resources
+
+        }   //end finally
+    }//GEN-LAST:event_SelectObjectComboBoxActionPerformed
 
     private void appWatchFolder() {
         File[] listOfFiles = folder.listFiles();
@@ -706,12 +728,12 @@ public class InstrumentUI extends javax.swing.JFrame {
                         if (!testImages.isEmpty()) {
                             TestInstance test = new TestInstance(testImages);
 
-                            if(SIMULATE_DIAG_ALG_RESULT){
-                            test.setPatient_id("XYZ_HF");
-                            test.setTechnician_id("Mike HF Technician");
-                            test.setDoctor_id("Susan HF Doctor");
+                            if (SIMULATE_DIAG_ALG_RESULT) {
+                                test.setPatient_id("XYZ_HF");
+                                test.setTechnician_id("Mike HF Technician");
+                                test.setDoctor_id("Susan HF Doctor");
                             }
-                            
+
                             test.setClinical_test_timestamp(new Timestamp(System.currentTimeMillis()));
 
                             if (test.verifyTestParameters(instrument, cartridge)) {
@@ -811,15 +833,16 @@ public class InstrumentUI extends javax.swing.JFrame {
                                 }
                             }
 
-                            // update view
-                            CartridgeInfoButton.setVisible(false);
-                            SelectObjectComboBox.setVisible(false);
-                            SimulateInsertCartridgeButton.setVisible(false);
-                            leftSideInfoPanel.setVisible(true);
-                            EndTestButton.setVisible(true);
-                            GetImageButton.setVisible(false);
-                            TestInfoButton.setVisible(false);
+                            InfoTextArea.setText(test.getTestResultString());
 
+                            // update view
+//                            CartridgeInfoButton.setVisible(false);
+//                            SelectObjectComboBox.setVisible(false);
+//                            SimulateInsertCartridgeButton.setVisible(false);
+//                            leftSideInfoPanel.setVisible(true);
+//                            EndTestButton.setVisible(true);
+//                            GetImageButton.setVisible(false);
+//                            TestInfoButton.setVisible(false);
                         } else {
                             Panel2_TextArea.setText("Unable to process test with zero valid images provided\n"
                                     + Panel2_TextArea.getText());
@@ -898,8 +921,14 @@ public class InstrumentUI extends javax.swing.JFrame {
 
                         test.setAnalysis_result(Double.parseDouble(testResultScore));
                         queries.updateClinicalTestInstanceResultScore(test);
-                        
-                        InfoTextArea.setText(test.toString());
+
+                        InfoTextArea.setText(InfoTextArea.getText() + "\n\n" + test.toString());
+                        instrumentIDTextField.setText(test.getInstrument_id());
+                        cartridgeIDTextField.setText(test.getCartridge_id());
+                        testIDTextField.setText(Long.toString(test.getClinical_test_instance_counter()));
+
+                        List<TestImage> imageIDList = test.dicom.getTestImages();
+                        imageIDTextField.setText(Long.toString(imageIDList.get(0).getClinicalTestImage_id()));
                     }
                 }
 
@@ -1024,8 +1053,6 @@ public class InstrumentUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Buttons_Panel;
     private javax.swing.JButton CartridgeInfoButton;
-    private javax.swing.JButton CloseInfoButton;
-    private javax.swing.JButton EndTestButton;
     private javax.swing.JButton GetImageButton;
     private javax.swing.JTextArea InfoTextArea;
     private javax.swing.JScrollPane Info_ScrollPane;
@@ -1037,15 +1064,21 @@ public class InstrumentUI extends javax.swing.JFrame {
     private javax.swing.JPanel Panel2_Panel;
     private javax.swing.JScrollPane Panel2_ScrollPane;
     private javax.swing.JTextArea Panel2_TextArea;
+    private javax.swing.JPanel QueryPanel;
     private javax.swing.JComboBox<String> SelectObjectComboBox;
     private javax.swing.JButton SimulateInsertCartridgeButton;
     private javax.swing.JButton TestInfoButton;
     private javax.swing.JPanel WatchFolderPanel;
     private javax.swing.JScrollPane WatchFolderScrollPane;
+    private javax.swing.JTextField cartridgeIDTextField;
     private javax.swing.Box.Filler filler1;
+    private javax.swing.JTextField imageIDTextField;
     private javax.swing.JPanel instrumentButtons;
+    private javax.swing.JTextField instrumentIDTextField;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel leftSideInfoPanel;
     private javax.swing.JPanel rightSide;
+    private javax.swing.JTextField testIDTextField;
     private javax.swing.JTextArea watchFolderTextArea;
     // End of variables declaration//GEN-END:variables
 }
