@@ -412,6 +412,13 @@ public class InstrumentUI extends javax.swing.JFrame {
 
             if (queries.getTestInstanceInfo(testIDTextField.getText(), test, true, true)) {
                 InfoTextArea.setText(test.toString());
+
+                instrumentIDTextField.setText(test.getInstrument_id());
+                cartridgeIDTextField.setText(test.getCartridge_id());
+//                testIDTextField.setText(Long.toString(test.getClinical_test_instance_counter()));
+
+                List<TestImage> imageIDList = test.dicom.getTestImages();
+                imageIDTextField.setText(Long.toString(imageIDList.get(0).getClinicalTestImage_id()));
             } else {
                 InfoTextArea.setText("Test: " + testIDTextField.getText() + " not found in database");
             }
