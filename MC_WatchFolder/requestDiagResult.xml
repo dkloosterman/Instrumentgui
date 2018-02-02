@@ -1,19 +1,19 @@
 <SensoDx>
 <RequestDiagResult>
 <TestID>
-4</TestID>
+12</TestID>
 <AssayType>
 65535</AssayType>
 <TestImages>
 <ImagePath>
-./TestImage.tif</ImagePath>
+.\TestImage.tif</ImagePath>
 <ImagePath>
-./Test.txt</ImagePath>
+.\TestImage_2.tif</ImagePath>
 <ImagePath>
-./TestImage_2.tif</ImagePath>
+.\Test.txt</ImagePath>
 </TestImages>
 <Timestamp>
-2018-02-02 08:43:46.129</Timestamp>
+2018-02-02 11:47:37.366</Timestamp>
 </RequestDiagResult>
 </SensoDx>
 

@@ -290,7 +290,7 @@ public class InstrumentUI extends javax.swing.JFrame {
         });
         Buttons_Panel.add(GetImageButton);
 
-        TestInfoButton.setText("Diagnostic Test ID");
+        TestInfoButton.setText("Test ID");
         TestInfoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TestInfoButtonActionPerformed(evt);
@@ -386,6 +386,8 @@ public class InstrumentUI extends javax.swing.JFrame {
         try {
 
             JDBCqueries queries = new JDBCqueries();
+            this.cartridge = null;
+            this.cartridge = new Cartridge();
 
             if (queries.getCartridgeMfgInfo(cartridgeIDTextField.getText(), this.cartridge)) {
                 InfoTextArea.setText(this.cartridge.toString());
@@ -436,10 +438,13 @@ public class InstrumentUI extends javax.swing.JFrame {
 
         try {
             JDBCqueries queries = new JDBCqueries();
+            this.instrument = null;
+            this.instrument = new Instrument();
+            
+            if (queries.getInstrumentMfgInfo(instrumentIDTextField.getText(), this.instrument)) {
 
-            if (queries.getInstrumentMfgInfo(instrumentIDTextField.getText(), this.instrument)
-                    && queries.getInstrumentDeploymentInfo(instrumentIDTextField.getText(), this.instrument)) {
-
+                queries.getInstrumentDeploymentInfo(instrumentIDTextField.getText(), this.instrument);
+                        
                 InfoTextArea.setText(this.instrument.toString());
 
                 SelectObjectComboBox.setVisible(true);
@@ -803,6 +808,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                                     // into APP_WATCH_FOLDER_LOCATION
                                     try {
                                         String randomDiagResult = Double.toString(Math.random());
+                                        Timestamp timestamp2 = new Timestamp(System.currentTimeMillis());
                                         fw = new FileWriter(APP_WATCH_FOLDER_LOCATION + "\\diagTestResult.xml");
                                         bw = new BufferedWriter(fw);
                                         String resultString = "<SensoDx>\n"
@@ -814,7 +820,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                                                 + randomDiagResult
                                                 + "</ResultScore>\n"
                                                 + "<Timestamp>"
-                                                + timestamp.toString()
+                                                + timestamp2.toString()
                                                 + "</Timestamp>\n"
                                                 + "</DiagTestResult>\n"
                                                 + "</SensoDx>\n\n";
@@ -851,8 +857,7 @@ public class InstrumentUI extends javax.swing.JFrame {
 //                            GetImageButton.setVisible(false);
 //                            TestInfoButton.setVisible(false);
                         } else {
-                            Panel2_TextArea.setText("Unable to process test with zero valid images provided\n"
-                                    + Panel2_TextArea.getText());
+                            InfoTextArea.setText("Unable to process test with zero valid images provided\n");
                         }
 
                         // create new TestInstance
