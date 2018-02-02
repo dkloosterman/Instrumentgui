@@ -366,7 +366,7 @@ public class InstrumentUI extends javax.swing.JFrame {
             cartridge.setManufactured_timestamp(new Timestamp(System.currentTimeMillis()));
             cartridge.setDeployment_type(deployType.toString());
             cartridge.setManufactured_location("Perinton, NY");
-            cartridge.setAssay_type(test.TRUST_ME);
+            cartridge.setAssay_type(test.TRUST_ME_ASSAYS_ENABLED);
             cartridge.setSubsystem_1_id("0000000010000002");
             cartridge.setSubsystem_2_id("0000000020000002");
             cartridge.setSubsystem_3_id("0000000030000002");
@@ -398,7 +398,6 @@ public class InstrumentUI extends javax.swing.JFrame {
         } catch (Exception e) {
             // handle the error
             System.out.println("\n" + "General Exception " + e.getMessage());
-//            System.exit(0);
         } finally {
             //finally block used to close resources
 
@@ -440,11 +439,11 @@ public class InstrumentUI extends javax.swing.JFrame {
             JDBCqueries queries = new JDBCqueries();
             this.instrument = null;
             this.instrument = new Instrument();
-            
+
             if (queries.getInstrumentMfgInfo(instrumentIDTextField.getText(), this.instrument)) {
 
                 queries.getInstrumentDeploymentInfo(instrumentIDTextField.getText(), this.instrument);
-                        
+
                 InfoTextArea.setText(this.instrument.toString());
 
                 SelectObjectComboBox.setVisible(true);
@@ -454,7 +453,7 @@ public class InstrumentUI extends javax.swing.JFrame {
         } catch (Exception e) {
             // handle the error
             System.out.println("\n" + "General Exception " + e.getMessage());
-            System.exit(0);
+
         } finally {
             //finally block used to close resources
 
@@ -556,7 +555,7 @@ public class InstrumentUI extends javax.swing.JFrame {
         } catch (Exception e) {
             // handle the error
             System.out.println("\n" + "General Exception " + e.getMessage());
-            System.exit(0);
+
         } finally {
             //finally block used to close resources
 
@@ -665,7 +664,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                 public void startElement(String uri, String localName, String qName,
                         Attributes attributes) throws SAXException {
 
-                    System.out.println("Start Element :" + qName);
+//                    System.out.println("Start Element :" + qName);
 
                     if (qName.equalsIgnoreCase("SensoDx")) {
                         bSensoDx = true;
@@ -711,7 +710,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                 public void endElement(String uri, String localName,
                         String qName) throws SAXException {
 
-                    System.out.println("End Element :" + qName);
+//                    System.out.println("End Element :" + qName);
 
                     if (qName.equalsIgnoreCase("Test")) {
                         Cartridge cartridge = new Cartridge();
@@ -727,10 +726,15 @@ public class InstrumentUI extends javax.swing.JFrame {
 
 //                        instrument.setCartridgeTrustMeAllowed(false);
                         // if CartridgeID is TrustMe, create a "TrustMe" cartridge
-                        if (Cartridge_attr_value.equals("TrustMe")
-                                && instrument.getCartridgeTrustMeAllowed()) {
-                            createTestCartridge(cartridge, Cartridge.DeploymentType.TrustMe);
-                            queries.insertCartridge(cartridge);
+                        boolean trustMeFailed = false;
+                        if (Cartridge_attr_value.equals("TrustMe")) {
+                            if (instrument.getCartridgeTrustMeAllowed()) {
+                                createTestCartridge(cartridge, Cartridge.DeploymentType.TrustMe);
+                                queries.insertCartridge(cartridge);
+                            } else {
+                                // This instrument not configured to accept a "TrustMe" cartridge
+                                trustMeFailed = true;
+                            }
                         } else {
                             cartridge.setCartridge_id(Cartridge_attr_value);
                             queries.getCartridgeMfgInfo(Cartridge_attr_value, cartridge);
@@ -846,22 +850,15 @@ public class InstrumentUI extends javax.swing.JFrame {
                                 }
                             }
 
+                            if (trustMeFailed) {
+                                test.setTestResultString("This Instrument cannot accept a TrustMe Cartridge\n");
+                            }
                             InfoTextArea.setText(test.getTestResultString());
 
-                            // update view
-//                            CartridgeInfoButton.setVisible(false);
-//                            SelectObjectComboBox.setVisible(false);
-//                            SimulateInsertCartridgeButton.setVisible(false);
-//                            leftSideInfoPanel.setVisible(true);
-//                            EndTestButton.setVisible(true);
-//                            GetImageButton.setVisible(false);
-//                            TestInfoButton.setVisible(false);
                         } else {
                             InfoTextArea.setText("Unable to process test with zero valid images provided\n");
                         }
 
-                        // create new TestInstance
-                        // call ProcessTest()
                         Panel2_TextArea.setText("Finished Processing a Diagnostic Test\n"
                                 + Panel2_TextArea.getText());
 
@@ -921,7 +918,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                     } else if (qName.equalsIgnoreCase("TestImages")) {
                         System.out.println("Test Images received: " + testImages.toString());
                     } else if (qName.equalsIgnoreCase("DiagTestResult")) {
-                        System.out.println("DiagTestResult: ");
+//                        System.out.println("DiagTestResult: ");
 
                         JDBCqueries queries = new JDBCqueries();
                         List<String> images = new ArrayList<>();
@@ -949,26 +946,26 @@ public class InstrumentUI extends javax.swing.JFrame {
                     java.util.Date date = new java.util.Date();
 
                     if (bSensoDx) {
-                        System.out.println("SensoDx : " + new String(ch, start, length));
+//                        System.out.println("SensoDx : " + new String(ch, start, length));
                         bSensoDx = false;
                     } else if (bTest) {
-                        System.out.println("Test : " + new String(ch, start, length));
+//                        System.out.println("Test : " + new String(ch, start, length));
                         bTest = false;
                     } else if (bInstrument) {
-                        System.out.println("Instrument : " + new String(ch, start, length));
+//                        System.out.println("Instrument : " + new String(ch, start, length));
                         bInstrument = false;
                     } else if (bCartridge) {
-                        System.out.println("Cartridge : " + new String(ch, start, length));
+//                        System.out.println("Cartridge : " + new String(ch, start, length));
                         bCartridge = false;
                     } else if (bAssayType) {
                         System.out.println("AssayType : " + new String(ch, start, length));
                         bAssayType = false;
                     } else if (bTestImages) {
-                        System.out.println("TestImages : " + new String(ch, start, length));
+//                        System.out.println("TestImages : " + new String(ch, start, length));
                         bTestImages = false;
                     } else if (bImage) {
                         imagePath = new String(ch, start, length);
-                        System.out.println("Image : " + imagePath);
+//                        System.out.println("Image : " + imagePath);
                         bImage = false;
                     } else if (bTimestamp) {
                         System.out.println("Timestamp : " + new String(ch, start, length));
