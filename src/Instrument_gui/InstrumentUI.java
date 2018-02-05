@@ -28,11 +28,11 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class InstrumentUI extends javax.swing.JFrame {
 
-    public static final String TESTFILE_SAMPLE = ".\\TestImage.tif";
-//    public static final String TESTFILE_SAMPLE = null;    
-    public static final String TESTFILE_SAMPLE_2 = ".\\TestImage_2.tif";
-    public static final String TESTFILE_SAMPLE_3 = ".\\Test.txt";
-
+    public static final String TESTFILE_SAMPLE = ".\\boats.tif";
+////    public static final String TESTFILE_SAMPLE = null;    
+    public static final String TESTFILE_SAMPLE_2 = ".\\bridge.tif";
+    public static final String TESTFILE_SAMPLE_3 = ".\\einstein.tif";
+        
     public static final int WATCH_FOLDER_RATE_MS = 1000;
     public static final String APP_WATCH_FOLDER_LOCATION = ".\\AppWatchFolder";
     File folder = new File(APP_WATCH_FOLDER_LOCATION);
