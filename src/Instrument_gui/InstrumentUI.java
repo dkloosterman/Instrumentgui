@@ -56,10 +56,6 @@ public class InstrumentUI extends javax.swing.JFrame {
             this.instrument = new Instrument();
 
             leftSideInfoPanel.setVisible(true);
-//            CartridgeInfoButton.setVisible(false);
-//            EndTestButton.setVisible(false);
-//            TestInfoButton.setVisible(false);
-//            GetImageButton.setVisible(false);
 
             // load combobox with all instr IDs
             ArrayList<String> allInstrIDs = new ArrayList<String>();
