@@ -2,5 +2,5 @@
 <SensoDx>
   <InfoPanel1>Request to know if Cartridge is Valid</InfoPanel1>
   <InfoPanel2>Put result in MC watch folder</InfoPanel2>
-  <isCartridgeValid>12345</isCartridgeValid>
+  <isCartridgeValid>TestCart</isCartridgeValid>
 </SensoDx>

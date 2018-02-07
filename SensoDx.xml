@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <SensoDx>
   <Test>
     <Instrument InstrumentID="2017040300001" />
@@ -6,9 +6,9 @@
       <AssayType>OralCancer</AssayType>
     </Cartridge>
     <TestImages>
-      <Image>./TestImage.tif</Image>
-      <Image>./Test.txt</Image>
-      <Image>./TestImage_2.tif</Image>
+      <Image>./boats.tif</Image>
+      <Image>./bridge.tif</Image>
+      <Image>./einstein.tif</Image>
     </TestImages>
     <Timestamp>20171107_093559001</Timestamp>
   </Test>

@@ -32,14 +32,14 @@ public class InstrumentUI extends javax.swing.JFrame {
 ////    public static final String TESTFILE_SAMPLE = null;    
     public static final String TESTFILE_SAMPLE_2 = ".\\bridge.tif";
     public static final String TESTFILE_SAMPLE_3 = ".\\einstein.tif";
-        
+
     public static final int WATCH_FOLDER_RATE_MS = 1000;
     public static final String APP_WATCH_FOLDER_LOCATION = ".\\AppWatchFolder";
     File folder = new File(APP_WATCH_FOLDER_LOCATION);
 
     public static final String MC_WATCH_FOLDER_LOCATION = ".\\MC_WatchFolder";
 
-    public static final String DIAG_ALG_WATCH_FOLDER_LOCATION = ".\\MC_WatchFolder";
+    public static final String DIAG_ALG_WATCH_FOLDER_LOCATION = ".\\DiagAlg_WatchFolder";
     public static final boolean SIMULATE_DIAG_ALG_RESULT = true;
 
     public TestInstance test;
@@ -656,16 +656,17 @@ public class InstrumentUI extends javax.swing.JFrame {
                 String testResultScore = "";
 
                 List<String> imagePaths = new ArrayList<>();
+                boolean allTestFilesFound = false;
 
                 public void startElement(String uri, String localName, String qName,
                         Attributes attributes) throws SAXException {
 
 //                    System.out.println("Start Element :" + qName);
-
                     if (qName.equalsIgnoreCase("SensoDx")) {
                         bSensoDx = true;
                     } else if (qName.equalsIgnoreCase("Test")) {
                         testImages = new ArrayList<>();
+
                         bTest = true;
                     } else if (qName.equalsIgnoreCase("Instrument")) {
                         bInstrument = true;
@@ -683,6 +684,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                         bAssayType = true;
                     } else if (qName.equalsIgnoreCase("TestImages")) {
                         bTestImages = true;
+                        allTestFilesFound = true;
                     } else if (qName.equalsIgnoreCase("Image")) {
                         bImage = true;
                     } else if (qName.equalsIgnoreCase("Timestamp")) {
@@ -707,7 +709,6 @@ public class InstrumentUI extends javax.swing.JFrame {
                         String qName) throws SAXException {
 
 //                    System.out.println("End Element :" + qName);
-
                     if (qName.equalsIgnoreCase("Test")) {
                         Cartridge cartridge = new Cartridge();
                         Instrument instrument = new Instrument();
@@ -716,7 +717,6 @@ public class InstrumentUI extends javax.swing.JFrame {
                         Panel2_TextArea.setText("Processing a Diagnostic Test\n"
                                 + Panel2_TextArea.getText());
 
-                        instrument.setInstrument_id(Instrument_attr_name);
                         queries.getInstrumentMfgInfo(Instrument_attr_value, instrument);
                         queries.getInstrumentDeploymentInfo(Instrument_attr_value, instrument);
 
@@ -736,93 +736,54 @@ public class InstrumentUI extends javax.swing.JFrame {
                             queries.getCartridgeMfgInfo(Cartridge_attr_value, cartridge);
                         }
 
-                        // verify >= 1 valid image
-                        if (!testImages.isEmpty()) {
-                            TestInstance test = new TestInstance(testImages);
-
-                            if (SIMULATE_DIAG_ALG_RESULT) {
-                                test.setPatient_id("XYZ_HF");
-                                test.setTechnician_id("Mike HF Technician");
-                                test.setDoctor_id("Susan HF Doctor");
-                            }
-
-                            test.setClinical_test_timestamp(new Timestamp(System.currentTimeMillis()));
-
-                            if (test.verifyTestParameters(instrument, cartridge)) {
-
-                                queries.insertClinicalTestInstance(test);
-
-                                // request Diagnostic Test Result
-                                //    put test parameters in an xml file into watch folder
-                                BufferedWriter bw = null;
-                                FileWriter fw = null;
-                                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-                                try {
-                                    String imagePathString = "";
-                                    for (TestImage image : test.dicom.getTestImages()) {
-                                        imagePathString += "<ImagePath>\n"
-                                                + image.getTestImagePath()
-                                                + "</ImagePath>\n";
-                                    }
-
-                                    fw = new FileWriter(DIAG_ALG_WATCH_FOLDER_LOCATION + "\\requestDiagResult.xml");
-                                    bw = new BufferedWriter(fw);
-                                    String resultString = "<SensoDx>\n"
-                                            + "<RequestDiagResult>\n"
-                                            + "<TestID>\n"
-                                            + test.getClinical_test_instance_counter()
-                                            + "</TestID>\n"
-                                            + "<AssayType>\n"
-                                            + cartridge.getAssay_type()
-                                            + "</AssayType>\n"
-                                            + "<TestImages>\n"
-                                            + imagePathString
-                                            + "</TestImages>\n"
-                                            + "<Timestamp>\n"
-                                            + timestamp.toString()
-                                            + "</Timestamp>\n"
-                                            + "</RequestDiagResult>\n"
-                                            + "</SensoDx>\n\n";
-
-                                    bw.write(resultString);
-
-                                } catch (Exception e) {
-                                    // handle the error
-                                    System.out.println("\n" + "General Exception " + e.getMessage());
-                                } finally {
-
-                                    try {
-                                        if (bw != null) {
-                                            bw.close();
-                                        }
-                                        if (fw != null) {
-                                            fw.close();
-                                        }
-                                    } catch (IOException ex) {
-                                        ex.printStackTrace();
-                                    }
-                                }   //end finally
+//                        TestInstance test = new TestInstance(testImages);
+                        if (allTestFilesFound) {
+                            // verify >= 1 valid image
+                            if (!testImages.isEmpty()) {
+                                TestInstance test = new TestInstance(testImages);
 
                                 if (SIMULATE_DIAG_ALG_RESULT) {
-                                    // write a response in watchfolder that contains diag test result
-                                    // into APP_WATCH_FOLDER_LOCATION
+                                    test.setPatient_id("XYZ_HF");
+                                    test.setTechnician_id("Mike HF Technician");
+                                    test.setDoctor_id("Susan HF Doctor");
+                                }
+
+                                test.setClinical_test_timestamp(new Timestamp(System.currentTimeMillis()));
+
+                                if (test.verifyTestParameters(instrument, cartridge)) {
+
+                                    queries.insertClinicalTestInstance(test);
+
+                                    // request Diagnostic Test Result
+                                    //    put test parameters in an xml file into watch folder
+                                    BufferedWriter bw = null;
+                                    FileWriter fw = null;
+                                    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                                     try {
-                                        String randomDiagResult = Double.toString(Math.random());
-                                        Timestamp timestamp2 = new Timestamp(System.currentTimeMillis());
-                                        fw = new FileWriter(APP_WATCH_FOLDER_LOCATION + "\\diagTestResult.xml");
+                                        String imagePathString = "";
+                                        for (TestImage image : test.dicom.getTestImages()) {
+                                            imagePathString += "<ImagePath>\n"
+                                                    + image.getTestImagePath()
+                                                    + "</ImagePath>\n";
+                                        }
+
+                                        fw = new FileWriter(DIAG_ALG_WATCH_FOLDER_LOCATION + "\\requestDiagResult.xml");
                                         bw = new BufferedWriter(fw);
                                         String resultString = "<SensoDx>\n"
-                                                + "<DiagTestResult>\n"
-                                                + "<TestID>"
+                                                + "<RequestDiagResult>\n"
+                                                + "<TestID>\n"
                                                 + test.getClinical_test_instance_counter()
                                                 + "</TestID>\n"
-                                                + "<ResultScore>"
-                                                + randomDiagResult
-                                                + "</ResultScore>\n"
-                                                + "<Timestamp>"
-                                                + timestamp2.toString()
+                                                + "<AssayType>\n"
+                                                + cartridge.getAssay_type()
+                                                + "</AssayType>\n"
+                                                + "<TestImages>\n"
+                                                + imagePathString
+                                                + "</TestImages>\n"
+                                                + "<Timestamp>\n"
+                                                + timestamp.toString()
                                                 + "</Timestamp>\n"
-                                                + "</DiagTestResult>\n"
+                                                + "</RequestDiagResult>\n"
                                                 + "</SensoDx>\n\n";
 
                                         bw.write(resultString);
@@ -843,16 +804,60 @@ public class InstrumentUI extends javax.swing.JFrame {
                                             ex.printStackTrace();
                                         }
                                     }   //end finally
+
+                                    if (SIMULATE_DIAG_ALG_RESULT) {
+                                        // write a response in watchfolder that contains diag test result
+                                        // into APP_WATCH_FOLDER_LOCATION
+                                        try {
+                                            String randomDiagResult = Double.toString(Math.random());
+                                            Timestamp timestamp2 = new Timestamp(System.currentTimeMillis());
+                                            fw = new FileWriter(APP_WATCH_FOLDER_LOCATION + "\\diagTestResult.xml");
+                                            bw = new BufferedWriter(fw);
+                                            String resultString = "<SensoDx>\n"
+                                                    + "<DiagTestResult>\n"
+                                                    + "<TestID>"
+                                                    + test.getClinical_test_instance_counter()
+                                                    + "</TestID>\n"
+                                                    + "<ResultScore>"
+                                                    + randomDiagResult
+                                                    + "</ResultScore>\n"
+                                                    + "<Timestamp>"
+                                                    + timestamp2.toString()
+                                                    + "</Timestamp>\n"
+                                                    + "</DiagTestResult>\n"
+                                                    + "</SensoDx>\n\n";
+
+                                            bw.write(resultString);
+
+                                        } catch (Exception e) {
+                                            // handle the error
+                                            System.out.println("\n" + "General Exception " + e.getMessage());
+                                        } finally {
+
+                                            try {
+                                                if (bw != null) {
+                                                    bw.close();
+                                                }
+                                                if (fw != null) {
+                                                    fw.close();
+                                                }
+                                            } catch (IOException ex) {
+                                                ex.printStackTrace();
+                                            }
+                                        }   //end finally
+                                    }
                                 }
-                            }
 
-                            if (trustMeFailed) {
-                                test.setTestResultString("This Instrument cannot accept a TrustMe Cartridge\n");
-                            }
-                            InfoTextArea.setText(test.getTestResultString());
+                                if (trustMeFailed) {
+                                    test.setTestResultString("This Instrument cannot accept a TrustMe Cartridge\n");
+                                }
+                                InfoTextArea.setText(test.getTestResultString());
 
+                            } else {
+                                InfoTextArea.setText("Unable to process test with zero valid images provided\n");
+                            }
                         } else {
-                            InfoTextArea.setText("Unable to process test with zero valid images provided\n");
+                            Panel2_TextArea.setText("Error: Input Diagnostic File Not Found\n");
                         }
 
                         Panel2_TextArea.setText("Finished Processing a Diagnostic Test\n"
@@ -868,7 +873,9 @@ public class InstrumentUI extends javax.swing.JFrame {
                         try {
                             JDBCqueries queries = new JDBCqueries();
 //                            isCartridgeIDvalid = "TestCart"; // uncomment for testing only
-                            boolean result = queries.isCartridgeValidToUse(isCartridgeIDvalid);
+                            boolean result
+                                    = queries.isCartridgeInDatabase(isCartridgeIDvalid)
+                                    && !queries.hasCartridgeBeenUsedInPreviousTest(isCartridgeIDvalid);
 
                             fw = new FileWriter(MC_WATCH_FOLDER_LOCATION + "\\validCartridge.xml");
                             bw = new BufferedWriter(fw);
@@ -907,7 +914,17 @@ public class InstrumentUI extends javax.swing.JFrame {
                         if (f.exists()) {
                             testImages.add(imagePath);
                         } else {
-                            Panel2_TextArea.setText("File " + imagePath + " not found!\n" + Panel2_TextArea.getText());
+                            allTestFilesFound = false;
+
+                            Errors fileNotFoundError = new Errors();
+                            JDBCqueries queries = new JDBCqueries();
+
+                            fileNotFoundError.buildErrorObject_ClinicalTestImageNotFound(Instrument_attr_value,
+                                    Cartridge_attr_value, null, imagePath);
+
+                            queries.insertError(fileNotFoundError);
+
+                            InfoTextArea.setText(fileNotFoundError.toString());
                             System.out.println("File " + imagePath + " not found!");
                         }
 
