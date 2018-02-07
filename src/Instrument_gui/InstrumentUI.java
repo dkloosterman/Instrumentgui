@@ -736,8 +736,9 @@ public class InstrumentUI extends javax.swing.JFrame {
                             queries.getCartridgeMfgInfo(Cartridge_attr_value, cartridge);
                         }
 
-//                        TestInstance test = new TestInstance(testImages);
+                        // continue job processing if all test images in the job are present in file system
                         if (allTestFilesFound) {
+
                             // verify >= 1 valid image
                             if (!testImages.isEmpty()) {
                                 TestInstance test = new TestInstance(testImages);
@@ -849,15 +850,32 @@ public class InstrumentUI extends javax.swing.JFrame {
                                 }
 
                                 if (trustMeFailed) {
+                                    Errors error = new Errors();
+//           
+                                    error.buildErrorObject_InstrumentNotTrustMeConfigured(Instrument_attr_value,
+                                            Cartridge_attr_value, null);
+
+                                    queries.insertError(error);
+
+                                    InfoTextArea.setText(error.toString());
+
                                     test.setTestResultString("This Instrument cannot accept a TrustMe Cartridge\n");
                                 }
                                 InfoTextArea.setText(test.getTestResultString());
 
                             } else {
-                                InfoTextArea.setText("Unable to process test with zero valid images provided\n");
+                                Errors error = new Errors();
+//           
+                                error.buildErrorObject_JobWithNoTestImages(Instrument_attr_value,
+                                        Cartridge_attr_value, null);
+
+                                queries.insertError(error);
+
+                                InfoTextArea.setText(error.toString());
+//                                InfoTextArea.setText("Unable to process test with zero valid images provided\n");
                             }
                         } else {
-                            Panel2_TextArea.setText("Error: Input Diagnostic File Not Found\n");
+//                            Panel2_TextArea.setText("Error: Input Diagnostic File Not Found\n");
                         }
 
                         Panel2_TextArea.setText("Finished Processing a Diagnostic Test\n"
@@ -944,7 +962,8 @@ public class InstrumentUI extends javax.swing.JFrame {
                         test.setAnalysis_result(Double.parseDouble(testResultScore));
                         queries.updateClinicalTestInstanceResultScore(test);
 
-                        InfoTextArea.setText(InfoTextArea.getText() + "\n\n" + test.toString());
+//                        InfoTextArea.setText(InfoTextArea.getText() + "\n\n" + test.toString());
+                        InfoTextArea.setText(test.toString());
                         instrumentIDTextField.setText(test.getInstrument_id());
                         cartridgeIDTextField.setText(test.getCartridge_id());
                         testIDTextField.setText(Long.toString(test.getClinical_test_instance_counter()));
