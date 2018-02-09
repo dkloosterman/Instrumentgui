@@ -684,7 +684,6 @@ public class InstrumentUI extends javax.swing.JFrame {
                         bAssayType = true;
                     } else if (qName.equalsIgnoreCase("TestImages")) {
                         bTestImages = true;
-//                        allTestFilesFound = true;
                     } else if (qName.equalsIgnoreCase("Image")) {
                         bImage = true;
                     } else if (qName.equalsIgnoreCase("Timestamp")) {
@@ -739,7 +738,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                             }
 
                             // continue job processing if all test images in the job are present in file system
-                            if (allTestFilesFound) {
+                            if (allTestFilesFound && !trustMeFailed) {
 
                                 // verify >= 1 valid image
                                 if (!testImages.isEmpty()) {
@@ -851,20 +850,7 @@ public class InstrumentUI extends javax.swing.JFrame {
                                         }
                                     }
 
-                                    if (trustMeFailed) {
-                                        Errors error = new Errors();
-
-                                        error.buildErrorObject_InstrumentNotTrustMeConfigured(Instrument_attr_value,
-                                                Cartridge_attr_value, null);
-
-                                        queries.insertError(error);
-
-                                        InfoTextArea.setText(error.toString());
-
-                                        test.setTestResultString("This Instrument cannot accept a TrustMe Cartridge\n");
-                                    }
                                     InfoTextArea.setText(test.getTestResultString());
-
                                 } else {
                                     Errors error = new Errors();
 //           
@@ -876,6 +862,17 @@ public class InstrumentUI extends javax.swing.JFrame {
                                     InfoTextArea.setText(error.toString());
 //                                InfoTextArea.setText("Unable to process test with zero valid images provided\n");
                                 }
+                            } else if (trustMeFailed) {
+                                Errors error = new Errors();
+
+                                error.buildErrorObject_InstrumentNotTrustMeConfigured(Instrument_attr_value,
+                                        Cartridge_attr_value, null);
+
+                                queries.insertError(error);
+
+                                InfoTextArea.setText(error.toString());
+
+//                                InfoTextArea.setText(test.getTestResultString());
                             }
                         } else {
                             Errors error = new Errors();
@@ -940,23 +937,25 @@ public class InstrumentUI extends javax.swing.JFrame {
                             }
                         }   //end finally
                     } else if (qName.equalsIgnoreCase("Image")) {
-                        File f = new File(imagePath);
+                        if (allTestFilesFound) {
+                            File f = new File(imagePath);
 
-                        if (f.exists()) {
-                            testImages.add(imagePath);
-                        } else {
-                            allTestFilesFound = false;
+                            if (f.exists()) {
+                                testImages.add(imagePath);
+                            } else {
+                                allTestFilesFound = false;
 
-                            Errors fileNotFoundError = new Errors();
-                            JDBCqueries queries = new JDBCqueries();
+                                Errors fileNotFoundError = new Errors();
+                                JDBCqueries queries = new JDBCqueries();
 
-                            fileNotFoundError.buildErrorObject_ClinicalTestImageNotFound(Instrument_attr_value,
-                                    Cartridge_attr_value, null, imagePath);
+                                fileNotFoundError.buildErrorObject_ClinicalTestImageNotFound(Instrument_attr_value,
+                                        Cartridge_attr_value, null, imagePath);
 
-                            queries.insertError(fileNotFoundError);
+                                queries.insertError(fileNotFoundError);
 
-                            InfoTextArea.setText(fileNotFoundError.toString());
-                            System.out.println("File " + imagePath + " not found!");
+                                InfoTextArea.setText(fileNotFoundError.toString());
+                                System.out.println("File " + imagePath + " not found!");
+                            }
                         }
 
                     } else if (qName.equalsIgnoreCase("TestImages")) {
