@@ -269,7 +269,6 @@
                       <Color blue="99" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Press here to simulate Test"/>
-                    <Property name="actionCommand" type="java.lang.String" value="Press here to simulate Test"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                     <Property name="verticalAlignment" type="int" value="3"/>
                   </Properties>

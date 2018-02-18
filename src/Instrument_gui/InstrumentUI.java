@@ -8,12 +8,15 @@ import Errors_pkg.Errors;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.io.*;
+import static java.lang.Thread.sleep;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 // for SAX Parser
 import javax.xml.parsers.SAXParser;
@@ -61,12 +64,31 @@ public class InstrumentUI extends javax.swing.JFrame {
             ArrayList<String> allInstrIDs = new ArrayList<String>();
             JDBCqueries queries = new JDBCqueries();
 
-            SelectObjectComboBox.removeAllItems();
-            allInstrIDs = queries.getAllInstrumentIDs();
-            for (String ID : allInstrIDs) {
-                SelectObjectComboBox.addItem(ID);
+            if (!queries.isConnectedToDB()) {
+                String locationOfDB = "";
+
+                if (queries.isUseLocalDB()) {
+                    locationOfDB = "Local Database";
+                } else {
+                    locationOfDB = "Cloud Database";
+                }
+                this.InfoTextArea.setText("Unable to connect to " + locationOfDB);
+
+                this.SimulateInsertCartridgeButton.setEnabled(false);
+                this.SelectObjectComboBox.setEnabled(false);
+                this.CartridgeInfoButton.setEnabled(false);
+                this.InstrumentInfoButton.setEnabled(false);
+                this.TestInfoButton.setEnabled(false);
+                this.GetImageButton.setEnabled(false);
+            } else {
+                SelectObjectComboBox.removeAllItems();
+                allInstrIDs = queries.getAllInstrumentIDs();
+                for (String ID : allInstrIDs) {
+                    SelectObjectComboBox.addItem(ID);
+                }
+                instrumentIDTextField.setText(this.instrument.getInstrument_id());
             }
-            instrumentIDTextField.setText(this.instrument.getInstrument_id());
+
             cartridgeIDTextField.setText("0");
             imageIDTextField.setText("0");
             testIDTextField.setText("0");
@@ -276,7 +298,6 @@ public class InstrumentUI extends javax.swing.JFrame {
 
         SimulateInsertCartridgeButton.setBackground(new java.awt.Color(255, 255, 153));
         SimulateInsertCartridgeButton.setText("Press here to simulate Test");
-        SimulateInsertCartridgeButton.setActionCommand("Press here to simulate Test");
         SimulateInsertCartridgeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         SimulateInsertCartridgeButton.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         SimulateInsertCartridgeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -571,14 +592,51 @@ public class InstrumentUI extends javax.swing.JFrame {
     }//GEN-LAST:event_SelectObjectComboBoxActionPerformed
 
     private void UseLocalDBcheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UseLocalDBcheckBoxActionPerformed
-        
+
         JDBCqueries queries = new JDBCqueries();
-        
-        if(this.UseLocalDBcheckBox.isSelected()){
+        String locationOfDB = "";
+
+        if (this.UseLocalDBcheckBox.isSelected()) {
+            locationOfDB = "Local Database";
             queries.setUseLocalDB(true);
-        }
-        else{
+        } else {
+            locationOfDB = "Cloud Database";
             queries.setUseLocalDB(false);
+        }
+        queries = null;
+
+        JDBCqueries queriesNew = new JDBCqueries();
+
+        if (!queriesNew.isConnectedToDB()) {
+            this.InfoTextArea.setText("Unable to connect to " + locationOfDB);
+            this.SimulateInsertCartridgeButton.setEnabled(false);
+            this.SelectObjectComboBox.setEnabled(false);
+            this.CartridgeInfoButton.setEnabled(false);
+            this.InstrumentInfoButton.setEnabled(false);
+            this.TestInfoButton.setEnabled(false);
+            this.GetImageButton.setEnabled(false);
+//            try {
+//                sleep(5000);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(InstrumentUI.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+        } else {
+            SelectObjectComboBox.removeAllItems();
+            // load combobox with all instr IDs
+            ArrayList<String> allInstrIDs = new ArrayList<String>();
+            allInstrIDs = queriesNew.getAllInstrumentIDs();
+            for (String ID : allInstrIDs) {
+                SelectObjectComboBox.addItem(ID);
+            }
+            instrumentIDTextField.setText(this.instrument.getInstrument_id());
+            this.InfoTextArea.setText("Successfully Connected to " + locationOfDB);
+
+            this.SimulateInsertCartridgeButton.setEnabled(true);
+            this.SelectObjectComboBox.setEnabled(true);
+            this.CartridgeInfoButton.setEnabled(true);
+            this.InstrumentInfoButton.setEnabled(true);
+            this.TestInfoButton.setEnabled(true);
+            this.GetImageButton.setEnabled(true);
         }
     }//GEN-LAST:event_UseLocalDBcheckBoxActionPerformed
 
