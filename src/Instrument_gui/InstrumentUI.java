@@ -149,6 +149,7 @@ public class InstrumentUI extends javax.swing.JFrame {
         Panel2_TextArea = new javax.swing.JTextArea();
         instrumentButtons = new javax.swing.JPanel();
         InsertCartridge_Panel = new javax.swing.JPanel();
+        UseLocalDBcheckBox = new javax.swing.JCheckBox();
         SimulateInsertCartridgeButton = new javax.swing.JButton();
         Buttons_Panel = new javax.swing.JPanel();
         GetImageButton = new javax.swing.JButton();
@@ -263,8 +264,19 @@ public class InstrumentUI extends javax.swing.JFrame {
 
         instrumentButtons.setLayout(new java.awt.GridLayout(3, 1));
 
+        InsertCartridge_Panel.setLayout(new java.awt.GridLayout(1, 2));
+
+        UseLocalDBcheckBox.setText("Use Local Database");
+        UseLocalDBcheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UseLocalDBcheckBoxActionPerformed(evt);
+            }
+        });
+        InsertCartridge_Panel.add(UseLocalDBcheckBox);
+
         SimulateInsertCartridgeButton.setBackground(new java.awt.Color(255, 255, 153));
-        SimulateInsertCartridgeButton.setText("Press here to simulate inserting a cartridge");
+        SimulateInsertCartridgeButton.setText("Press here to simulate Test");
+        SimulateInsertCartridgeButton.setActionCommand("Press here to simulate Test");
         SimulateInsertCartridgeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         SimulateInsertCartridgeButton.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         SimulateInsertCartridgeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -557,6 +569,18 @@ public class InstrumentUI extends javax.swing.JFrame {
 
         }   //end finally
     }//GEN-LAST:event_SelectObjectComboBoxActionPerformed
+
+    private void UseLocalDBcheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UseLocalDBcheckBoxActionPerformed
+        
+        JDBCqueries queries = new JDBCqueries();
+        
+        if(this.UseLocalDBcheckBox.isSelected()){
+            queries.setUseLocalDB(true);
+        }
+        else{
+            queries.setUseLocalDB(false);
+        }
+    }//GEN-LAST:event_UseLocalDBcheckBoxActionPerformed
 
     private void appWatchFolder() {
         File[] listOfFiles = folder.listFiles();
@@ -1121,6 +1145,7 @@ public class InstrumentUI extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> SelectObjectComboBox;
     private javax.swing.JButton SimulateInsertCartridgeButton;
     private javax.swing.JButton TestInfoButton;
+    private javax.swing.JCheckBox UseLocalDBcheckBox;
     private javax.swing.JPanel WatchFolderPanel;
     private javax.swing.JScrollPane WatchFolderScrollPane;
     private javax.swing.JTextField cartridgeIDTextField;

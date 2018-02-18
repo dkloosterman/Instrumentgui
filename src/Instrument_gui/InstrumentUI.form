@@ -250,14 +250,26 @@
           <SubComponents>
             <Container class="javax.swing.JPanel" name="InsertCartridge_Panel">
 
-              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+                <Property name="columns" type="int" value="2"/>
+                <Property name="rows" type="int" value="1"/>
+              </Layout>
               <SubComponents>
+                <Component class="javax.swing.JCheckBox" name="UseLocalDBcheckBox">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Use Local Database"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="UseLocalDBcheckBoxActionPerformed"/>
+                  </Events>
+                </Component>
                 <Component class="javax.swing.JButton" name="SimulateInsertCartridgeButton">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="99" green="ff" red="ff" type="rgb"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Press here to simulate inserting a cartridge"/>
+                    <Property name="text" type="java.lang.String" value="Press here to simulate Test"/>
+                    <Property name="actionCommand" type="java.lang.String" value="Press here to simulate Test"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                     <Property name="verticalAlignment" type="int" value="3"/>
                   </Properties>
