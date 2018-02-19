@@ -63,15 +63,19 @@ public class InstrumentUI extends javax.swing.JFrame {
             // load combobox with all instr IDs
             ArrayList<String> allInstrIDs = new ArrayList<String>();
             JDBCqueries queries = new JDBCqueries();
-
-            if (!queries.isConnectedToDB()) {
-                String locationOfDB = "";
-
-                if (queries.isUseLocalDB()) {
+            
+            String locationOfDB = "";
+            if (queries.isUseLocalDB()) {
                     locationOfDB = "Local Database";
+                    this.UseLocalDBcheckBox.setSelected(true);
                 } else {
                     locationOfDB = "Cloud Database";
+                    this.UseLocalDBcheckBox.setSelected(false);
                 }
+            this.UseLocalDBcheckBox.setEnabled(true);
+
+            if (!queries.isConnectedToDB()) {
+         
                 this.InfoTextArea.setText("Unable to connect to " + locationOfDB);
 
                 this.SimulateInsertCartridgeButton.setEnabled(false);
