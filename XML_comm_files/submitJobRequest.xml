@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SensoDx>
+  <Test>
+    <Instrument InstrumentID="2017040300001" />
+    <Cartridge CartridgeID="TrustMe">
+      <AssayType>OralCancer</AssayType>
+    </Cartridge>
+    <TestImages>
+      <Image>./boats.tif</Image>
+      <Image>./bridge.tif</Image>
+      <Image>./einstein.tif</Image>
+    </TestImages>
+    <Timestamp>20171107_093559001</Timestamp>
+  </Test>
+  <InfoPanel1>Processing a Test</InfoPanel1>
+  <InfoPanel2>Executed xyz in module abc</InfoPanel2>
+</SensoDx>
