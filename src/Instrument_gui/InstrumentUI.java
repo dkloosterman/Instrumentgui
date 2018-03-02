@@ -8,15 +8,13 @@ import Errors_pkg.Errors;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.io.*;
-import static java.lang.Thread.sleep;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 // for SAX Parser
 import javax.xml.parsers.SAXParser;
